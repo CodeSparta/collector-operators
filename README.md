@@ -18,6 +18,7 @@ Features:
 ## Instructions:
 ### 1. Clone into koffer directory
 ```
+ mkdir -p /tmp/artifacts
  git clone https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/operatorhub.git /tmp/operatorhub
 ```
 ### 2. Run Koffer Engine
@@ -25,6 +26,7 @@ Features:
  sudo podman run \
      --rm -it -h koffer --name koffer         \
      --pull=always --entrypoint entrypoint    \
+     --volume /tmp/artifacts:/root/deploy:z   \
      --volume /tmp/operatorhub:/root/koffer:z \
    docker.io/containercraft/koffer:nightlies
 ```
