@@ -15,22 +15,22 @@
       loop:
         - "{{ dir_deploy }}/mirror"
    ######## Mirror Catalog to Registry
+    - name: '{{ ansible_name_module }} | shell:oc.adm.catalog.mirror | Mirror OLM RedHat Operator Images'
+      shell: |
+        oc adm catalog build --insecure=true \
+          --registry-config=/root/.docker/config.json \
+          --from=registry.redhat.io/openshift4/ose-operator-registry:v4.3 \
+          --to=localhost:5000/olm/redhat-operators:v1 \
+          --appregistry-org redhat-operators \
+          --filter-by-os="linux/amd64"
+      when: image_mirror_utility == "oc"
+   ######## Mirror Catalog to Registry
     - name: '{{ ansible_name_module }} | shell:oc.adm.catalog.mirror | Sync OLM Catalog'
       shell: |
         oc adm catalog mirror \
           -a /root/.docker/config.json --insecure \
           --filter-by-os="linux/amd64" \
-          localhost:5000/olm/redhat-operators:v2 localhost:5000
-      when: image_mirror_utility == "oc"
-   ######## Mirror Catalog to Registry
-    - name: '{{ ansible_name_module }} | shell:oc.adm.catalog.mirror | Mirror OLM RedHat Operator Images'
-      shell: |
-        oc adm catalog build --insecure=true \
-          --registry-config=/root/.docker/config.json \
-          --from=registry.redhat.io/openshift4/ose-operator-registry:v4.5 \
-          --to=localhost:5000/olm/redhat-operators:v2 \
-          --appregistry-org redhat-operators \
-          --filter-by-os="linux/amd64"
+          localhost:5000/olm/redhat-operators:v1 localhost:5000
       when: image_mirror_utility == "oc"
  
    ######## Skopeo Copy Images to Registry
