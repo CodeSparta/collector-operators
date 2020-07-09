@@ -18,7 +18,7 @@ Features:
 ## Instructions:
 ### 1. Clone into koffer directory
 ```
- rm -rf /git/koffer 2>/dev/null; git clone https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/operatorhub.git /tmp/koffer
+ rm -rf /tmp/koffer 2>/dev/null; git clone https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/operatorhub.git /tmp/koffer
 ```
 ### 2. Run Koffer Engine
 ```
