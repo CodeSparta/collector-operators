@@ -18,14 +18,14 @@ Features:
 ## Instructions:
 ### 1. Clone into koffer directory
 ```
- rm -rf /tmp/koffer 2>/dev/null; git clone https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/operatorhub.git /tmp/koffer
+ git clone https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/operatorhub.git /tmp/operatorhub
 ```
 ### 2. Run Koffer Engine
 ```
  sudo podman run \
-     --rm -it -h koffer --name koffer      \
-     --pull=always --entrypoint entrypoint \
-     --volume /tmp/koffer:/root/koffer:z   \
+     --rm -it -h koffer --name koffer         \
+     --pull=always --entrypoint entrypoint    \
+     --volume /tmp/operatorhub:/root/koffer:z \
    docker.io/containercraft/koffer:nightlies
 ```
 ### 3. Move Koffer Bundle to target host /tmp directory
