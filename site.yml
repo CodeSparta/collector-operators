@@ -3,15 +3,15 @@
   hosts: local
   vars_files:
     - 'vars/global.yml'
-  tasks:
-  - name: 'Koffer | Artifact Rake Utility | site.yml | file | Create ~/.docker'
-    file:
-      path: "/root/.docker"
-      state: directory
-  - name: 'Koffer | Artifact Rake Utility | site.yml | copy | Stage Quay.io Pull Secret @ /root/.docker/config.json'
-    copy:
-      src: "/root/deploy/secrets/docker/quay.json"
-      dest: "/root/.docker/config.json"
+# tasks:
+# - name: 'Koffer | Artifact Rake Utility | site.yml | file | Create ~/.docker'
+#   file:
+#     path: "/root/.docker"
+#     state: directory
+# - name: 'Koffer | Artifact Rake Utility | site.yml | copy | Stage Quay.io Pull Secret @ /root/.docker/config.json'
+#   copy:
+#     src: "/root/deploy/secrets/docker/quay.json"
+#     dest: "/root/.docker/config.json"
 
 - import_playbook: images.yml       # Pull cloudctl images & Download container images to directory
 # import_playbook: bundle.yml       # Bundle artifacts for airgap pivot

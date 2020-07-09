@@ -28,6 +28,7 @@ Features:
      --pull=always --entrypoint entrypoint    \
      --volume /tmp/artifacts:/root/deploy:z   \
      --volume /tmp/operatorhub:/root/koffer:z \
+     --volume /root/.docker/config.json:/root/.docker/config.json:z \
    docker.io/containercraft/koffer:nightlies
 ```
 ### 3. Move Koffer Bundle to target host /tmp directory
