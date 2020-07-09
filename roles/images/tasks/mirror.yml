@@ -15,12 +15,12 @@
       loop:
         - "{{ dir_deploy }}/mirror"
    ######## Mirror Catalog to Registry
-    - name: '{{ ansible_name_module }} | shell:oc.adm.catalog.mirror | Sync OLM Catalog'
-      shell: |
-        oc adm catalog mirror --insecure=true \
-          --registry-config=/root/.docker/config.json \
-          registry.redhat.io/olm/redhat-operators:v1 localhost:5000
-      when: image_mirror_utility == "oc"
+#   - name: '{{ ansible_name_module }} | shell:oc.adm.catalog.mirror | Sync OLM Catalog'
+#     shell: |
+#       oc adm catalog mirror --insecure=true \
+#         --registry-config=/root/.docker/config.json \
+#         localhost:5000/olm/redhat-operators:v1 localhost:5000
+#     when: image_mirror_utility == "oc"
    ######## Mirror Catalog to Registry
     - name: '{{ ansible_name_module }} | shell:oc.adm.catalog.mirror | Mirror OLM RedHat Operator Images'
       shell: |
