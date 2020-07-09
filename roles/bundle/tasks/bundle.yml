@@ -17,7 +17,7 @@
 ####### Build Unified Bundle
 - name: '{{ ansible_name_module }} | command:tar | build tarball bundle of all artifacts'
   command:
-    "tar -c --use-compress-program='pigz -9 ' -v -f {{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar.xz -C {{ local_home }}/mirror docker"
+    "tar -c --use-compress-program='pigz -9 ' -v -f {{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar.xz -C {{ local_home }}/deploy/mirror docker"
   args:
     creates: '{{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar.xz'
     warn: false
