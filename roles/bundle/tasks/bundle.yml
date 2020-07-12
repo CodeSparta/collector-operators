@@ -1,12 +1,6 @@
 ---
 ####### Purge preexisting bundles
-- name: '{{ ansible_name_module }} | file | Purge pre-existing bundles'
-  file:
-    path: '{{ local_home }}/deploy/bundle'
-    state: directory
-
-####### Purge preexisting bundles
-- name: '{{ ansible_name_module }} | file | Purge pre-existing bundles'
+- name: '{{ ansible_name_module }} | file:absent | Purge pre-existing operator bundles'
   file:
     path: '{{ item }}'
     state: absent
@@ -17,7 +11,7 @@
 ####### Build Unified Bundle
 - name: '{{ ansible_name_module }} | command:tar | build tarball bundle of all artifacts'
   command:
-    "tar -c --use-compress-program='pigz -9 ' -v -f {{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar.xz -C {{ local_home }}/deploy/mirror docker"
+    "tar -cv --use-compress-program='pigz -9 ' -f {{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar.xz -C {{ local_home }}/deploy/mirror docker"
   args:
     creates: '{{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar.xz'
     warn: false

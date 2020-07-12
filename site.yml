@@ -14,4 +14,4 @@
 #     dest: "/root/.docker/config.json"
 
 - import_playbook: images.yml       # Pull cloudctl images & Download container images to directory
-# import_playbook: bundle.yml       # Bundle artifacts for airgap pivot
+- import_playbook: bundle.yml       # Bundle artifacts for airgap pivot
