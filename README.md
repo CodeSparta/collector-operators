@@ -16,22 +16,20 @@ Features:
   - Low side injestion direct to "pre-hydrated" registry stateful path
 
 ## Instructions:
-### 1. Clone into koffer directory
+### 1. Run Koffer Engine
 ```
- mkdir -p /tmp/artifacts
- git clone https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/operatorhub.git /tmp/operatorhub
+ sudo podman run -it --rm \
+     --entrypoint=/usr/bin/entrypoint \
+     --volume /tmp/platform:/root/deploy:z \
+     --volume /tmp/platform/secrets/docker/quay.json:/root/.docker/config.json:r \
+  docker.io/containercraft/koffer:nightlies \
+  https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/operatorhub.git master
 ```
-### 2. Run Koffer Engine
+### 2. Move Koffer Bundle to target host /tmp directory
+### 3. Extract to docker registry path
 ```
- sudo podman run \
-     --rm -it -h koffer --name koffer         \
-     --pull=always --entrypoint entrypoint    \
-     --volume /tmp/artifacts:/root/deploy:z   \
-     --volume /tmp/operatorhub:/root/koffer:z \
-     --volume /root/.docker/config.json:/root/.docker/config.json:z \
-   docker.io/containercraft/koffer:nightlies
+ tar -xv -f ${file} -C ${path}
 ```
-### 3. Move Koffer Bundle to target host /tmp directory
 # [Developer Docs & Utils](./dev)
 # Demo
 ![bundle](./web/bundle.svg)
