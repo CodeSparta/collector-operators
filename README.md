@@ -28,7 +28,7 @@ Features:
 ### 2. Move Koffer Bundle to restricted environment target host `/tmp` directory
 ### 3. Extract to docker registry path
 ```
- tar xv -f /tmp/koffer-bundle.redhat-operators.tar.xz -C /root/deploy/mirror
+ tar xv -f /tmp/koffer-bundle.redhat-operators.tar -C /root/deploy/mirror
 ```
 ### 4. Start or Restart your docker registry container
 # [Developer Docs & Utils](./dev)
