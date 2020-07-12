@@ -1,48 +1,27 @@
 ---
-####### Purge preexisting bundles
 - name: '{{ ansible_name_module }} | file:absent | Purge pre-existing operator bundles'
   file:
     path: '{{ item }}'
     state: absent
   loop:
-    - '{{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar.xz'
-    - '{{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar.xz.sha256'
+    - '{{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar'
+    - '{{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar.sha256'
 
-####### Build Unified Bundle
 - name: '{{ ansible_name_module }} | command:tar | build tarball bundle of all artifacts'
   command:
-    "tar -cv --use-compress-program='pigz -9 ' -f {{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar.xz -C {{ local_home }}/deploy/mirror docker"
+    "tar -cv -f {{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar -C {{ local_home }}/deploy/mirror docker"
   args:
-    creates: '{{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar.xz'
+    creates: '{{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar'
     warn: false
 
-####### SHA256sum koffer-bundle.redhat-operators.tar.xz
-- name: '{{ ansible_name_module }} | stat:sha256 | SHA koffer-bundle.redhat-operators.tar.xz'
-  command: 'sha256sum koffer-bundle.redhat-operators.tar.xz'
+- name: '{{ ansible_name_module }} | stat:sha256 | SHA koffer-bundle.redhat-operators.tar'
+  command: 'sha256sum koffer-bundle.redhat-operators.tar'
   args:
     warn: false
     chdir: '{{ local_home }}/deploy/bundle'
   register: bundle_sha
 
-- name: '{{ ansible_name_module }} | copy:content.bcrypt_htpasswd | Generate Default Registry Basic Auth'
+- name: '{{ ansible_name_module }} | copy:content.sha256 | Create Sha256 Verification file'
   copy:
     content: '{{ bundle_sha.stdout }}'
-    dest: '{{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar.xz.sha256'
-
-####### Build Unified Bundle
-# name: '{{ ansible_name_module }} | command:tar.cvf | Build unified bundle with auxilary unpack+launch utilities'
-# command:
-#   "tar -cvf {{ local_home }}/koffer/bundle/koffer-bundle.openshift-{{ version_openshift  }}.tar -C /tmp koffer-bundle.redhat-operators.tar.xz.sha256 koffer-bundle.redhat-operators.tar.xz cloudctl.yml start-cloudctl.sh"
-# args:
-#   creates: "{{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar"
-#   warn: false
-
-# name: '{{ ansible_name_module }} | role | archive | Bundle koffer-bundle.redhat-operators.tar.xz with auxilary files'
-# archive:
-#   path:
-#   - '/tmp/koffer-bundle.redhat-operators.tar.xz.sha256'
-#   - '/tmp/koffer-bundle.redhat-operators.tar.xz'
-#   - '/tmp/registry.yml'
-#   - '/tmp/registry.sh'
-#   dest: '{{ local_home }}/deploy/{{ cloud_provider }}-{{ target_environment }}-{{ name_cluster_vpc }}-p1bundle.tar'
-#   format: tar
+    dest: '{{ local_home }}/deploy/bundle/koffer-bundle.redhat-operators.tar.sha256'

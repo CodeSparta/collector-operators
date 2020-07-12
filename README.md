@@ -25,11 +25,12 @@ Features:
   docker.io/containercraft/koffer:nightlies \
   https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/operatorhub.git master
 ```
-### 2. Move Koffer Bundle to target host /tmp directory
+### 2. Move Koffer Bundle to restricted environment target host `/tmp` directory
 ### 3. Extract to docker registry path
 ```
- tar -xv -f ${file} -C ${path}
+ tar xv -f /tmp/koffer-bundle.redhat-operators.tar.xz -C /root/deploy/mirror
 ```
+### 4. Start or Restart your docker registry container
 # [Developer Docs & Utils](./dev)
 # Demo
 ![bundle](./web/bundle.svg)
