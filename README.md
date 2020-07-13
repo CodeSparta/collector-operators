@@ -21,7 +21,7 @@ Features:
  sudo podman run -it --rm \
      --entrypoint=/usr/bin/entrypoint \
      --volume /tmp/platform:/root/deploy:z \
-     --volume /tmp/platform/secrets/docker/quay.json:/root/.docker/config.json:r \
+     --volume /tmp/platform/secrets/docker/quay.json:/root/.docker/config.json:ro \
   docker.io/containercraft/koffer:nightlies \
   https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/operatorhub.git master
 ```
