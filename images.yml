@@ -3,9 +3,30 @@
   hosts: local
   vars_files:
     - 'vars/global.yml'
-    - 'vars/images.yml'
   vars:
-    module: "images"
+    module: "operators"
     ansible_name_module: "{{ ansible_name }} | {{ module }}"
-  roles:
-    - images
+  tasks:
+    - name: '{{ ansible_name_module }} | file:absent | Purge Pre-Existing Artifacts' 
+      file: 
+        path: "{{ dir_deploy }}/deploy/mirror/docker"
+        state: absent
+    - name: '{{ ansible_name_module }} | file:directory | Place Artifacts Directory' 
+      file: 
+        path: "{{ dir_deploy }}/images"
+        state: directory
+    - name: '{{ ansible_name_module }} | command:mirror.py | Pull Selected Operator Images' 
+      command:
+        argv:
+          - ./mirror.py
+          - --catalog-version
+          - 1.0.0
+          - --authfile
+          - /root/.docker/config.json
+          - --registry-olm
+          - localhost:5000
+          - --registry-catalog
+          - localhost:5000
+          - --operator-file
+          - operators.list
+          - --icsp-scope=namespace

@@ -371,10 +371,10 @@ def MirrorImagesToLocalRegistry(images):
 def CopyImageToDestinationRegistry(
         sourceImageUrl, destinationImageUrl, authfile=None):
   if args.authfile:
-    cmd_args = "skopeo copy --authfile {} -a docker://{} docker://{}".format(
+    cmd_args = "skopeo copy --format=v2s2 --authfile {} -a docker://{} docker://{}".format(
         authfile, sourceImageUrl, destinationImageUrl)
   else:
-    cmd_args = "skopeo copy -a docker://{} docker://{}".format(
+    cmd_args = "skopeo copy --format=v2s2 -a docker://{} docker://{}".format(
         sourceImageUrl, destinationImageUrl)
 
   subprocess.run(cmd_args, shell=True, check=True)
