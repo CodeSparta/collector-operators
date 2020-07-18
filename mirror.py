@@ -54,7 +54,7 @@ parser.add_argument(
     help="Scope of registry mirrors in imagecontentsourcepolicy file. Allowed values: namespace, registry. Defaults to: namespace")
 parser.add_argument(
     "--output",
-    default="publish",
+    default="/root/deploy/tack/operators",
     help="Directory to create YAML files")
 args = parser.parse_args()
 
