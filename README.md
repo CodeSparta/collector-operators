@@ -30,6 +30,7 @@ Features:
  tar xv -f /tmp/koffer-bundle.collector-operators.tar -C /root/deploy/mirror
 ```
 ### 4. Start or Restart your docker registry container
-# [Developer Docs & Utils](./dev)
+## [Developer Docs & Utils](./dev)
+## [Supported Offline Operators List](https://access.redhat.com/articles/4740011)
 # Demo
 ![bundle](./web/bundle.svg)
