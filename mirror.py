@@ -68,7 +68,7 @@ operator_known_bad_image_list_file = os.path.join(
     script_root_dir, "known-bad-images")
 quay_rh_base_url = "https://quay.io/cnr/api/v1/packages/"
 redhat_operators_image_name = "redhat-operators"
-redhat_operators_packages_url = "https://quay.io/cnr/api/v1/packages?namespace=redhat-operators"
+redhat_operators_packages_url = "https://quay.io/cnr/api/v1/packages?namespace=community-operators"
 image_content_source_policy_template_file = os.path.join(
     script_root_dir, "image-content-source-template")
 catalog_source_template_file = os.path.join(
