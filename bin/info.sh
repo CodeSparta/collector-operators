@@ -10,8 +10,9 @@ cat <<EOF
     - Move to cloudctl deployment services bastion \`/tmp\`
     - Unpack bundle into image registry path via cmd:
 
-        \`tar xv -f /tmp/koffer-bundle.collector-operators.tar -C /root/deploy/mirror\`
+        \`tar xv -f /tmp/koffer-bundle.collector-operators.tar -C /root/deploy\`
 
+    - Apply operators to cluster with configs in \`mirror/config/operators/\'
 EOF
 }
 info

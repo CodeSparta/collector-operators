@@ -27,9 +27,9 @@ Features:
 ### 2. Move Koffer Bundle to restricted environment target host `/tmp` directory
 ### 3. Extract to docker registry path
 ```
- tar xv -f /tmp/koffer-bundle.collector-operators.tar -C /root/deploy/mirror
+ tar xv -f /tmp/koffer-bundle.collector-operators.tar -C /root/deploy
 ```
-### 4. Start or Restart your docker registry container
+### 4. Apply operator catalog configs with contents of `mirror/config/operators`
 ## [Developer Docs & Utils](./dev)
 ## [Supported Offline Operators List](https://access.redhat.com/articles/4740011)
 # Demo
