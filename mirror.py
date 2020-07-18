@@ -106,7 +106,7 @@ def main():
   downloadAndProcessManifests(mod_package_file_data_json)
 
   print("Creating custom catalogue image..")
-# CreateCatalogImageAndPushToLocalRegistry()
+  CreateCatalogImageAndPushToLocalRegistry()
 
   print("Mirroring related images to offline registry...")
   images = getImages()
