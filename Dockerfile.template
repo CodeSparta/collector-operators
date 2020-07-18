@@ -11,7 +11,7 @@ RUN set -ex \
     && echo
 
 USER 1001
-COPY ../../tmp/{{ manifestPath }} /manifests
+COPY /tmp/{{ manifestPath }} /manifests
 
 # Initialize the database
 RUN initializer --manifests /manifests/ --output /db/bundles.db
