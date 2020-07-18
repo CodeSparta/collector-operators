@@ -13,11 +13,11 @@
         state: absent
     - name: '{{ ansible_name_module }} | file:directory | Place Artifacts Directory' 
       file: 
-        path: "{{ dir_deploy }}/images"
+        path: "{{ item }}"
         state: directory
       with_items:
         - "{{ dir_deploy }}/mirror"
-        - "{{ dir_deploy }}/config/operators"
+        - "{{ dir_deploy }}/mirror/config/operators"
     - name: '{{ ansible_name_module }} | command:mirror.py | Pull Selected Operator Images' 
       command:
         argv:
@@ -33,5 +33,5 @@
           - --operator-file
           - operators.list
           - --output
-          - "{{ dir_deploy }}/config/operators"
+          - "{{ dir_deploy }}/mirror/config/operators"
           - --icsp-scope=namespace
