@@ -318,7 +318,7 @@ def CreateCatalogImageAndPushToLocalRegistry():
     dockerfile.write(content)
 
   #cmd_args = "buildah bud --isolation=chroot --format docker -f {} -t {}".format(content_root_dir, image_url)
-  cmd_args = "buildah bud --isolation=chroot --format docker -f {} -t {}".format(manifest_root_dir, image_url)
+  cmd_args = "cd / && buildah bud --isolation=chroot --format docker -f {} -t {}".format(manifest_root_dir, image_url)
   subprocess.run(cmd_args, shell=True, check=True)
 
   print("Pushing catalog image to offline registry...")
