@@ -316,14 +316,14 @@ def CreateCatalogImageAndPushToLocalRegistry():
   with open(dockerFile, "w") as dockerfile:
     dockerfile.write(content)
 
-  cmd_args = "podman build --format docker -f {} -t {}".format(content_root_dir, image_url)
+  cmd_args = "buildah bud --isolation=chroot --format docker -f {} -t {}".format(content_root_dir, image_url)
   subprocess.run(cmd_args, shell=True, check=True)
 
   print("Pushing catalog image to offline registry...")
   if args.authfile:
-    cmd_args = "podman push --authfile {} {}".format(args.authfile, image_url)
+    cmd_args = "buildah push --authfile {} {}".format(args.authfile, image_url)
   else:
-    cmd_args = "podman push {} ".format(image_url)
+    cmd_args = "buildah push {} ".format(image_url)
 
   subprocess.run(cmd_args, shell=True, check=True)
   CreateCatalogSourceYaml(image_url)
