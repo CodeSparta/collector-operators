@@ -23,12 +23,12 @@ Features:
      --volume /tmp/platform:/root/deploy:z \
      --volume /tmp/platform/secrets/docker/quay.json:/root/.docker/config.json:ro \
   docker.io/containercraft/koffer:nightlies \
-  https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/operatorhub.git master
+  https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/collector-operators.git selective
 ```
 ### 2. Move Koffer Bundle to restricted environment target host `/tmp` directory
 ### 3. Extract to docker registry path
 ```
- tar xv -f /tmp/koffer-bundle.redhat-operators.tar -C /root/deploy/mirror
+ tar xv -f /tmp/koffer-bundle.collector-operators.tar -C /root/deploy/mirror
 ```
 ### 4. Start or Restart your docker registry container
 # [Developer Docs & Utils](./dev)
