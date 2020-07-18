@@ -1,0 +1,19 @@
+#!/usr/local/bin/ansible-playbook --inventory=inventory
+- name: '{{ name_vendor }} | Koffer | auth.yml' 
+  hosts: local
+  vars_files:
+    - 'vars/global.yml'
+  vars:
+    module: "bundle"
+    ansible_name_module: "{{ ansible_name }} | {{ module }}"
+    redhat_quay_pull_file: '{{ dir_artifacts }}/.docker/master.json }}'
+  tasks:
+    - name: 'Koffer | Artifact Rake Utility | site.yml | file | Create ~/.docker'
+      file:
+        path: "/root/.docker"
+        state: directory
+
+    - name: 'Koffer | Artifact Rake Utility | site.yml | copy | Stage Quay.io Pull Secret @ /root/.docker/config.json'
+      copy:
+        src: "/root/deploy/secrets/docker/quay.json"
+        dest: "/root/.docker/config.json"

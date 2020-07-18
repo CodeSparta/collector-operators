@@ -2,16 +2,13 @@
 - name: ' Koffer | Artifact Rake Utility' 
   hosts: local
   vars_files:
-    - 'vars/global.yml'
-# tasks:
-# - name: 'Koffer | Artifact Rake Utility | site.yml | file | Create ~/.docker'
-#   file:
-#     path: "/root/.docker"
-#     state: directory
-# - name: 'Koffer | Artifact Rake Utility | site.yml | copy | Stage Quay.io Pull Secret @ /root/.docker/config.json'
-#   copy:
-#     src: "/root/deploy/secrets/docker/quay.json"
-#     dest: "/root/.docker/config.json"
+    - vars/global.yml
 
-- import_playbook: images.yml       # Pull cloudctl images & Download container images to directory
-- import_playbook: bundle.yml       # Bundle artifacts for airgap pivot
+- name: 'Koffer | Artifact Rake Utility | import_playbook | auth.yml'
+  import_playbook: auth.yml
+
+- name: 'Koffer | Artifact Rake Utility | import_playbook | images.yml'
+  import_playbook: images.yml
+
+- name: 'Koffer | Artifact Rake Utility | import_playbook | bundle.yml'
+  import_playbook: bundle.yml
