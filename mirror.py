@@ -311,7 +311,8 @@ def CreateCatalogImageAndPushToLocalRegistry():
 
   content = templateFile.render(manifestPath=os.path.basename(manifest_root_dir))
 
-  dockerFile = os.path.join(content_root_dir, 'Dockerfile')
+  #dockerFile = os.path.join(content_root_dir, 'Dockerfile')
+  dockerFile = os.path.join(manifest_root_dir, 'Dockerfile')
 
   with open(dockerFile, "w") as dockerfile:
     dockerfile.write(content)
