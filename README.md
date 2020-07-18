@@ -22,7 +22,7 @@ Features:
      --entrypoint=/usr/bin/entrypoint \
      --volume /tmp/platform:/root/deploy:z \
   docker.io/containercraft/koffer:nightlies \
-  https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/collector-operators.git master
+  https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/collector-operators.git nightlies
 ```
 ### 2. Move Koffer Bundle to restricted environment target host `/tmp` directory
 ### 3. Extract to docker registry path
