@@ -16,8 +16,8 @@
         path: "{{ dir_deploy }}/images"
         state: directory
       with_items:
-        - "{{ dir_deploy }}/images"
-        - "{{ dir_deploy }}/tack/operators"
+        - "{{ dir_deploy }}/mirror"
+        - "{{ dir_deploy }}/config/operators"
     - name: '{{ ansible_name_module }} | command:mirror.py | Pull Selected Operator Images' 
       command:
         argv:
@@ -32,4 +32,6 @@
           - localhost:5000
           - --operator-file
           - operators.list
+          - --output
+          - "{{ dir_deploy }}/config/operators"
           - --icsp-scope=namespace
