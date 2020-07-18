@@ -3,12 +3,12 @@
 #### 0. (OPTIONAL) Build Locally
 ```
   sudo -i
-  curl -L https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/bundle/-/raw/nightlies/dev/bin/build-local.sh | bash -x
+  curl -L https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/bundle/-/raw/latest/dev/bin/build-local.sh | bash -x
 ```
 #### 1. Clone codebase under development
 ```
  git clone https://github.com/containercraft/koffer-openshift.git /tmp/koffer;
- cd /tmp/koffer && git checkout nightlies;
+ cd /tmp/koffer && git checkout latest;
 ```
 #### 2. Prepare Developer Environment
   a. Create persistence directories
@@ -33,7 +33,7 @@ sudo podman run \
     --volume /tmp/koffer:/root/koffer:z            \
     --volume /tmp/mirror:/root/deploy/mirror:z     \
     --volume /tmp/images:/root/deploy/images:z     \
-  docker.io/containercraft/koffer:nightlies
+  docker.io/containercraft/koffer:latest
 ```
 
   - Option B. Exec into container for manual development
@@ -44,12 +44,12 @@ sudo podman run \
     --volume /tmp/koffer:/root/koffer:z            \
     --volume /tmp/mirror:/root/deploy/mirror:z     \
     --volume /tmp/images:/root/deploy/images:z     \
-  docker.io/containercraft/koffer:nightlies
+  docker.io/containercraft/koffer:latest
 ```
   - Then manually exec the `/usr/bin/entrypoint` actions
 ```
  git pull;
- git checkout nightlies;
+ git checkout latest;
  ./usr/bin/run_registry.sh
  ./tree.yml
  ./secrets.yml
@@ -81,7 +81,7 @@ tar -xv -C /root -f /tmp/koffer-bundle.*.tar
 ## Remove / Purge
 #### Cleanup Koffer Artifacts
 ```
-sudo podman rmi --force koffer:nightlies
+sudo podman rmi --force koffer:latest
 sudo rm -rf /tmp/koffer/bundle/koffer-bundle.*.tar
 sudo rm -rf /root/{deploy,cloudctl.yml,start-cloudctl.sh,ArtifactsBundle.tar.xz.sha256,ArtifactsBundle.tar.xz}
 sudo rm -rf /tmp/{koffer,mirror,images}
@@ -92,4 +92,4 @@ sudo podman pod rm --force cloudctl
 for container in $(sudo podman ps -a | grep -v CONTAINER | awk '/busybox|one|registry|nginx/{print $1}'); do sudo podman rm --force ${container}; done
 for container in $(sudo podman images | grep -v CONTAINER | awk '/koffer|pause|busybox|one|registry|nginx/{print $3}'); do sudo podman rmi --force ${container}; done
 ```
-[this script]:https://github.com/containercraft/Koffer/blob/nightlies/dev/bin/build-local.sh
+[this script]:https://github.com/containercraft/Koffer/blob/latest/dev/bin/build-local.sh
