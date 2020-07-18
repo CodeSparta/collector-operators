@@ -18,7 +18,7 @@ Features:
 ## Instructions:
 ### 1. Run Koffer Engine
 ```
- sudo podman run -it --rm \
+ sudo podman run -it --rm --device /dev/fuse \
      --entrypoint=/usr/bin/entrypoint \
      --volume /tmp/platform:/root/deploy:z \
   docker.io/containercraft/koffer:nightlies \
