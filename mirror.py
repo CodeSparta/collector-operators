@@ -287,11 +287,12 @@ def setImages(image):
 
 # Write related images from an operator CSV YAML to a file for later processing
 def extractRelatedImagesToFile(operatorCsvYaml):
-  for entry in operatorCsvYaml['spec']['relatedImages']:
-    if('image' in entry):
-      setImages(entry['image'])
-    elif('value' in entry):
-      setImages(entry['value'])
+  if('relatedImages' in operatorCsvYaml):
+    for entry in operatorCsvYaml['spec']['relatedImages']:
+      if('image' in entry):
+        setImages(entry['image'])
+      elif('value' in entry):
+        setImages(entry['value'])
 
   # Some operators don't have every image they need in the related images field
   # We have to query the deployments spec to get the missing image(s)
