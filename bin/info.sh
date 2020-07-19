@@ -12,7 +12,8 @@ cat <<EOF
 
         \`tar xv -f /tmp/koffer-bundle.collector-operators.tar -C /root/deploy\`
 
-    - Apply operators to cluster with configs in \`mirror/config/operators/\'
+    - Apply operators to cluster with configs in \`mirror/config/operators/\`
+
 EOF
 }
 info
