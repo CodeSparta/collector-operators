@@ -32,5 +32,4 @@ Features:
 ### 4. Apply operator catalog configs with contents of `mirror/config/operators`
 ## [Developer Docs & Utils](./dev)
 ## [Supported Offline Operators List](https://access.redhat.com/articles/4740011)
-# Demo
 ![bundle](./web/bundle.svg)
