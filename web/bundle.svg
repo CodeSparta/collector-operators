@@ -130,7 +130,7 @@
 
             #screen_view {
                 animation-duration: 111997ms;
-                animation-iteration-count:3;
+                animation-iteration-count:2;
                 animation-name:roll;
                 animation-timing-function: steps(1,end);
                 animation-fill-mode: forwards;
