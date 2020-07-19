@@ -35,7 +35,7 @@
           - --registry-catalog
           - localhost:5000
           - --operator-file
-          - operators.list
+          - redhat.list
           - --output
           - "{{ dir_deploy }}/mirror/operators/redhat"
           - --icsp-scope=namespace
@@ -53,7 +53,7 @@
           - --registry-catalog
           - localhost:5000
           - --operator-file
-          - operators.list
+          - community.list
           - --output
           - "{{ dir_deploy }}/mirror/operators/community"
           - --icsp-scope=namespace
