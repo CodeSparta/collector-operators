@@ -288,6 +288,7 @@ def setImages(image):
 # Write related images from an operator CSV YAML to a file for later processing
 def extractRelatedImagesToFile(operatorCsvYaml):
   for entry in operatorCsvYaml['spec']['relatedImages']:
+    print("debugging " + operatorCsvYaml['spec'])
     if('image' in entry):
       setImages(entry['image'])
     elif('value' in entry):
@@ -298,7 +299,6 @@ def extractRelatedImagesToFile(operatorCsvYaml):
   for entry in operatorCsvYaml['spec']['install']['spec']['deployments']:
     for container in entry['spec']['template']['spec']['containers']:
       if('image' in container):
-        print("debugging " + container['image'])
         setImages(container['image'])
 
 
