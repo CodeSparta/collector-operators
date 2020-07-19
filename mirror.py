@@ -233,11 +233,12 @@ def downloadManifest(quay_operator_reg_name,
   tf = tarfile.open(operator_archive_file)
   tf.extractall(manifest_root_dir)
   operatorCsvYaml = getOperatorCsvYaml(quay_operator_name)
-  print("debugging" + quay_operator_name)
+  print("debugging " + quay_operator_name)
   print(
       "Getting list of related images from " +
       quay_operator_name +
       " operator")
+  print("debugging " + operatorCsvYaml)
   extractRelatedImagesToFile(operatorCsvYaml)
 
 
