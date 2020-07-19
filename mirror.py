@@ -251,7 +251,6 @@ def getOperatorCsvYaml(operator_name):
     operatorManifestPath = os.path.dirname(operatorPackagePath[0])
     operatorPackageFilename = operatorPackagePath[0]
 
-    print("debugging " + operatorPackageFilename)
     with open(operatorPackageFilename, 'r') as packageYamlFile:
       packageYaml = yaml.safe_load(packageYamlFile)
       default = packageYaml['defaultChannel']
@@ -299,6 +298,7 @@ def extractRelatedImagesToFile(operatorCsvYaml):
   for entry in operatorCsvYaml['spec']['install']['spec']['deployments']:
     for container in entry['spec']['template']['spec']['containers']:
       if('image' in container):
+        print("debugging " + container['image'])
         setImages(container['image'])
 
 
