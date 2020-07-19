@@ -241,7 +241,6 @@ def downloadManifest(quay_operator_reg_name,
 
 
 def getOperatorCsvYaml(operator_name):
-  print("debugging " + str(operatorCsvYaml))
   try:
     # Find manifest file
     operatorPackagePath = glob.glob(
@@ -249,6 +248,7 @@ def getOperatorCsvYaml(operator_name):
             manifest_root_dir,
             operator_name + '*',
             '*package*'))
+    print("debugging " + str(operatorCsvYaml))
     operatorManifestPath = os.path.dirname(operatorPackagePath[0])
     operatorPackageFilename = operatorPackagePath[0]
 
