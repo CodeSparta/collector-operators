@@ -67,8 +67,8 @@ operator_image_list = []
 operator_known_bad_image_list_file = os.path.join(
     script_root_dir, "known-bad-images")
 quay_rh_base_url = "https://quay.io/cnr/api/v1/packages/"
-redhat_operators_image_name = "community-operators"
-redhat_operators_packages_url = "https://quay.io/cnr/api/v1/packages?namespace=community-operators"
+redhat_operators_image_name = "redhat-operators"
+redhat_operators_packages_url = "https://quay.io/cnr/api/v1/packages?namespace=redhat-operators"
 image_content_source_policy_template_file = os.path.join(
     script_root_dir, "image-content-source-template")
 catalog_source_template_file = os.path.join(
@@ -287,12 +287,11 @@ def setImages(image):
 
 # Write related images from an operator CSV YAML to a file for later processing
 def extractRelatedImagesToFile(operatorCsvYaml):
-  if('relatedImages' in operatorCsvYaml):
-    for entry in operatorCsvYaml['spec']['relatedImages']:
-      if('image' in entry):
-        setImages(entry['image'])
-      elif('value' in entry):
-        setImages(entry['value'])
+  for entry in operatorCsvYaml['spec']['relatedImages']:
+    if('image' in entry):
+      setImages(entry['image'])
+    elif('value' in entry):
+      setImages(entry['value'])
 
   # Some operators don't have every image they need in the related images field
   # We have to query the deployments spec to get the missing image(s)
