@@ -238,7 +238,7 @@ def downloadManifest(quay_operator_reg_name,
       "Getting list of related images from " +
       quay_operator_name +
       " operator")
-  print("debugging " + operatorCsvYaml)
+  print("debugging " + str(operatorCsvYaml))
   extractRelatedImagesToFile(operatorCsvYaml)
 
 
