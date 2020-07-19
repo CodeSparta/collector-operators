@@ -252,7 +252,7 @@ def getOperatorCsvYaml(operator_name):
     operatorPackageFilename = operatorPackagePath[0]
 
     with open(operatorPackageFilename, 'r') as packageYamlFile:
-    print("debugging " + str(operatorCsvYaml))
+      print("debugging " + operatorPackageFilename)
       packageYaml = yaml.safe_load(packageYamlFile)
       default = packageYaml['defaultChannel']
       for channel in packageYaml['channels']:
