@@ -1,1 +1,4 @@
 keycloak-operator
+postgresql
+jenkins-operator
+argocd-operator
