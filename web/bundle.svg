@@ -16,7 +16,7 @@
         }
     
             :root {
-                --animation-duration: 12199ms;
+                --animation-duration: 111997ms;
             }
 
             @keyframes roll {
@@ -129,7 +129,7 @@
             }
 
             #screen_view {
-                animation-duration: 12199ms;
+                animation-duration: 11199ms;
                 animation-iteration-count:3;
                 animation-name:roll;
                 animation-timing-function: steps(1,end);
