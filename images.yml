@@ -25,7 +25,7 @@
     - name: '{{ ansible_name_module }} | command:redhat.py | Pull Operator Catalog Selections: Red Hat' 
       command:
         argv:
-          - ./mirror.py
+          - ./redhat.py
           - --catalog-version
           - 1.0.0
           - --authfile
@@ -43,7 +43,7 @@
     - name: '{{ ansible_name_module }} | command:community.py | Pull Operator Catalog Selections: Community' 
       command:
         argv:
-          - ./mirror.py
+          - ./community.py
           - --catalog-version
           - 1.0.0
           - --authfile
