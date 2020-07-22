@@ -22,23 +22,23 @@
         - "{{ dir_deploy }}/mirror/operators/certified"
         - "{{ dir_deploy }}/mirror/operators/community"
 
-    - name: '{{ ansible_name_module }} | command:community.py | Pull Operator Catalog Selections: Community' 
-      command:
-        argv:
-          - ./community.py
-          - --catalog-version
-          - 1.0.0
-          - --authfile
-          - /root/.docker/config.json
-          - --registry-olm
-          - localhost:5000
-          - --registry-catalog
-          - localhost:5000
-          - --operator-file
-          - community.list
-          - --output
-          - "{{ dir_deploy }}/mirror/operators/community"
-          - --icsp-scope=namespace
+#   - name: '{{ ansible_name_module }} | command:community.py | Pull Operator Catalog Selections: Community' 
+#     command:
+#       argv:
+#         - ./community.py
+#         - --catalog-version
+#         - 1.0.0
+#         - --authfile
+#         - /root/.docker/config.json
+#         - --registry-olm
+#         - localhost:5000
+#         - --registry-catalog
+#         - localhost:5000
+#         - --operator-file
+#         - community.list
+#         - --output
+#         - "{{ dir_deploy }}/mirror/operators/community"
+#         - --icsp-scope=namespace
 
     - name: '{{ ansible_name_module }} | command:redhat.py | Pull Operator Catalog Selections: Red Hat' 
       command:
