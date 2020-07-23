@@ -1,7 +1,7 @@
-# Koffer Collector | RedHat OpenShift Operator Lifecycle Hub
+# [Koffer](https://github.com/containercraft/Koffer) Collector | AirGap Operator Hub Artifacts
 ## Provides
 This automation provides a unified and standardized tarball of artifacts for
-airgap infrastructure deployment tasks.
+cloudctl services pod airgap operator deployment tasks.
 
 ## About
 Koffer Collector Operator Hub uses the Koffer Engine runtime container to enable
@@ -11,9 +11,9 @@ Operator Hub. Primarily built to enable airgaped environments in a standard
 local mirror techniques.
 
 Features:
+  - Low side injestion direct to "pre-hydrated" registry stateful path
   - High side sha256 verification of artifacts bundle before standup
   - High side artifacts served via generic docker registry container
-  - Low side injestion direct to "pre-hydrated" registry stateful path
 
 ## Instructions:
 ### 0. Intended to be run post [collector-infra]
