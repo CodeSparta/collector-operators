@@ -16,13 +16,15 @@ Features:
   - Low side injestion direct to "pre-hydrated" registry stateful path
 
 ## Instructions:
+### 0. Intended to be run post [collector-infra]
 ### 1. Run Koffer Engine
 ```
- sudo podman run -it --rm --device /dev/fuse \
+ sudo podman run -it --rm \
+     --privileged --device /dev/fuse \
      --entrypoint=/usr/bin/entrypoint \
      --volume /tmp/platform:/root/deploy:z \
-  docker.io/containercraft/koffer:nightlies \
-  https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/collector-operators.git master
+   docker.io/containercraft/koffer:nightlies \
+   https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/collector-operators.git master
 ```
 ### 2. Move Koffer Bundle to restricted environment target host `/tmp` directory
 ### 3. Extract to docker registry path
@@ -33,3 +35,4 @@ Features:
 ## [Developer Docs & Utils](./dev)
 ## [Supported Offline Operators List](https://access.redhat.com/articles/4740011)
 ![bundle](./web/bundle.svg)
+[collector-infra]:https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/collector-infra
