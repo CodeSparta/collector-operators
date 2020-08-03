@@ -1,0 +1,24 @@
+apiVersion: operator.openshift.io/v1alpha1
+kind: ImageContentSourcePolicy
+metadata:
+  name: olm-image-content-source
+spec:
+  repositoryDigestMirrors:
+  - mirrors:
+    - registry.tacobell.besttacos.com:5000/ocs4
+    source: registry.redhat.io/ocs4
+  - mirrors:
+    - registry.tacobell.besttacos.com:5000/openshift4
+    source: registry.redhat.io/openshift4
+  - mirrors:
+    - registry.tacobell.besttacos.com:5000/rhceph
+    source: registry.redhat.io/rhceph
+  - mirrors:
+    - registry.tacobell.besttacos.com:5000/rhscl
+    source: registry.redhat.io/rhscl
+  - mirrors:
+    - registry.tacobell.besttacos.com:5000/openshift-service-mesh
+    source: registry.redhat.io/openshift-service-mesh
+  - mirrors:
+    - registry.tacobell.besttacos.com:5000/distributed-tracing
+    source: registry.redhat.io/distributed-tracing
