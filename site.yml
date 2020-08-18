@@ -4,8 +4,8 @@
   vars_files:
     - vars/global.yml
 
-- name: 'Koffer | Artifact Rake Utility | import_playbook | auth.yml'
-  import_playbook: auth.yml
+# name: 'Koffer | Artifact Rake Utility | import_playbook | auth.yml'
+# import_playbook: auth.yml
 
 - name: 'Koffer | Artifact Rake Utility | import_playbook | images.yml'
   import_playbook: images.yml

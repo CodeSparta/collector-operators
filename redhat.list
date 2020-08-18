@@ -4,4 +4,3 @@ servicemeshoperator
 kiali-ossm
 jaeger-product
 elasticsearch-operator
-rhsso-operator
