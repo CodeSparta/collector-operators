@@ -4,3 +4,4 @@ servicemeshoperator
 kiali-ossm
 jaeger-product
 elasticsearch-operator
+sso74-rhel8-operator
