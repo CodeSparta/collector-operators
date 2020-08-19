@@ -24,8 +24,8 @@ Features:
    docker.io/codesparta/koffer bundle \
      --repo collector-operators
 ```
-### 2. Move Koffer Bundle to restricted environment target host `/tmp` directory
-### 3. Extract to docker registry path
+### 2. Move Koffer Bundle to restricted environment
+### 3. Extract to CloudCtl Artifact path
 ```
  tar xv -f /tmp/koffer-bundle.collector-operators.tar -C /root
 ```
