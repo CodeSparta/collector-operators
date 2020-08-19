@@ -16,7 +16,6 @@ Features:
   - High side artifacts served via generic docker registry container
 
 ## Instructions:
-### 0. First Run: [collector-infra](https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/collector-infra)
 ### 1. Run Koffer Engine
 ```
  sudo podman run -it --rm \
