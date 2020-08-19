@@ -1,5 +1,5 @@
 #!/bin/bash -x
-./mirror.py \
+./redhat.py \
 --catalog-version 1.0.0 \
 --authfile /root/.docker/config.json \
 --registry-olm localhost:5000 \
