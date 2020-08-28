@@ -16,6 +16,10 @@ Features:
   - High side artifacts served via generic docker registry container
 
 ## Instructions:
+### 0. Make Artifact Bundle Directory
+```
+ mkdir -p /tmp/bundle
+```
 ### 1. Run Koffer Engine
 ```
  sudo podman run -it --rm \
