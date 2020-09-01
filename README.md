@@ -2,6 +2,7 @@
 ## Provides
 This automation provides a unified and standardized tarball of artifacts for
 cloudctl services pod airgap operator deployment tasks.
+### [Supported Offline Operators List](https://access.redhat.com/articles/4740011)
 
 ## About
 Koffer Collector Operator Hub uses the Koffer Engine runtime container to enable
@@ -34,4 +35,3 @@ Features:
  tar xv -f /tmp/koffer-bundle.collector-operators.tar -C /root
 ```
 ### 4. Apply operator catalog configs with contents of `mirror/config/operators`
-## [Supported Offline Operators List](https://access.redhat.com/articles/4740011)
