@@ -31,8 +31,8 @@ sudo podman run \
     --entrypoint entrypoint                        \
     --rm -it -h koffer --name koffer               \
     --volume /tmp/koffer:/root/koffer:z            \
-    --volume /tmp/mirror:/root/deploy/mirror:z     \
-    --volume /tmp/images:/root/deploy/images:z     \
+    --volume /tmp/mirror:/root/platform/mirror:z     \
+    --volume /tmp/images:/root/platform/images:z     \
   docker.io/containercraft/koffer:latest
 ```
 
@@ -42,8 +42,8 @@ sudo podman run \
     --entrypoint bash                              \
     --rm -it -h koffer --name koffer               \
     --volume /tmp/koffer:/root/koffer:z            \
-    --volume /tmp/mirror:/root/deploy/mirror:z     \
-    --volume /tmp/images:/root/deploy/images:z     \
+    --volume /tmp/mirror:/root/platform/mirror:z     \
+    --volume /tmp/images:/root/platform/images:z     \
   docker.io/containercraft/koffer:latest
 ```
   - Then manually exec the `/usr/bin/entrypoint` actions
@@ -56,7 +56,7 @@ sudo podman run \
  ./git.yml
  ./images.yml
  ./bundle.yml
- du -sh /root/deploy/koffer/koffer-bundle.*.tar
+ du -sh /root/platform/koffer/koffer-bundle.*.tar
 ```
 #### 4. Place bundle on CloudCtl Bastion host /tmp directory
 ```
@@ -83,7 +83,7 @@ tar -xv -C /root -f /tmp/koffer-bundle.*.tar
 ```
 sudo podman rmi --force koffer:latest
 sudo rm -rf /tmp/koffer/bundle/koffer-bundle.*.tar
-sudo rm -rf /root/{deploy,cloudctl.yml,start-cloudctl.sh,ArtifactsBundle.tar.xz.sha256,ArtifactsBundle.tar.xz}
+sudo rm -rf /root/{platform,cloudctl.yml,start-cloudctl.sh,ArtifactsBundle.tar.xz.sha256,ArtifactsBundle.tar.xz}
 sudo rm -rf /tmp/{koffer,mirror,images}
 ```
 #### Cleanup CloudCtl Artifacts

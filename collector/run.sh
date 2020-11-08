@@ -5,5 +5,5 @@
 --registry-olm localhost:5000 \
 --registry-catalog localhost:5000 \
 --operator-file ./operators.list \
---output /root/deploy/mirror/config/operators \
+--output /root/platform/mirror/config/operators \
 --icsp-scope=namespace

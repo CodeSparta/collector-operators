@@ -10,17 +10,17 @@
   tasks:
     - name: '{{ ansible_name_module }} | file:absent | Purge Pre-Existing Artifacts' 
       file: 
-        path: "{{ dir_deploy }}/mirror/docker"
+        path: "{{ dir_platform }}/mirror/docker"
         state: absent
     - name: '{{ ansible_name_module }} | file:directory | Place Artifacts Directory' 
       file: 
         path: "{{ item }}"
         state: directory
       with_items:
-        - "{{ dir_deploy }}/mirror"
-        - "{{ dir_deploy }}/mirror/operators/redhat"
-        - "{{ dir_deploy }}/mirror/operators/certified"
-        - "{{ dir_deploy }}/mirror/operators/community"
+        - "{{ dir_platform }}/mirror"
+        - "{{ dir_platform }}/mirror/operators/redhat"
+        - "{{ dir_platform }}/mirror/operators/certified"
+        - "{{ dir_platform }}/mirror/operators/community"
 
 #   - name: '{{ ansible_name_module }} | command:community.py | Pull Operator Catalog Selections: Community' 
 #     command:
@@ -37,7 +37,7 @@
 #         - --operator-file
 #         - community.list
 #         - --output
-#         - "{{ dir_deploy }}/mirror/operators/community"
+#         - "{{ dir_platform }}/mirror/operators/community"
 #         - --icsp-scope=namespace
 
     - name: '{{ ansible_name_module }} | command:redhat.py | Pull Operator Catalog Selections: Red Hat' 
@@ -55,5 +55,5 @@
           - --operator-file
           - redhat.list
           - --output
-          - "{{ dir_deploy }}/mirror/operators/redhat"
+          - "{{ dir_platform }}/mirror/operators/redhat"
           - --icsp-scope=namespace

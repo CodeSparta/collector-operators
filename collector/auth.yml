@@ -15,5 +15,5 @@
 
     - name: 'Koffer | Artifact Rake Utility | site.yml | copy | Stage Quay.io Pull Secret @ /root/.docker/config.json'
       copy:
-        src: "/root/deploy/secrets/docker/quay.json"
+        src: "/root/platform/secrets/docker/quay.json"
         dest: "/root/.docker/config.json"

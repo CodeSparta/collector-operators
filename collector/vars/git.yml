@@ -9,7 +9,7 @@ git_branch: v2-govcloud-automation
 url_git_bundle: 'https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/bundle.git'
 url_git_build: 'https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/build.git'
 url_git_cloudctl: 'https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/cloudctl.git'
-url_git_deploy: 'https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/deploy.git'
+url_git_platform: 'https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/platform.git'
 url_git_configure: 'https://repo1.dsop.io/dsop/redhat/platformone/ocp4x/ansible/configure.git'
 
 # Terraform Git Repos
@@ -23,7 +23,7 @@ dir_git_tffences: "{{ dir_terraform }}/fences"
 
 dir_git_build: "{{ dir_ansible }}/build"
 dir_git_bundle: "{{ dir_ansible }}/bundle"
-dir_git_deploy: "{{ dir_ansible }}/deploy"
+dir_git_platform: "{{ dir_ansible }}/platform"
 dir_git_tfcore: "{{ dir_ansible }}/core"
 dir_git_cloudctl: "{{ dir_ansible }}/cloudctl"
 dir_git_configure: "{{ dir_ansible }}/configure"
@@ -33,8 +33,8 @@ dir_git_tfbootstrap: "{{ dir_ansible }}/bootstrap"
 
 # Git Clone Items
 ansiblerepos:
-  - repo: "{{ url_git_deploy }}"
-    dest: "{{ dir_git_deploy }}"
+  - repo: "{{ url_git_platform }}"
+    dest: "{{ dir_git_platform }}"
     branch: nightlies
   - repo: "{{ url_git_configure }}"
     dest: "{{ dir_git_configure }}"
