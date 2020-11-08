@@ -33,4 +33,4 @@
     - name: '{{ ansible_name_module }} | copy:content.sha256 | Create Sha256 Verification file'
       copy:
         content: '{{ bundle_sha.stdout }}'
-        dest: '{{ local_home }}/platform/bundle/koffer-bundle.collector-operators.tar.sha256'
+        dest: '{{ local_home }}/bundle/koffer-bundle.collector-operators.tar.sha256'
