@@ -13,24 +13,24 @@
         path: '{{ item }}'
         state: absent
       loop:
-        - '{{ local_home }}/deploy/bundle/koffer-bundle.collector-operators.tar'
-        - '{{ local_home }}/deploy/bundle/koffer-bundle.collector-operators.tar.sha256'
+        - '{{ local_home }}/platform/bundle/koffer-bundle.collector-operators.tar'
+        - '{{ local_home }}/platform/bundle/koffer-bundle.collector-operators.tar.sha256'
     
     - name: '{{ ansible_name_module }} | command:tar | build tarball bundle of all artifacts'
       command:
-        "tar -cv -f {{ local_home }}/deploy/bundle/koffer-bundle.collector-operators.tar -C {{ local_home }} deploy"
+        "tar -cv -f {{ local_home }}/platform/bundle/koffer-bundle.collector-operators.tar -C {{ local_home }} platform"
       args:
-        creates: '{{ local_home }}/deploy/bundle/koffer-bundle.collector-operators.tar'
+        creates: '{{ local_home }}/platform/bundle/koffer-bundle.collector-operators.tar'
         warn: false
     
     - name: '{{ ansible_name_module }} | stat:sha256 | SHA koffer-bundle.collector-operators.tar'
       command: 'sha256sum koffer-bundle.collector-operators.tar'
       args:
         warn: false
-        chdir: '{{ local_home }}/deploy/bundle'
+        chdir: '{{ local_home }}/platform/bundle'
       register: bundle_sha
     
     - name: '{{ ansible_name_module }} | copy:content.sha256 | Create Sha256 Verification file'
       copy:
         content: '{{ bundle_sha.stdout }}'
-        dest: '{{ local_home }}/deploy/bundle/koffer-bundle.collector-operators.tar.sha256'
+        dest: '{{ local_home }}/platform/bundle/koffer-bundle.collector-operators.tar.sha256'
