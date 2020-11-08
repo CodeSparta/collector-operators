@@ -19,7 +19,6 @@ dir_platform: "{{ local_home }}/platform"
 dir_images: "{{ dir_platform }}/images"
 dir_ansible: "{{ dir_platform }}/ansible"
 dir_secrets: "{{ dir_platform }}/secrets"
-dir_platform: "{{ dir_platform }}/platform"
 
 # Terraform Variables
 dir_terraform: "{{ dir_platform }}/terraform"
