@@ -19,13 +19,13 @@ Features:
 ## Instructions:
 ### 0. Make Artifact Bundle Directory
 ```
- mkdir -p /tmp/bundle
+ mkdir -p ${HOME}/bundle
 ```
 ### 1. Run Koffer Engine
 ```
 podman run -it --rm --pull always \
     --device /dev/fuse \
-    --volume /tmp/bundle:/root/bundle:z \
+    --volume ${HOME}/bundle:/root/bundle:z \
   docker.io/cloudctl/koffer bundle \
     --plugin collector-operators
 ```
