@@ -23,11 +23,11 @@ Features:
 ```
 ### 1. Run Koffer Engine
 ```
- sudo podman run -it --rm \
-     --privileged --device /dev/fuse \
-     --volume /tmp/bundle:/root/deploy/bundle:z \
-   docker.io/codesparta/koffer bundle \
-     --repo collector-operators
+podman run -it --rm --pull always \
+    --device /dev/fuse \
+    --volume /tmp/bundle:/root/bundle:z \
+  docker.io/cloudctl/koffer bundle \
+    --plugin collector-operators
 ```
 ### 2. Move Koffer Bundle to restricted environment
 ### 3. Extract to CloudCtl Artifact path
