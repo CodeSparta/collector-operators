@@ -1,0 +1,33 @@
+#!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
+- name: '{{ name_vendor }} | Koffer | tree.yml' 
+  hosts: koffer
+  vars_files:
+    - 'vars/global.yml'
+  vars:
+    module: "tree"
+    ansible_name_module: "{{ ansible_name }} | {{ module }}"
+  tasks:
+
+    - name: '{{ ansible_name_module }} | file:directory | Create Artifact Directory Tree' 
+      file:
+        path: '{{ item }}'
+        state: directory
+        mode: '0744'
+        recurse: yes
+      with_items:
+        - '{{ dir_bin }}'
+        - '{{ local_tmp }}'
+        - '{{ dir_platform }}'
+        - '{{ dir_platform }}/mirror'
+        - '{{ dir_platform }}/secrets'
+        - '{{ dir_platform }}/nginx/rhcos'
+        - '{{ dir_platform }}/nginx/openshift/latest'
+
+    - name: '{{ ansible_name_module }} | file:directory | Create Bundle Directory' 
+      file:
+        path: '{{ item }}'
+        state: directory
+        mode: '0777'
+        recurse: yes
+      with_items:
+        - "{{ dir_bundle }}"
