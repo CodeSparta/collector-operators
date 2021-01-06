@@ -2,8 +2,16 @@ all:
   hosts:
     deploy:
   children:
-    localhost:
+    local:
       hosts:
-        koffer:
+        host:
+          ansible_host: 10.88.0.1
+      vars:
+        ansible_port: 22
+        ansible_user: root
+        ansible_connection: ssh
+    koffer:
+      hosts:
+        self:
           ansible_user: root
           ansible_connection: local

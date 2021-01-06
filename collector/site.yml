@@ -1,5 +1,5 @@
 #!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
-- name: ' Koffer | Artifact Rake Utility' 
+- name: 'Koffer | Artifact Rake Utility' 
   hosts: koffer
   vars_files:
     - 'vars/global.yml'
@@ -7,20 +7,21 @@
   tasks:
 
     ####### Purge Preexisting Artifacts 
-    - name: '{{ ansible_name_module }} | file | Purge pre-existing bundles'
+    - name: '{{ ansible_name }} | file | Purge pre-existing bundles'
       file:
         path: '{{ item }}'
         state: absent
       loop:
-        - '{{ dir_platform }}'
-        - '{{ dir_platform }}/nginx/openshift/latest/release.txt'
-        - '{{ dir_bundle }}/koffer-bundle.ocp-{{ version_openshift }}.tar.xz'
-        - '{{ dir_bundle }}/koffer-bundle.ocp-{{ version_openshift }}.tar.xz.sha256'
+        - '{{ dir_platform }}/koffer-bundle.operators-{{ version_openshift }}.tar.xz'
+        - '{{ dir_platform }}/koffer-bundle.opeartors-{{ version_openshift }}.tar.xz.sha256'
       when: clean_purge_artifacts == True
 
 - import_playbook: tree.yml         # Create base directory tree
-- import_playbook: secrets.yml      # Collect Secrets
 - import_playbook: tools.yml        # Pull OpenShift oc, openshift-install, and kubectl binaries 
-- import_playbook: images.yml       # Download OCP Infra Container Images
-- import_playbook: bundle.yml       # Bundle artifacts for airgap pivot
-- import_playbook: finalize.yml     # Finalize
+- import_playbook: catalog.yml      # 
+# import_playbook: images.yml       # Download OCP Infra Container Images
+
+# import_playbook: bundle.yml       # Bundle artifacts for airgap pivot
+# when: bundle == True
+# import_playbook: finalize.yml     # Finalize
+# when: bundle == True
