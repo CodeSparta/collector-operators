@@ -10,8 +10,8 @@ all:
         ansible_port: 22
         ansible_user: root
         ansible_connection: ssh
-    koffer:
+    self:
       hosts:
-        self:
+        koffer:
           ansible_user: root
           ansible_connection: local

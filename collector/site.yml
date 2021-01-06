@@ -12,8 +12,8 @@
         path: '{{ item }}'
         state: absent
       loop:
-        - '{{ dir_platform }}/koffer-bundle.operators-{{ version_openshift }}.tar.xz'
-        - '{{ dir_platform }}/koffer-bundle.opeartors-{{ version_openshift }}.tar.xz.sha256'
+        - '{{ dir_platform }}/koffer-bundle.operators-sparta.tar.xz'
+        - '{{ dir_platform }}/koffer-bundle.opeartors-sparta.tar.xz.sha256'
       when: clean_purge_artifacts == True
 
 - import_playbook: tree.yml         # Create base directory tree

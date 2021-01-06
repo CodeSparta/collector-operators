@@ -5,12 +5,18 @@
 # Artifacts Variables
 bundle: True
 clean_purge_artifacts: True
+operator_collection: 'cluster-logging,kubevirt-hyperconverged'
 
 # Ansible Playbook Run Variables
 name_vendor: " CodeSparta"
 ansible_name: "{{ name_vendor }} | Koffer | Artifact Bundle Utility"
 ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
 image_mirror_utility: "oc"
+
+# Hosts Environment 
+local_user: "{{ lookup('env', 'USER') }}"
+local_home: "{{ lookup('env', 'HOME') }}"
+remote_home: "{{ ansible_env.HOME }}"
 
 # Directory Inventory
 dir_bin: "/root"
@@ -25,11 +31,6 @@ dir_platform: "{{ local_home }}/platform"
 # Terraform Variables
 dir_terraform: "{{ dir_iac }}"
 tf_vars: "{{ dir_iac }}/global.tfvars"
-
-# Hosts Environment 
-local_user: "{{ lookup('env', 'USER') }}"
-local_home: "{{ lookup('env', 'HOME') }}"
-remote_home: "{{ ansible_env.HOME }}"
 
 # Docker Pull Secrets
 registry_quay_auth_file: "{{ dir_secrets }}/docker/quay.json }}"

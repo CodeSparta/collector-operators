@@ -6,76 +6,55 @@
 
   vars:
     module: "catalog"
+    target_registry: "{{ mirror_registry | default('10.88.0.1:5000') }}"
     ansible_name_module: "{{ ansible_name }} | {{ module }}"
 
   tasks:
 
-    ####### Copy binaries onto host for execution
-    - name: '{{ ansible_name_module }} | copy:/bin/{items} | Place temporary opm binary on host /root/opm'
+    - name: '{{ ansible_name_module }} | copy:/bin/{items} | Place temporary dependencies on host {{ dir_bin }}'
       copy:
         src: '{{ item.bin }}'
         dest: '{{ item.dest }}'
         mode: '{{ item.mode }}'
       with_items:
+        - { bin: '/bin/oc', mode: '0744', dest: '{{ dir_bin }}/oc' }
         - { bin: '/bin/opm', mode: '0744', dest: '{{ dir_bin }}/opm' }
+        - { bin: '/root/.docker/config.json', mode: '0744', dest: '/tmp/redhat.json' }
 
-      ######### Mirror Images to directory
-    - name: '{{ ansible_name_module }} | command:cmd_opm | Test OPM Binary'
+    - name: '{{ ansible_name_module }} | command:cmd | Test Binaries'
       command:
         cmd: '{{ item.bin }} {{ item.exec }}'
       with_items:
+        - { bin: '{{ dir_bin }}/oc',  exec: 'version --client' }
         - { bin: '{{ dir_bin }}/opm', exec: 'version' }
 
+    - name: '{{ ansible_name_module }} | command:cmd | Build Custom Catalog'
+      shell: |
+        REGISTRY_AUTH_FILE=/tmp/redhat.json \
+        {{ dir_bin }}/opm index prune \
+          -f registry.redhat.io/redhat/redhat-operator-index:v4.6 \
+          -t {{ target_registry }}/redhat/bofa-operator-index:v4.6 \
+          -p {{ operator_collection }} 
 
+    - name: '{{ ansible_name_module }} | command:cmd | Push Custom Catalog'
+      shell: |
+        podman push --tls-verify=false {{ target_registry }}/redhat/bofa-operator-index:v4.6
 
+    - name: '{{ ansible_name_module }} | command:cmd | Build Image Mirror Manifest'
+      shell: |
+        REGISTRY_AUTH_FILE=/tmp/redhat.json \
+        {{ dir_bin }}/oc adm catalog mirror \
+          --insecure \
+          --manifests-only \
+          --filter-by-os=x86_64 \
+          {{ target_registry }}/redhat/bofa-operator-index:v4.6 \
+          {{ target_registry }}
 
-    ###### Evaluate lock file presence
-#   - name: '{{ ansible_name_module }} | stat | check for mirror v2.sha256 Lock file'
-#     stat:
-#       path: '{{ dir_platform }}/mirror/ocp-release.{{ version_openshift }}.lock'
-#     register: mirror_lock_check
-    
-    ###### Download OpenShift Docker Images from Quay.io to File: /root/platform/mirror/v2
-#   - name: '{{ ansible_name_module }} | block | Download OpenShift images'
-#     block:
-#   
-      ######### Purge & Prepare
-#       - name: '{{ ansible_name_module }} | file:directory | Create mirror artifact directories'
-#         file:
-#           path: "{{ dir_platform }}/mirror"
-#           state: directory
-    
-      ####### Place OpenShift RHCOS AWS VMDK
-#       - name: '{{ ansible_name_module }} | get_url:url | Place OpenShift RHCOS Image | rhcos-aws.x86_64.vmdk.gz'
-#         get_url:
-#           url: 'https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.6/latest/rhcos-aws.x86_64.vmdk.gz'
-#           dest: '{{ dir_platform }}/nginx/rhcos'
-#           mode: 0775
-    
-      ######### Mirror Images to directory
-#       - name: '{{ ansible_name_module }} | shell:oc.adm.release.mirror | Sync content from quay.io'
-#         shell: |
-#           {{ dir_bin }}/oc adm release mirror --insecure=true \
-#             --to=localhost:5000/openshift-release-dev \
-#             --registry-config=/root/.docker/config.json \
-#             --from=quay.io/openshift-release-dev/ocp-release:{{ version_openshift }}-x86_64 \
-#             --to-release-image=localhost:5000/openshift-release-dev:{{ version_openshift }}-x86_64
-#         when: image_mirror_utility == "oc"
-     
-      ######### Skopeo Copy Images to Registry
-#       - name: '{{ ansible_name_module }} | shell:skopeo.copy | Sync content from quay.io'
-#         shell: |
-#             for i in $(cat /var/lib/koffer/release.list); do \
-#               skopeo copy docker://quay.io/$i \
-#               docker://localhost:5000/openshift-release-dev/$i ; \
-#             done
-#         when: image_mirror_utility == "skopeo"
-#   
-      ####### Block Conditionals
-#     when: not mirror_lock_check.stat.exists
-    
-#   - name: '{{ ansible_name_module }} | command:touch | Place mirror lock file'
-#     command:
-#       cmd: 'touch {{ dir_platform }}/mirror/ocp-release.{{ version_openshift }}.lock'
-#     args:
-#       warn: false
+    - name: '{{ ansible_name_module }} | command:cmd | Mirror Catalog Images'
+      shell: |
+        {{ dir_bin }}/oc adm catalog mirror \
+          --insecure \
+          --filter-by-os=x86_64 \
+          --registry-config=/tmp/redhat.json \
+          {{ target_registry }}/redhat/bofa-operator-index:v4.6 \
+          {{ target_registry }}/openshift

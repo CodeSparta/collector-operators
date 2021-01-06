@@ -17,6 +17,6 @@
     - name: "{{ ansible_name_module }} | unarchive:openshift-client-linux.tar.gz | Downloading OC Client Version {{ ocp_version_override | default(version_openshift_latest.stdout) }}"
       unarchive:
         src: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ ocp_version_override | default(version_openshift_latest.stdout) }}/openshift-client-linux.tar.gz"
-        dest: '{{ dir_bin }}'
+        dest: '/bin'
         remote_src: yes
         mode: 0775
