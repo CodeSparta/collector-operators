@@ -2,24 +2,19 @@
 #####################################################################################################
 # End of user configurable variables
 #####################################################################################################
-# OpenShift Version
-version_openshift: "{{ lookup('env', 'varVerOpenshift') }}"
-#tpdk_version: "{{ lookup('env', 'varVerTpdk') }}"
-konductor_version: latest
-tpdk_version: master
-# Artifacts Purge
+# Artifacts Variables
+bundle: True
 clean_purge_artifacts: True
 
 # Ansible Playbook Run Variables
 name_vendor: " CodeSparta"
-image_mirror_utility: "oc"
 ansible_name: "{{ name_vendor }} | Koffer | Artifact Bundle Utility"
 ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+image_mirror_utility: "oc"
 
 # Directory Inventory
-local_home: "{{ lookup('env', 'HOME') }}"
+dir_bin: "/root"
 local_tmp: /tmp/koffer
-dir_bin: "{{ dir_platform }}/bin"
 dir_iac: "{{ dir_platform }}/iac"
 dir_koffer: "{{ local_home }}/koffer"
 dir_bundle: "{{ local_home }}/bundle"
@@ -33,6 +28,7 @@ tf_vars: "{{ dir_iac }}/global.tfvars"
 
 # Hosts Environment 
 local_user: "{{ lookup('env', 'USER') }}"
+local_home: "{{ lookup('env', 'HOME') }}"
 remote_home: "{{ ansible_env.HOME }}"
 
 # Docker Pull Secrets
@@ -44,3 +40,6 @@ sshkeys_pub_file: "{{ dir_secrets }}/ssh/id_rsa_{{ cluster_domain }}.pub"
 sshkeys_priv_file: "{{{ dir_secrets }}/ssh/id_rsa_{{ cluster_domain }}"
 sshkeys_pub_string: "{{ lookup('file', '{{ sshkeys_pub_file }}') }}"
 sshkeys_priv_string: "{{ lookup('file', '{{ sshkeys_priv_file }}') }}"
+
+# Ansible Playbook Run Variables
+ansible_python_interpreter: /usr/bin/python3

@@ -10,18 +10,13 @@
 
   tasks:
 
-    ####### Place OpenShift Install Binary
-    - name: '{{ ansible_name_module }} | get_url:url | Place OpenShift release.txt | {{ version_openshift }}'
+    - name: "{{ ansible_name_module }} | shell:curl_release.txt | Lookup Latest OCP Release"
+      shell: curl --silent https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/release.txt | awk '/  Version/{print $2}'
+      register: version_openshift_latest
+
+    - name: "{{ ansible_name_module }} | unarchive:openshift-client-linux.tar.gz | Downloading OC Client Version {{ ocp_version_override | default(version_openshift_latest.stdout) }}"
       unarchive:
-        src: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ version_openshift }}/openshift-install-linux.tar.gz"
-        dest: '{{ dir_bin }}'
-        remote_src: yes
-        mode: 0775
-    
-    ####### Place OpenShift Install Binary
-    - name: '{{ ansible_name_module }} | get_url:url | Place OpenShift release.txt | {{ version_openshift }}'
-      unarchive:
-        src: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ version_openshift }}/openshift-client-linux.tar.gz"
+        src: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ ocp_version_override | default(version_openshift_latest.stdout) }}/openshift-client-linux.tar.gz"
         dest: '{{ dir_bin }}'
         remote_src: yes
         mode: 0775
