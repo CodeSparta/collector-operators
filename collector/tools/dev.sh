@@ -35,10 +35,11 @@ echo ">>  Starting Koffer"
 podman run -it --rm --entrypoint bash \
     --workdir ${HOME}/koffer                   \
     --name ${project} -h ${project}            \
+    --publish 10.88.0.1:5000:5000              \
     --volume  $(pwd):/root/koffer:z            \
     --volume  /tmp/.ssh:/root/.ssh:z           \
     --volume  ${HOME}/.aws:/root/.aws:z        \
-    --volume  ${HOME}/.docker:/root/.docker:z  \
+    --volume  $(pwd)/docker:/root/.docker:z    \
     --volume  ${HOME}/.bashrc:/root/.bashrc:z  \
     --volume  ${HOME}/bundle:/root/bundle:z    \
   quay.io/cloudctl/koffer:latest
