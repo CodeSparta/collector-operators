@@ -8,15 +8,18 @@
   vars:
     module: "bundle"
     ansible_name_module: "{{ ansible_name }} | {{ module }}"
+    index_tag: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace('^.*:','') }}"
+    index_name: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace(':.*$','') }}"
+    index_image_out: '{{ target_registry }}/custom-{{ index_name }}:{{ index_tag }}'
+    bundle_name: 'koffer-bundle.custom-{{ index_name }}-catalog.tar.xz'
 
   tasks:
 
-    ####### Build Artifacts Bundle
     - name: '{{ ansible_name_module }} | command:tar | Build Artifacts Bundle'
       command:
-        "tar -cv --use-compress-program='pigz -9 ' -f {{ dir_bundle }}/koffer-bundle.openshift-{{ version_openshift }}.tar.xz -C {{ local_home }} platform"
+        "tar -cv --use-compress-program='pigz -9 ' -f {{ dir_bundle }}/{{ bundle_name }} -C {{ local_home }} platform"
       args:
-        creates: "{{ dir_bundle }}/koffer-bundle.openshift-{{ version_openshift }}.tar.xz -C {{ local_home }} platform"
+        creates: "{{ dir_bundle }}/bundle_name -C {{ local_home }} platform"
         warn: false
     
 #   ####### SHA256sum Artifact Bundle File

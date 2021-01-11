@@ -1,0 +1,57 @@
+#!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
+- name: '{{ name_vendor }} | Koffer | images.yml' 
+  hosts: host
+  vars_files:
+    - 'vars/global.yml'
+
+  vars:
+    module: "images"
+    ansible_name_module: "{{ ansible_name }} | {{ module }}"
+
+  tasks:
+
+    - name: "{{ ansible_name_module }} | shell:curl_release.txt | Lookup Latest OCP Release"
+      delegate_to: koffer
+      shell: curl --silent https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/release.txt | awk '/  Version/{print $2}'
+      register: openshift_version_latest
+      when: openshift_version is not defined
+
+    - set_fact:
+        openshift_version: '{{ openshift_version_latest.stdout }}'
+        cacheable: yes
+      when: openshift_version is not defined
+
+    - name: "{{ ansible_name_module }} | unarchive:openshift-client-linux.tar.gz | Downloading OC Client {{ openshift_version }}"
+      delegate_to: koffer
+      unarchive:
+        remote_src: yes
+        src: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ openshift_version }}/openshift-client-linux.tar.gz"
+        dest: '/bin'
+        mode: 0775
+
+    - name: '{{ ansible_name_module }} | copy | Place temporary mirror credentials on host /tmp/mirror.json'
+      copy: 
+        src: "{{ lookup('first_found', find_list) }}"
+        dest: '/tmp/mirror.json'
+        mode: '0744'
+      vars:
+        find_list:
+          - '/root/.docker/mirror.json'
+          - '/root/koffer/collector/templates/docker/mirror.json'
+
+    - name: '{{ ansible_name_module }} | copy:/bin/{items} | Place temporary dependencies on host {{ dir_bin }}'
+      copy:
+        src: '{{ item.bin }}'
+        dest: '{{ item.dest }}'
+        mode: '{{ item.mode }}'
+      with_items:
+        - { bin: '/bin/oc', mode: '0744', dest: '{{ dir_bin }}/oc' }
+        - { bin: '/bin/opm', mode: '0744', dest: '{{ dir_bin }}/opm' }
+        - { bin: '/root/.docker/config.json', mode: '0744', dest: '/tmp/redhat.json' }
+
+    - name: '{{ ansible_name_module }} | command:cmd | Test Binaries'
+      command:
+        cmd: '{{ item.bin }} {{ item.exec }}'
+      with_items:
+        - { bin: '{{ dir_bin }}/oc',  exec: 'version --client' }
+        - { bin: '{{ dir_bin }}/opm', exec: 'version' }

@@ -6,55 +6,40 @@
 
   vars:
     module: "catalog"
-    target_registry: "{{ mirror_registry | default('10.88.0.1:5000') }}"
     ansible_name_module: "{{ ansible_name }} | {{ module }}"
+    index_tag: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace('^.*:','') }}"
+    index_name: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace(':.*$','') }}"
+    index_image_out: '{{ target_registry }}/custom-{{ index_name }}:{{ index_tag }}'
 
   tasks:
 
-    - name: '{{ ansible_name_module }} | copy:/bin/{items} | Place temporary dependencies on host {{ dir_bin }}'
-      copy:
-        src: '{{ item.bin }}'
-        dest: '{{ item.dest }}'
-        mode: '{{ item.mode }}'
-      with_items:
-        - { bin: '/bin/oc', mode: '0744', dest: '{{ dir_bin }}/oc' }
-        - { bin: '/bin/opm', mode: '0744', dest: '{{ dir_bin }}/opm' }
-        - { bin: '/root/.docker/config.json', mode: '0744', dest: '/tmp/redhat.json' }
-
-    - name: '{{ ansible_name_module }} | command:cmd | Test Binaries'
-      command:
-        cmd: '{{ item.bin }} {{ item.exec }}'
-      with_items:
-        - { bin: '{{ dir_bin }}/oc',  exec: 'version --client' }
-        - { bin: '{{ dir_bin }}/opm', exec: 'version' }
-
     - name: '{{ ansible_name_module }} | command:cmd | Build Custom Catalog'
-      shell: |
-        REGISTRY_AUTH_FILE=/tmp/redhat.json \
-        {{ dir_bin }}/opm index prune \
-          -f registry.redhat.io/redhat/redhat-operator-index:v4.6 \
-          -t {{ target_registry }}/redhat/bofa-operator-index:v4.6 \
-          -p {{ operator_collection }} 
+      shell:
+        chdir: '{{ local_tmp }}/operators'
+        cmd: |
+          REGISTRY_AUTH_FILE=/tmp/redhat.json \
+          {{ dir_bin }}/opm index prune --tag {{ index_image_out }} --packages {{ opm_index_list }} --from-index {{ opm_index_image }}
 
     - name: '{{ ansible_name_module }} | command:cmd | Push Custom Catalog'
-      shell: |
-        podman push --tls-verify=false {{ target_registry }}/redhat/bofa-operator-index:v4.6
+      shell:
+        cmd: |
+          REGISTRY_AUTH_FILE=/tmp/mirror.json \
+          podman push --tls-verify=false {{ index_image_out }}
 
     - name: '{{ ansible_name_module }} | command:cmd | Build Image Mirror Manifest'
-      shell: |
-        REGISTRY_AUTH_FILE=/tmp/redhat.json \
-        {{ dir_bin }}/oc adm catalog mirror \
-          --insecure \
-          --manifests-only \
-          --filter-by-os=x86_64 \
-          {{ target_registry }}/redhat/bofa-operator-index:v4.6 \
-          {{ target_registry }}
+      shell:
+        chdir: '{{ local_tmp }}/operators'
+        cmd: |
+          REGISTRY_AUTH_FILE=/tmp/redhat.json \
+          {{ dir_bin }}/oc adm catalog mirror --insecure --manifests-only --filter-by-os=x86_64 {{ index_image_out }} {{ target_registry }}
 
-    - name: '{{ ansible_name_module }} | command:cmd | Mirror Catalog Images'
-      shell: |
-        {{ dir_bin }}/oc adm catalog mirror \
-          --insecure \
-          --filter-by-os=x86_64 \
-          --registry-config=/tmp/redhat.json \
-          {{ target_registry }}/redhat/bofa-operator-index:v4.6 \
-          {{ target_registry }}/openshift
+    - name: '{{ ansible_name_module }} | absent | Remove garbage index build material'
+      file:
+        path: '{{ local_tmp }}/operators/index*'
+        state: absent
+
+    - name: '{{ ansible_name_module }} | fetch | Stage Operator imageContentSourcePolicy, mapping.txt, & mirror.list'
+      synchronize:
+        mode: pull
+        src: '{{ local_tmp }}/operators'
+        dest: '{{ dir_platform }}'

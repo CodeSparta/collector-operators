@@ -1,16 +1,23 @@
 ---
+#build_bundle: 'true'
 #####################################################################################################
 # End of user configurable variables
 #####################################################################################################
-# Artifacts Variables
-bundle: True
-clean_purge_artifacts: True
-operator_collection: 'cluster-logging,kubevirt-hyperconverged'
+# Operator Variables
+default_registry: '10.88.0.1:5000/redhat'
+default_index_image: 'registry.redhat.io/redhat/redhat-operator-index:v4.6'
+default_custom_index_image: 'custom-redhat-operator-index:v4.6'
+default_operator_list: 'cluster-logging'
+
+opm_index_image: '{{ index_image | default(default_index_image) }}'
+target_registry: '{{ mirror_registry | default(default_registry) }}'
+opm_index_list: '{{ operator_list | default(default_operator_list) }}'
 
 # Ansible Playbook Run Variables
-name_vendor: " CodeSparta"
+name_vendor: "CodeSparta"
 ansible_name: "{{ name_vendor }} | Koffer | Artifact Bundle Utility"
 ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+clean_purge_artifacts: True
 image_mirror_utility: "oc"
 
 # Hosts Environment 
@@ -26,6 +33,7 @@ dir_koffer: "{{ local_home }}/koffer"
 dir_bundle: "{{ local_home }}/bundle"
 dir_images: "{{ dir_platform }}/images"
 dir_secrets: "{{ dir_platform }}/secrets"
+dir_operators: "{{ dir_platform }}/operators"
 dir_platform: "{{ local_home }}/platform"
 
 # Terraform Variables

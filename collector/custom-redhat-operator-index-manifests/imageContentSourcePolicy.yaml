@@ -1,0 +1,18 @@
+apiVersion: operator.openshift.io/v1alpha1
+kind: ImageContentSourcePolicy
+metadata:
+  name: custom-redhat-operator-index
+spec:
+  repositoryDigestMirrors:
+  - mirrors:
+    - 10.88.0.1:5000/redhat/openshift4-ose-cluster-logging-operator
+    source: registry.redhat.io/openshift4/ose-cluster-logging-operator
+  - mirrors:
+    - 10.88.0.1:5000/redhat/openshift4-ose-logging-curator5
+    source: registry.redhat.io/openshift4/ose-logging-curator5
+  - mirrors:
+    - 10.88.0.1:5000/redhat/openshift4-ose-logging-fluentd
+    source: registry.redhat.io/openshift4/ose-logging-fluentd
+  - mirrors:
+    - 10.88.0.1:5000/redhat/openshift4-ose-cluster-logging-operator-bundle
+    source: registry.redhat.io/openshift4/ose-cluster-logging-operator-bundle
