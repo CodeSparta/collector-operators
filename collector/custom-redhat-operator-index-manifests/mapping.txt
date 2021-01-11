@@ -1,0 +1,4 @@
+registry.redhat.io/openshift4/ose-cluster-logging-operator@sha256:540b0d087c5e5529bab555030310478630249a9339a4a4c3fac6d0d7037d5eac=10.88.0.1:5000/redhat/openshift4-ose-cluster-logging-operator:5f9e513e
+registry.redhat.io/openshift4/ose-logging-curator5@sha256:73884604ac4506bcfb2a3c112eb621f40e0cd53fede8118e0f7a1b292ac8f924=10.88.0.1:5000/redhat/openshift4-ose-logging-curator5:f6789123
+registry.redhat.io/openshift4/ose-logging-fluentd@sha256:11ccb42f3d96b065f7d94879611a7aefabbe509b522c11ac36be7a1c959a34d6=10.88.0.1:5000/redhat/openshift4-ose-logging-fluentd:1f0b20f7
+registry.redhat.io/openshift4/ose-cluster-logging-operator-bundle@sha256:61aca61840dcf1d50f4a17fc9b2e10b7855c563bd6680b4dc77e3e9283c81369=10.88.0.1:5000/redhat/openshift4-ose-cluster-logging-operator-bundle:8f6d6578
