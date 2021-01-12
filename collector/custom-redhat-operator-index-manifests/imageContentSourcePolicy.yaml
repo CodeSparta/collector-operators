@@ -3,22 +3,4 @@ kind: ImageContentSourcePolicy
 metadata:
   name: custom-redhat-operator-index
 spec:
-  repositoryDigestMirrors:
-  - mirrors:
-    - 10.88.0.1:5000/quay/quay-container-security-rhel8-operator
-    source: registry.redhat.io/quay/quay-container-security-rhel8-operator
-  - mirrors:
-    - 10.88.0.1:5000/quay/quay-container-security-rhel8-operator-metadata
-    source: registry.redhat.io/quay/quay-container-security-rhel8-operator-metadata
-  - mirrors:
-    - 10.88.0.1:5000/quay/quay-rhel8-operator
-    source: registry.redhat.io/quay/quay-rhel8-operator
-  - mirrors:
-    - 10.88.0.1:5000/quay/quay-openshift-bridge-rhel8-operator-metadata
-    source: registry.redhat.io/quay/quay-openshift-bridge-rhel8-operator-metadata
-  - mirrors:
-    - 10.88.0.1:5000/quay/quay-openshift-bridge-rhel8-operator
-    source: registry.redhat.io/quay/quay-openshift-bridge-rhel8-operator
-  - mirrors:
-    - 10.88.0.1:5000/quay/quay-operator-bundle
-    source: registry.redhat.io/quay/quay-operator-bundle
+  repositoryDigestMirrors: []
