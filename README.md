@@ -19,15 +19,11 @@ Features:
 ## Instructions:
 ### 0. Make Artifact Bundle Directory
 ```
- mkdir -p ${HOME}/bundle
+ mkdir -p /tmp/{bundle,operators}
 ```
 ### 1. Run Koffer Engine
 ```
-podman run -it --rm --pull always \
-    --device /dev/fuse \
-    --volume ${HOME}/bundle:/root/bundle:z \
-  docker.io/cloudctl/koffer bundle \
-    --plugin collector-operators
+ curl -sL https://git.io/JtvZV | sudo bash 
 ```
 ### 2. Move Koffer Bundle to restricted environment
 ### 3. Extract to CloudCtl Artifact path

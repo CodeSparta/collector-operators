@@ -1,5 +1,5 @@
 #!/bin/bash
-
+run () {
 # For now, koffer operator collector must be run as root
 if (( $EUID != 0  )); then
   echo ">> Please run as root"
@@ -43,3 +43,6 @@ podman run -it --rm --entrypoint bash \
     --volume  ${HOME}/.bashrc:/root/.bashrc:z  \
     --volume  ${HOME}/bundle:/root/bundle:z    \
   quay.io/cloudctl/koffer:latest
+}
+
+run
