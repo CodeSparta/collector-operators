@@ -26,22 +26,25 @@ project="collector-operators"
 echo ">> Pulling quay.io/cloudctl/koffer"
 podman pull quay.io/cloudctl/koffer:latest
 
-rm -rf /tmp/.ssh
-cp -rf ~/.ssh /tmp/.ssh
-mkdir -p ${HOME}/{.aws,.docker,bundle}
+rm -rf /tmp/koffer
+mkdir -p /tmp/koffer
+mkdir -p ${HOME}/{bundle,operators}
+cp -rf ~/.ssh /tmp/koffer/.ssh
+cp -rf ~/.aws /tmp/koffer/.aws
+cp -rf ~/.docker /tmp/koffer/.docker
+mkdir -p /tmp/koffer/{.ssh,.docker,.aws}
 
 #clear
 echo ">>  Starting Koffer"
 podman run -it --rm --entrypoint bash \
-    --workdir ${HOME}/koffer                   \
-    --name ${project} -h ${project}            \
-    --publish 10.88.0.1:5000:5000              \
-    --volume  $(pwd):/root/koffer:z            \
-    --volume  /tmp/.ssh:/root/.ssh:z           \
-    --volume  ${HOME}/.aws:/root/.aws:z        \
-    --volume  $(pwd)/docker:/root/.docker:z    \
-    --volume  ${HOME}/.bashrc:/root/.bashrc:z  \
-    --volume  ${HOME}/bundle:/root/bundle:z    \
+    --workdir ${HOME}/koffer                       \
+    --name ${project} -h ${project}                \
+    --publish 10.88.0.1:5000:5000                  \
+    --volume  $(pwd):/root/koffer:z                \
+    --volume  /tmp/koffer/.ssh:/root/.ssh:z        \
+    --volume  /tmp/koffer/.docker:/root/.docker:z  \
+    --volume  /tmp/koffer/.aws:/root/.aws:z        \
+    --volume  ${HOME}/bundle:/root/bundle:z        \
   quay.io/cloudctl/koffer:latest
 }
 
