@@ -43,3 +43,16 @@
         mode: pull
         src: '{{ local_tmp }}/operators'
         dest: '{{ dir_platform }}'
+
+    - name: '{{ ansible_name_module }} | fetch | Stage Operator imageContentSourcePolicy, mapping.txt, & mirror.list'
+      delegate_to: koffer
+      copy:
+        mode: 0744
+        content: "{{ lookup('file', '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/mapping.txt') }}"
+        dest: '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/mirror.list'
+
+    - name: '{{ ansible_name_module }} | fetch | Stage Operator imageContentSourcePolicy, mapping.txt, & mirror.list'
+      delegate_to: koffer
+      replace:
+        path: '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/mirror.list'
+        regexp: '=.*$'
