@@ -6,7 +6,7 @@
 # Operator Variables
 default_registry: '10.88.0.1:5000/redhat'
 default_index_image: 'registry.redhat.io/redhat/redhat-operator-index:v4.6'
-default_custom_index_image: 'custom-redhat-operator-index:v4.6'
+default_custom_index_image: 'redhat-operator-index:v4.6'
 default_operator_list: 'cluster-logging'
 
 opm_index_image: '{{ index_image | default(default_index_image) }}'
