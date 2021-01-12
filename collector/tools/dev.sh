@@ -8,7 +8,8 @@ else
 # For now, koffer executes index image startup and custom image build on host
 # ansible connection over ssh required from koffer onto host
   ready=$(ssh root@10.88.0.1 whoami ; echo $?)
-  if [[ ! ${ready} == 0 ]]; then
+  if [[ ! ${ready} == 0 ]] && \
+     [[ -f "/root/.ssh/id_rsa" ]]; then
         echo ">> Host ssh connection discovered successfully"
   else
         echo ">> Host ssh connection not found"
