@@ -15,10 +15,9 @@
         mode: '0744'
         recurse: yes
       with_items:
-        - '{{ local_tmp }}'
-        - '{{ local_tmp }}/operators'
         - '{{ dir_platform }}'
         - '{{ dir_platform }}/mirror'
+        - '{{ local_tmp }}/operators'
 
     - name: '{{ ansible_name_module }} | file:directory | Create Artifact Directory Tree' 
       file:
