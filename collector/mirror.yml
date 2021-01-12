@@ -17,4 +17,4 @@
     - name: '{{ ansible_name_module }} | command:cmd | Mirror Catalog Images'
       shell: |
         REGISTRY_AUTH_FILE=/tmp/redhat.json \
-        {{ dir_bin }}/oc adm catalog mirror --insecure --filter-by-os='.*' {{ index_image_out }} {{ target_registry }}
+        {{ dir_bin }}/oc adm catalog mirror --insecure --filter-by-os='.*' --registry-config='/tmp/redhat.json' {{ index_image_out }} {{ target_registry }}
