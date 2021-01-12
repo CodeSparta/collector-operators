@@ -37,6 +37,7 @@ podman run -it --rm \
     --volume  /tmp/koffer/.ssh:/root/.ssh:z                    \
     --volume  /tmp/koffer/bundle:/root/bundle:z                \
     --volume  /tmp/koffer/operators:/root/platform/operators:z \
+    --env     OPERATORS='kubevirt-hyperconverged'              \
   quay.io/cloudctl/koffer:latest bundle \
     --plugin collector-operators
 
