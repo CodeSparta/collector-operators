@@ -5,14 +5,20 @@ metadata:
 spec:
   repositoryDigestMirrors:
   - mirrors:
-    - 10.88.0.1:5000/redhat/openshift4-ose-cluster-logging-operator
-    source: registry.redhat.io/openshift4/ose-cluster-logging-operator
+    - 10.88.0.1:5000/quay/quay-container-security-rhel8-operator
+    source: registry.redhat.io/quay/quay-container-security-rhel8-operator
   - mirrors:
-    - 10.88.0.1:5000/redhat/openshift4-ose-logging-curator5
-    source: registry.redhat.io/openshift4/ose-logging-curator5
+    - 10.88.0.1:5000/quay/quay-container-security-rhel8-operator-metadata
+    source: registry.redhat.io/quay/quay-container-security-rhel8-operator-metadata
   - mirrors:
-    - 10.88.0.1:5000/redhat/openshift4-ose-logging-fluentd
-    source: registry.redhat.io/openshift4/ose-logging-fluentd
+    - 10.88.0.1:5000/quay/quay-rhel8-operator
+    source: registry.redhat.io/quay/quay-rhel8-operator
   - mirrors:
-    - 10.88.0.1:5000/redhat/openshift4-ose-cluster-logging-operator-bundle
-    source: registry.redhat.io/openshift4/ose-cluster-logging-operator-bundle
+    - 10.88.0.1:5000/quay/quay-openshift-bridge-rhel8-operator-metadata
+    source: registry.redhat.io/quay/quay-openshift-bridge-rhel8-operator-metadata
+  - mirrors:
+    - 10.88.0.1:5000/quay/quay-openshift-bridge-rhel8-operator
+    source: registry.redhat.io/quay/quay-openshift-bridge-rhel8-operator
+  - mirrors:
+    - 10.88.0.1:5000/quay/quay-operator-bundle
+    source: registry.redhat.io/quay/quay-operator-bundle
