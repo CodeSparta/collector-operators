@@ -24,7 +24,7 @@
         path: '{{ item }}'
         state: directory
         mode: '0744'
-        recurse: yes
+        recurse: no
       with_items:
         - '{{ local_tmp }}'
         - '{{ local_tmp }}/operators'
