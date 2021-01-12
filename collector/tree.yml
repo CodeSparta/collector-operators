@@ -35,4 +35,4 @@
         path: '{{ dir_bundle }}'
         state: directory
         mode: '0777'
-        recurse: yes
+        recurse: no
