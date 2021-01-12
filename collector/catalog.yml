@@ -53,12 +53,15 @@
           REGISTRY_AUTH_FILE=/tmp/mirror.json \
           podman push --tls-verify=false {{ index_image_out }}
 
+    ## Cannot filter by os arch due to bug:
+    ## https://bugzilla.redhat.com/show_bug.cgi?id=1890951
+    ## https://github.com/openshift/openshift-docs/pull/27855
     - name: '{{ ansible_name_module }} | command:cmd | Build Image Mirror Manifests'
       shell:
         chdir: '{{ local_tmp }}/operators'
         cmd: |
           REGISTRY_AUTH_FILE=/tmp/redhat.json \
-          {{ dir_bin }}/oc adm catalog mirror --insecure --manifests-only --filter-by-os=x86_64 {{ index_image_out }} {{ target_registry }}
+          {{ dir_bin }}/oc adm catalog mirror --insecure --manifests-only --filter-by-os='.*' {{ index_image_out }} {{ target_registry }}
 
     - name: '{{ ansible_name_module }} | synchronize | Stage Operator imageContentSourcePolicy, mapping.txt'
       synchronize:
