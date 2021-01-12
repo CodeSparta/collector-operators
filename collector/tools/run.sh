@@ -9,6 +9,7 @@ else
 # ansible connection over ssh required from koffer onto host
   ready=$(ssh root@10.88.0.1 whoami ; echo $?)
   if [[ ! ${ready} == 0 ]]; then
+     [[ -f "/root/.ssh/id_rsa" ]]; then
         echo ">> Host ssh connection discovered successfully"
   else
         echo ">> Host ssh connection not found"
@@ -31,10 +32,10 @@ mkdir -p /tmp/koffer/{bundle,operators}
 
 echo ">>  Starting Koffer"
 podman run -it --rm --entrypoint bash \
-    --name ${project} -h ${project}            \
-    --publish 10.88.0.1:5000:5000              \
-    --volume  /tmp/koffer/.ssh:/root/.ssh:z    \
-    --volume  /tmp/koffer/bundle:/root/bundle:z \
+    --publish 10.88.0.1:5000:5000                              \
+    --name ${project} -h ${project}                            \
+    --volume  /tmp/koffer/.ssh:/root/.ssh:z                    \
+    --volume  /tmp/koffer/bundle:/root/bundle:z                \
     --volume  /tmp/koffer/operators:/root/platform/operators:z \
   quay.io/cloudctl/koffer:latest
 
@@ -42,4 +43,3 @@ rm -rf /tmp/koffer/.ssh
 }
 
 run
-
