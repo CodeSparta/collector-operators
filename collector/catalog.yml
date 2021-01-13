@@ -70,6 +70,7 @@
         src: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.src }}'
         dest: '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/{{ item.dest }}'
         mode: '0777'
+        flat: yes
       with_items:
         - { src: 'imageContentSourcePolicy.yaml', dest: 'imageContentSourcePolicy.yaml' }
         - { src: 'mapping.txt', dest: 'mapping.txt' }
