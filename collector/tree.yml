@@ -24,6 +24,7 @@
         - '{{ dir_platform }}/operators'
         - '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests'
         - '{{ local_tmp }}/operators'
+        - '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests'
 
     - name: '{{ ansible_name_module }} | file:directory | Create Artifact Directory Tree' 
       file:
