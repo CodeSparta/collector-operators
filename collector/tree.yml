@@ -6,6 +6,10 @@
   vars:
     module: "tree"
     ansible_name_module: "{{ ansible_name }} | {{ module }}"
+    index_tag: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace('^.*:','') }}"
+    index_name: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace(':.*$','') }}"
+    index_image_out: '{{ target_registry }}/redhat/custom-{{ index_name }}:{{ index_tag }}'
+
   tasks:
 
     - name: '{{ ansible_name_module }} | file:directory | Create Artifact Directory Tree' 
