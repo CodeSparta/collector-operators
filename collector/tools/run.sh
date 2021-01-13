@@ -35,14 +35,11 @@ cp -rf ~/.ssh /tmp/koffer/.ssh
 #clear
 echo ">>  Starting Koffer"
 podman run -it --rm \
-    --workdir ${HOME}/koffer                       \
-    --publish 10.88.0.1:5000:5000                  \
-    --name ${project} -h ${project}                \
-    --volume  /tmp/koffer/.ssh:/root/.ssh:z        \
-    --volume  ${HOME}/bundle:/root/bundle:z        \
-    --env BUNDLE=false \
+    --env BUNDLE=false                      \
+    --publish 10.88.0.1:5000:5000           \
+    --volume  /tmp/koffer/.ssh:/root/.ssh:z \
     --env OPERATORS=kubevirt-hyperconverged \
-  quay.io/cloudctl/koffer:latest bundle \
+  quay.io/cloudctl/koffer:latest bundle     \
     --plugin collector-operators
 }
 
