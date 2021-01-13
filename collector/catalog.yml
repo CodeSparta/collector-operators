@@ -63,18 +63,22 @@
           REGISTRY_AUTH_FILE=/tmp/redhat.json \
           {{ dir_bin }}/oc adm catalog mirror --insecure --manifests-only --filter-by-os='.*' {{ index_image_out }} {{ target_registry }}
 
-    - name: '{{ ansible_name_module }} | synchronize | Stage Operator imageContentSourcePolicy, mapping.txt'
-      synchronize:
-        mode: pull
-        src: '{{ local_tmp }}/operators'
-        dest: '{{ dir_platform }}'
-
-    - name: '{{ ansible_name_module }} | copy:mirror.list | Template mirror.list'
-      delegate_to: koffer
+    - name: '{{ ansible_name_module }} | copy | Stage Operator imageContentSourcePolicy, mapping.txt'
       copy:
-        mode: 0744
-        content: "{{ lookup('file', '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/mapping.txt') }}"
-        dest: '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/mirror.list'
+        mode: '0777'
+        path: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.src }}'
+        dest: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.dest }}'
+      with_items:
+        - "{{ src: 'imageContentSourcePolicy.yaml', dest: 'imageContentSourcePolicy.yaml' }}"
+        - "{{ src: 'mapping.txt', dest: 'mapping.txt' }}"
+        - "{{ src: 'mapping.txt', dest: 'mirror.list' }}"
+ 
+#   - name: '{{ ansible_name_module }} | copy:mirror.list | Template mirror.list'
+#     delegate_to: koffer
+#     copy:
+#       mode: 0744
+#       content: "{{ lookup('file', '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/mapping.txt') }}"
+#       dest: '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/mirror.list'
 
     - name: '{{ ansible_name_module }} | replace | Format mirror.list'
       delegate_to: koffer
