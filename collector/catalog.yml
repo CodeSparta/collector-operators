@@ -76,13 +76,6 @@
         - { src: 'mapping.txt', dest: 'mapping.txt' }
         - { src: 'mapping.txt', dest: 'mirror.list' }
  
-#   - name: '{{ ansible_name_module }} | copy:mirror.list | Template mirror.list'
-#     delegate_to: koffer
-#     copy:
-#       mode: 0744
-#       content: "{{ lookup('file', '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/mapping.txt') }}"
-#       dest: '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/mirror.list'
-
     - name: '{{ ansible_name_module }} | replace | Format mirror.list'
       delegate_to: koffer
       replace:
