@@ -19,12 +19,11 @@
         mode: '0744'
         recurse: no
       with_items:
-        - '{{ dir_platform }}'
-        - '{{ dir_platform }}/mirror'
-        - '{{ dir_platform }}/operators'
-        - '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests'
         - '{{ local_tmp }}/operators'
         - '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests'
+        - '{{ dir_platform }}/operators'
+        - '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests'
+        - '{{ dir_platform }}/mirror'
 
     - name: '{{ ansible_name_module }} | file:directory | Create Artifact Directory Tree' 
       file:
