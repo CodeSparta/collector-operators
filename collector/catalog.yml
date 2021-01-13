@@ -69,9 +69,9 @@
         path: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.src }}'
         dest: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.dest }}'
       with_items:
-        - "{{ src: 'imageContentSourcePolicy.yaml', dest: 'imageContentSourcePolicy.yaml' }}"
-        - "{{ src: 'mapping.txt', dest: 'mapping.txt' }}"
-        - "{{ src: 'mapping.txt', dest: 'mirror.list' }}"
+        - { src: 'imageContentSourcePolicy.yaml', dest: 'imageContentSourcePolicy.yaml' }
+        - { src: 'mapping.txt', dest: 'mapping.txt' }
+        - { src: 'mapping.txt', dest: 'mirror.list' }
  
 #   - name: '{{ ansible_name_module }} | copy:mirror.list | Template mirror.list'
 #     delegate_to: koffer
