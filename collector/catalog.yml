@@ -65,6 +65,19 @@
           {{ dir_bin }}/oc adm catalog mirror --insecure --manifests-only --filter-by-os='.*' {{ index_image_out }} {{ target_registry }}
 
     - name: '{{ ansible_name_module }} | copy | Stage Operator imageContentSourcePolicy, mapping.txt'
+      copy:
+        src: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.src }}'
+        dest: '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/{{ item.dest }}'
+        mode: '0777'
+      with_items:
+        - { src: 'mapping.txt', dest: 'mirror.list' }
+
+    - name: '{{ ansible_name_module }} | replace | Format mirror.list'
+      replace:
+        path: '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/mirror.list'
+        regexp: '=.*$'
+
+    - name: '{{ ansible_name_module }} | copy | Stage Operator imageContentSourcePolicy, mapping.txt'
       fetch:
         src: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.src }}'
         dest: '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/{{ item.dest }}'
@@ -73,14 +86,8 @@
       with_items:
         - { src: 'imageContentSourcePolicy.yaml', dest: 'imageContentSourcePolicy.yaml' }
         - { src: 'mapping.txt', dest: 'mapping.txt' }
-        - { src: 'mapping.txt', dest: 'mirror.list' }
+        - { src: 'mirror.list', dest: 'mirror.list' }
  
-    - name: '{{ ansible_name_module }} | replace | Format mirror.list'
-      delegate_to: koffer
-      replace:
-        path: '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/mirror.list'
-        regexp: '=.*$'
-
     - name: '{{ ansible_name_module }} | absent | Remove garbage index build material'
       delegate_to: koffer
       file:
