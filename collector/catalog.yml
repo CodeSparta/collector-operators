@@ -10,7 +10,7 @@
     index_tag: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace('^.*:','') }}"
     index_name: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace(':.*$','') }}"
     index_image_out: '{{ target_registry }}/redhat/custom-{{ index_name }}:{{ index_tag }}'
-    operator_list: "{{ lookup('env', 'OPERATORS') | default(default_operator_list) }}"
+    operator_list: "{{ lookup('env', 'OPERATORS') | default(default_operator_list, true) }}"
 
   tasks:
 
@@ -46,8 +46,7 @@
         chdir: '{{ local_tmp }}/operators'
         cmd: |
           REGISTRY_AUTH_FILE=/tmp/redhat.json \
-          {{ dir_bin }}/opm index prune --from-index {{ opm_index_image }} --tag {{ index_image_out }} \
-          --packages {{ default_operator_list }}
+          {{ dir_bin }}/opm index prune --from-index {{ opm_index_image }} --tag {{ index_image_out }} --packages {{ operator_list }}
 
     - name: '{{ ansible_name_module }} | command:cmd | Push Custom Catalog {{ index_image_out }}'
       shell:
