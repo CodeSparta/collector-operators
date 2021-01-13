@@ -31,9 +31,6 @@ rm -rf /tmp/koffer
 mkdir -p /tmp/koffer
 mkdir -p ${HOME}/{bundle,operators}
 cp -rf ~/.ssh /tmp/koffer/.ssh
-cp -rf ~/.aws /tmp/koffer/.aws
-cp -rf ~/.docker /tmp/koffer/.docker
-mkdir -p /tmp/koffer/{.ssh,.docker,.aws}
 
 #clear
 echo ">>  Starting Koffer"
