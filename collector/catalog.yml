@@ -75,7 +75,7 @@
 
     - name: '{{ ansible_name_module }} | replace | Format mirror.list'
       replace:
-        path: '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/mirror.list'
+        path: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/mirror.list'
         regexp: '=.*$'
 
     - name: '{{ ansible_name_module }} | copy | Stage Operator imageContentSourcePolicy, mapping.txt'
