@@ -22,7 +22,7 @@ else
 fi
 
 #ansible_user="$(whoami)"
-project="koffer-collector"
+project="collector-operators"
 
 echo ">> Pulling quay.io/cloudctl/koffer"
 podman pull quay.io/cloudctl/koffer:latest
@@ -31,19 +31,19 @@ rm -rf /tmp/koffer
 mkdir -p /tmp/koffer
 mkdir -p ${HOME}/{bundle,operators}
 cp -rf ~/.ssh /tmp/koffer/.ssh
+cp -rf ~/.aws /tmp/koffer/.aws
+cp -rf ~/.docker /tmp/koffer/.docker
+mkdir -p /tmp/koffer/{.ssh,.docker,.aws}
 
+#clear
 echo ">>  Starting Koffer"
-podman run -it --rm \
-    --workdir ${HOME}/koffer                                   \
-    --publish 10.88.0.1:5000:5000                              \
-    --name ${project} -h ${project}                            \
-    --volume  /tmp/koffer/.ssh:/root/.ssh:z                    \
-    --volume  /tmp/koffer/bundle:/root/bundle:z                \
-    --env     OPERATORS='kubevirt-hyperconverged'              \
-  quay.io/cloudctl/koffer:latest bundle \
-    --plugin collector-operators
-
-rm -rf /tmp/koffer/.ssh
+podman run -it --rm --entrypoint bash \
+    --workdir ${HOME}/koffer                       \
+    --publish 10.88.0.1:5000:5000                  \
+    --name ${project} -h ${project}                \
+    --volume  /tmp/koffer/.ssh:/root/.ssh:z        \
+    --volume  ${HOME}/bundle:/root/bundle:z        \
+  quay.io/cloudctl/koffer:latest
 }
 
 run

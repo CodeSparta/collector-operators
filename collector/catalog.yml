@@ -10,7 +10,6 @@
     index_tag: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace('^.*:','') }}"
     index_name: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace(':.*$','') }}"
     index_image_out: '{{ target_registry }}/redhat/custom-{{ index_name }}:{{ index_tag }}'
-    operator_list: "{{ lookup('env', 'OPERATORS') | default(default_operator_list, true) }}"
 
   tasks:
 
