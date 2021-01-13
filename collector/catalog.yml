@@ -45,7 +45,7 @@
         chdir: '{{ local_tmp }}/operators'
         cmd: |
           REGISTRY_AUTH_FILE=/tmp/redhat.json \
-          {{ dir_bin }}/opm index prune --tag {{ index_image_out }} --packages {{ opm_index_list }} --from-index {{ opm_index_image }}
+          {{ dir_bin }}/opm index prune --tag {{ index_image_out }} --packages {{ operator_list }} --from-index {{ opm_index_image }}
 
     - name: '{{ ansible_name_module }} | command:cmd | Push Custom Catalog {{ index_image_out }}'
       shell:
