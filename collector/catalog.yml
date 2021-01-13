@@ -67,7 +67,7 @@
     - name: '{{ ansible_name_module }} | copy | Stage Operator imageContentSourcePolicy, mapping.txt'
       copy:
         src: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.src }}'
-        dest: '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/{{ item.dest }}'
+        dest: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.dest }}'
         mode: '0777'
       with_items:
         - { src: 'mapping.txt', dest: 'mirror.list' }
@@ -87,9 +87,3 @@
         - { src: 'imageContentSourcePolicy.yaml', dest: 'imageContentSourcePolicy.yaml' }
         - { src: 'mapping.txt', dest: 'mapping.txt' }
         - { src: 'mirror.list', dest: 'mirror.list' }
- 
-    - name: '{{ ansible_name_module }} | absent | Remove garbage index build material'
-      delegate_to: koffer
-      file:
-        path: '{{ local_tmp }}/operators/index*'
-        state: absent
