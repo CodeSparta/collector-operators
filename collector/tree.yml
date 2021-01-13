@@ -17,6 +17,7 @@
       with_items:
         - '{{ dir_platform }}'
         - '{{ dir_platform }}/mirror'
+        - '{{ dir_platform }}/operators'
         - '{{ local_tmp }}/operators'
 
     - name: '{{ ansible_name_module }} | file:directory | Create Artifact Directory Tree' 

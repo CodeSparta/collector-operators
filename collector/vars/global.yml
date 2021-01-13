@@ -7,7 +7,7 @@ build_bundle: "{{ lookup('env', 'BUNDLE') | default('false') }}"
 default_registry: '10.88.0.1:5000'
 default_index_image: 'registry.redhat.io/redhat/redhat-operator-index:v4.6'
 default_custom_index_image: 'redhat/redhat-operator-index:v4.6'
-default_operator_list: 'cluster-logging,servicemeshoperator'
+default_operator_list: 'cluster-logging,servicemeshoperator,openshift-monitoring'
 
 opm_index_image: '{{ index_image | default(default_index_image) }}'
 target_registry: '{{ mirror_registry | default(default_registry) }}'
