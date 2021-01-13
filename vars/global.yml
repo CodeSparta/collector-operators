@@ -11,7 +11,7 @@ default_operator_list: 'cluster-logging,servicemeshoperator,openshift-monitoring
 
 opm_index_image: '{{ index_image | default(default_index_image) }}'
 target_registry: '{{ mirror_registry | default(default_registry) }}'
-opm_index_list: '{{ operator_list | default(default_operator_list) }}'
+#opm_index_list: '{{ operator_list | default(default_operator_list) }}'
 operator_list: "{{ lookup('env', 'OPERATORS') | default(default_operator_list) }}"
 
 # Ansible Playbook Run Variables
