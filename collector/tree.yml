@@ -18,6 +18,7 @@
         - '{{ dir_platform }}'
         - '{{ dir_platform }}/mirror'
         - '{{ dir_platform }}/operators'
+        - '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests'
         - '{{ local_tmp }}/operators'
 
     - name: '{{ ansible_name_module }} | file:directory | Create Artifact Directory Tree' 
