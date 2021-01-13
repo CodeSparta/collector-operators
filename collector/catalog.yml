@@ -64,7 +64,7 @@
           {{ dir_bin }}/oc adm catalog mirror --insecure --manifests-only --filter-by-os='.*' {{ index_image_out }} {{ target_registry }}
 
     - name: '{{ ansible_name_module }} | copy | Stage Operator imageContentSourcePolicy, mapping.txt'
-      copy:
+      fetch:
         src: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.src }}'
         dest: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.dest }}'
         mode: '0777'
