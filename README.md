@@ -1,7 +1,9 @@
-# [Koffer](https://github.com/containercraft/Koffer) Collector | AirGap Operator Hub Artifacts
+# [Koffer](https://github.com/containercraft/Koffer) Collector | Operator Artifacts
 ## Provides
-This automation provides a unified and standardized tarball of artifacts for
-cloudctl services pod airgap operator deployment tasks.
+This automation provides a unified and standardized method of enumerating
+operator dependencies and either mirroring direct to an accisible docker v2
+compliant registry service, or producing a tarball of all artifacts that is
+cloudctl compliant for use across an airgap.
 ### [Supported Offline Operators List](https://access.redhat.com/articles/4740011)
 
 ## About
@@ -16,18 +18,30 @@ Features:
   - High side sha256 verification of artifacts bundle before standup
   - High side artifacts served via generic docker registry container
 
+Capabilities:
+  - Custom operator catalog index image
+  - imageContentSourcePolicy yaml definition
+  - mapping.txt
+  - mirror.list
+  - CloudCtl ready bundle of artifacts
+  - Mirror images direct to accessible docker v2 compliant registry
+
 ## Instructions:
-### 0. Make Artifact Bundle Directory
+### 0. Prereqs
 ```
- mkdir -p /tmp/{bundle,operators}
+ TBD
 ```
 ### 1. Run Koffer Engine
 ```
- curl -sL https://git.io/JtvZV | sudo bash 
+podman run -it --rm \
+    --env BUNDLE=false \
+    --publish 10.88.0.1:5000:5000 \
+    --volume /tmp/koffer/.ssh:/root/.ssh:z \
+    --env OPERATORS=kubevirt-hyperconverged \
+  quay.io/cloudctl/koffer:latest bundle \
+    --plugin collector-operators
 ```
-### 2. Move Koffer Bundle to restricted environment
-### 3. Extract to CloudCtl Artifact path
+### 2. Review list of images & imageContentSourcePolicy.yaml
 ```
- tar xv -f /tmp/koffer-bundle.collector-operators.tar -C /root
+ls /tmp/koffer/operators/*/
 ```
-### 4. Apply operator catalog configs with contents of `mirror/config/operators`
