@@ -65,9 +65,9 @@
 
     - name: '{{ ansible_name_module }} | copy | Stage Operator imageContentSourcePolicy, mapping.txt'
       copy:
-        mode: '0777'
-        path: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.src }}'
+        src: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.src }}'
         dest: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.dest }}'
+        mode: '0777'
       with_items:
         - { src: 'imageContentSourcePolicy.yaml', dest: 'imageContentSourcePolicy.yaml' }
         - { src: 'mapping.txt', dest: 'mapping.txt' }
