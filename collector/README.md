@@ -22,7 +22,7 @@ Artifacts:
      --volume /tmp/docker:/root/.docker:z \
      --volume ${HOME}/operators:/tmp/koffer/operators:z \
    docker.io/containercraft/koffer:latest bundle \
-     --config 
+     --config https://git.io/JtUHP
 ```
   - unpack bundle
 ```
