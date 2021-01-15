@@ -22,7 +22,7 @@ Artifacts:
      --volume /tmp/docker:/root/.docker:z \
      --volume ${HOME}/operators:/tmp/koffer/operators:z \
      --env BUNDLE='false' --env MIRROR='false' \
-     --env OPERATORS='elasticsearch-operator,cluster-logging,metering-ocp,serverless-operator,openshift-pipelines-operator-rh,nfd,ocs-operator,advanced-cluster-management,local-storage-operator,kubevirt-hyperconverged'
+     --env OPERATORS='elasticsearch-operator,cluster-logging,metering-ocp,serverless-operator,openshift-pipelines-operator-rh,nfd,ocs-operator,advanced-cluster-management,local-storage-operator,kubevirt-hyperconverged' \
    docker.io/cloudctl/koffer:extra bundle \
      --config https://git.io/JtUHP
 ```
