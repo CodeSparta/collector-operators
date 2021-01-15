@@ -1,75 +1,55 @@
 #!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
 - name: '{{ name_vendor }} | Koffer | images.yml' 
-  hosts: host
+  hosts: koffer
   vars_files:
     - 'vars/global.yml'
 
   vars:
     module: "catalog"
     ansible_name_module: "{{ ansible_name }} | {{ module }}"
-    index_tag: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace('^.*:','') }}"
-    index_name: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace(':.*$','') }}"
-    index_image_out: '{{ target_registry }}/redhat/custom-{{ index_name }}:{{ index_tag }}'
 
   tasks:
 
-    - name: '{{ ansible_name_module }} | file:[absent,directory] | Prepare staging directory'
+    - name: '{{ ansible_name_module }} | file:absent | Purge artifact directory custom-{{ index_name }}-manifests'
       file:
-        path: '{{ local_tmp }}/operators'
+        path: '{{ item }}'
         state: absent
-    - file:
-        path: '{{ local_tmp }}/operators'
-        state: directory
-        mode: 0744
-
-    - name: '{{ ansible_name_module }} | command:cmd | Clear pre-existing custom catalog image layers'
-      shell:
-        cmd: |
-          REGISTRY_AUTH_FILE=/tmp/mirror.json \
-          podman rmi {{ index_image_out }}
-      args:
-        warn: false
-      ignore_errors: true
+      loop:
+        - '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests'
 
     - name: '{{ ansible_name_module }} | command:cmd | Podman Pull {{ opm_index_image }}'
-      shell:
+      command:
         cmd: |
-          REGISTRY_AUTH_FILE=/tmp/redhat.json \
           podman pull {{ opm_index_image }}
-      args:
-        warn: false
-      ignore_errors: true
 
-    - name: '{{ ansible_name_module }} | command:cmd | Build Custom Catalog'
+    - name: '{{ ansible_name_module }} | command:cmd | Build Custom Catalog | {{ opm_index_list }}'
       shell:
         chdir: '{{ local_tmp }}/operators'
         cmd: |
-          REGISTRY_AUTH_FILE=/tmp/redhat.json \
-          {{ dir_bin }}/opm index prune --from-index {{ opm_index_image }} --tag {{ index_image_out }} --packages {{ operator_list }}
+          opm index prune --tag {{ index_image_out }} --packages {{ operator_list }} --from-index {{ opm_index_image }}
 
     - name: '{{ ansible_name_module }} | command:cmd | Push Custom Catalog {{ index_image_out }}'
       shell:
         cmd: |
-          REGISTRY_AUTH_FILE=/tmp/mirror.json \
           podman push --tls-verify=false {{ index_image_out }}
 
     ## Cannot filter by os arch due to bug:
     ## https://bugzilla.redhat.com/show_bug.cgi?id=1890951
     ## https://github.com/openshift/openshift-docs/pull/27855
-    ##    {{ dir_bin }}/oc adm catalog mirror --insecure --manifests-only --filter-by-os='.*' {{ index_image_out }} {{ target_registry }}
+    ##    oc adm catalog mirror --insecure --manifests-only --filter-by-os='.*' {{ index_image_out }} {{ target_registry }}
     - name: '{{ ansible_name_module }} | command:cmd | Build Image Mirror Manifests'
       shell:
         chdir: '{{ local_tmp }}/operators'
         cmd: |
-          REGISTRY_AUTH_FILE=/tmp/redhat.json \
-          {{ dir_bin }}/oc adm catalog mirror --insecure --manifests-only --filter-by-os='.*' {{ index_image_out }} {{ target_registry }}
+          oc adm catalog mirror --insecure --manifests-only --filter-by-os='.*' {{ index_image_out }} {{ target_registry }}
 
-    - name: '{{ ansible_name_module }} | copy | Stage Operator imageContentSourcePolicy, mapping.txt'
+         #oc adm catalog mirror --insecure --manifests-only --filter-by-os='x86_64' {{ index_image_out }} {{ target_registry }}
+
+    - name: '{{ ansible_name_module }} | copy:mirror.list | Template mirror.list'
       copy:
-        remote_src: yes
         src: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.src }}'
         dest: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.dest }}'
-        mode: '0777'
+        mode: '0775'
       with_items:
         - { src: 'mapping.txt', dest: 'mirror.list' }
 
@@ -78,13 +58,14 @@
         path: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/mirror.list'
         regexp: '=.*$'
 
-    - name: '{{ ansible_name_module }} | copy | Stage Operator imageContentSourcePolicy, mapping.txt'
-      fetch:
-        src: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.src }}'
-        dest: '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests/{{ item.dest }}'
-        mode: '0777'
-        flat: yes
-      with_items:
-        - { src: 'imageContentSourcePolicy.yaml', dest: 'imageContentSourcePolicy.yaml' }
-        - { src: 'mapping.txt', dest: 'mapping.txt' }
-        - { src: 'mirror.list', dest: 'mirror.list' }
+    - name: '{{ ansible_name_module }} | absent | Remove garbage index build material'
+      file:
+        path: '{{ local_tmp }}/operators/index*'
+        state: absent
+
+    - name: '{{ ansible_name_module }} | copy:/tmp/koffer/operators | Stage Operator imageContentSourcePolicy, mapping.txt'
+      copy:
+        mode: 0777
+        src: '{{ local_tmp }}/operators'
+        dest: '{{ dir_platform }}'
+      when: bundle == 'true'

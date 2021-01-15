@@ -4,32 +4,11 @@
   vars_files:
     - 'vars/global.yml'
 
-  tasks:
-
-    ####### Purge Preexisting Artifacts 
-    - name: '{{ ansible_name }} | file | Purge pre-existing bundles'
-      file:
-        path: '{{ item }}'
-        state: absent
-      loop:
-        - '{{ dir_platform }}/koffer-bundle.operators-sparta.tar.xz'
-        - '{{ dir_platform }}/koffer-bundle.opeartors-sparta.tar.xz.sha256'
-      when: clean_purge_artifacts == True
-    - file:
-        path: '{{ item }}'
-        state: absent
-      loop:
-        - '{{ local_tmp }}/operators'
-      when: clean_purge_artifacts == True
-      delegate_to: host
-
 - import_playbook: tree.yml          # Create required directory tree
 - import_playbook: dependencies.yml  # Pull OpenShift oc, openshift-install, and kubectl binaries 
 - import_playbook: catalog.yml       # 
 - import_playbook: mirror.yml        # Download OCP Infra Container Images
-  when: build_bundle == 'true'
+  when: mirror or bundle == 'true'
 
-# import_playbook: bundle.yml       # Bundle artifacts for airgap pivot
-# when: bundle == True
-# import_playbook: finalize.yml     # Finalize
-# when: bundle == True
+- import_playbook: bundle.yml       # Bundle artifacts for airgap pivot
+  when: bundle == 'true'

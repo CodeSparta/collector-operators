@@ -6,39 +6,22 @@
   vars:
     module: "tree"
     ansible_name_module: "{{ ansible_name }} | {{ module }}"
-    index_tag: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace('^.*:','') }}"
-    index_name: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace(':.*$','') }}"
-    index_image_out: '{{ target_registry }}/redhat/custom-{{ index_name }}:{{ index_tag }}'
 
   tasks:
 
+    - name: '{{ ansible_name_module }} | file:[absent,directory] | Prepare staging directory'
+      file:
+        path: '{{ local_tmp }}/operators/custom-{{ index_image_out }}-manifests'
+        state: absent
+
     - name: '{{ ansible_name_module }} | file:directory | Create Artifact Directory Tree' 
       file:
         path: '{{ item }}'
         state: directory
         mode: '0744'
-        recurse: no
+        recurse: yes
       with_items:
-        - '{{ local_tmp }}/operators'
-        - '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests'
-        - '{{ dir_platform }}/operators'
-        - '{{ dir_platform }}/operators/custom-{{ index_name }}-manifests'
+        - '{{ dir_platform }}'
         - '{{ dir_platform }}/mirror'
-
-    - name: '{{ ansible_name_module }} | file:directory | Create Artifact Directory Tree' 
-      file:
-        path: '{{ item }}'
-        state: directory
-        mode: '0744'
-        recurse: no
-      with_items:
         - '{{ local_tmp }}'
-        - '{{ local_tmp }}/operators'
-      delegate_to: host
-
-    - name: '{{ ansible_name_module }} | file:directory | Set Bundle Directory Permissions' 
-      file:
-        path: '{{ dir_bundle }}'
-        state: directory
-        mode: '0777'
-        recurse: no
+        - '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests'

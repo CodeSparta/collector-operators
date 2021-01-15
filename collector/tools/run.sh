@@ -36,7 +36,6 @@ cp -rf ~/.ssh /tmp/koffer/.ssh
 echo ">>  Starting Koffer"
 podman run -it --rm \
     --env BUNDLE=false                      \
-    --publish 10.88.0.1:5000:5000           \
     --volume  /tmp/koffer/.ssh:/root/.ssh:z \
     --env OPERATORS=kubevirt-hyperconverged \
   quay.io/cloudctl/koffer:latest bundle     \

@@ -1,6 +1,6 @@
 #!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
 - name: '{{ name_vendor }} | Koffer | images.yml' 
-  hosts: host
+  hosts: koffer
   vars_files:
     - 'vars/global.yml'
 
@@ -8,13 +8,8 @@
     module: "mirror"
     ansible_name_module: "{{ ansible_name }} | {{ module }}"
 
-    index_tag: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace('^.*:','') }}"
-    index_name: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace(':.*$','') }}"
-    index_image_out: '{{ target_registry }}/redhat/custom-{{ index_name }}:{{ index_tag }}'
-
   tasks:
 
-    - name: '{{ ansible_name_module }} | command:cmd | Mirror Catalog Images'
-      shell: |
-        REGISTRY_AUTH_FILE=/tmp/redhat.json \
-        {{ dir_bin }}/oc adm catalog mirror --insecure --filter-by-os='.*' --registry-config='/tmp/redhat.json' {{ index_image_out }} {{ target_registry }}
+    - name: '{{ ansible_name_module }} | command:cmd | Mirror Catalog Images | {{ target_registry }}'
+      command: |
+        oc adm catalog mirror --insecure --filter-by-os='linux/amd64' --registry-config='/root/.docker/config.json' {{ index_image_out }} {{ target_registry }}
