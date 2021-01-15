@@ -1,8 +1,8 @@
 ---
-bundle: "{{ lookup('env', 'BUNDLE') | default('false', true) }}"         ## boolean: 'true|false|nill'
-mirror: "{{ lookup('env', 'mirror') | default('false', true) }}"         ## boolean: 'true|false|nill'
-target: "{{ lookup('env', 'TARGET') }}"                                  ## fqdn: 'registry.my.company.net:5000' default: 'localhost:5000' koffer internal listener
-catalog: "{{ lookup('env', 'CATALOG') | default(default_index_image) }}" ## boolean: 'true|false|nill'
+target: "{{ lookup('env', 'TARGET') }}"                    ## fqdn: 'registry.my.company.net:5000' default: 'localhost:5000' koffer internal listener
+bundle: "{{ lookup('env', 'BUNDLE') | default('false') }}" ## boolean: 'true|false|nill'
+mirror: "{{ lookup('env', 'MIRROR') | default('false') }}" ## boolean: 'true|false|nill'
+catalog: "{{ lookup('env', 'CATALOG') | default(default_index_image, true) }}" ## boolean: 'true|false|nill'
 operator_list: "{{ lookup('env', 'OPERATORS') | default(default_operator_list, true) }}"
 #####################################################################################################
 # End of user configurable variables
