@@ -28,20 +28,22 @@ Capabilities:
 
 ## Instructions:
 ### 0. Prereqs
-```
- TBD
-```
+  - Packages:
+    - podman
+    - fuse-overlayfs
+
 ### 1. Run Koffer Engine
 ```
-podman run -it --rm \
-    --env BUNDLE=false \
-    --publish 10.88.0.1:5000:5000 \
-    --volume /tmp/koffer/.ssh:/root/.ssh:z \
-    --env OPERATORS=kubevirt-hyperconverged \
-  quay.io/cloudctl/koffer:latest bundle \
-    --plugin collector-operators
+mkdir -p ${HOME}/operators && \
+podman run -it --rm --pull always \
+     --privileged --device /dev/fuse \
+     --volume /tmp/docker:/root/.docker:z \
+     --volume ${HOME}/operators:/tmp/koffer/operators:z \
+     --env OPERATORS='elasticsearch-operator,cluster-logging,metering-ocp,serverless-operator,openshift-pipelines-operator-rh,nfd,ocs-operator,advanced-cluster-management,local-storage-operator,kubevirt-hyperconverged' \
+   docker.io/cloudctl/koffer:extra bundle \
+     --config https://git.io/JtUHP
 ```
 ### 2. Review list of images & imageContentSourcePolicy.yaml
 ```
-ls /tmp/koffer/operators/*/
+ls operators/*/
 ```
