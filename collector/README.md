@@ -21,7 +21,7 @@ Artifacts:
      --privileged --device /dev/fuse \
      --volume /tmp/docker:/root/.docker:z \
      --volume ${HOME}/operators:/tmp/koffer/operators:z \
-   docker.io/containercraft/koffer:extra bundle \
+   docker.io/cloudctl/koffer:extra bundle \
      --config https://git.io/JtUHP
 ```
   - unpack bundle
