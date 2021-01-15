@@ -1,5 +1,4 @@
 # [Koffer](https://github.com/containercraft/Koffer) Collector | Operator Artifacts
-## Provides
 This automation provides a unified and standardized method of enumerating
 operator dependencies and either mirroring direct to an accisible docker v2
 compliant registry service, or producing a tarball of all artifacts that is
@@ -8,8 +7,8 @@ cloudctl compliant for use across an airgap.
 
 ## About
 Koffer Collector Operator Hub uses the Koffer Engine runtime container to enable
-streamlined low side capture of all required artifacts for deploying OpenShift 
-Operator Hub. Primarily built to enable airgaped environments in a standard 
+streamlined low side enumeration and capture of all required artifacts for deploying
+OpenShift Operator Hub. Primarily built to enable airgaped environments in a standard 
 "registry < to > mirror" workflow model conventional to more typical connected 
 local mirror techniques.
 
@@ -28,6 +27,7 @@ Capabilities:
 
 ## Instructions:
 ### 0. Prereqs
+  - RHEL8, Fedora 33+, or CoreOS 3.6.8+
   - Packages:
     - podman
     - fuse-overlayfs
