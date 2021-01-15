@@ -1,17 +1,27 @@
 ---
-build_bundle: "{{ lookup('env', 'BUNDLE') | default('true') }}"
+bundle: "{{ lookup('env', 'BUNDLE') | default('false', true) }}"         ## boolean: 'true|false|nill'
+mirror: "{{ lookup('env', 'mirror') | default('false', true) }}"         ## boolean: 'true|false|nill'
+target: "{{ lookup('env', 'TARGET') }}"                                  ## fqdn: 'registry.my.company.net:5000' default: 'localhost:5000' koffer internal listener
+catalog: "{{ lookup('env', 'CATALOG') | default(default_index_image) }}" ## boolean: 'true|false|nill'
+operator_list: "{{ lookup('env', 'OPERATORS') | default(default_operator_list, true) }}"
 #####################################################################################################
 # End of user configurable variables
 #####################################################################################################
 # Operator Variables
-default_registry: '10.88.0.1:5000'
-default_index_image: 'registry.redhat.io/redhat/redhat-operator-index:v4.6'
-default_custom_index_image: 'redhat/redhat-operator-index:v4.6'
 default_operator_list: 'cluster-logging,servicemeshoperator,openshift-monitoring'
 
-opm_index_image: '{{ index_image | default(default_index_image) }}'
-target_registry: '{{ mirror_registry | default(default_registry) }}'
-operator_list: "{{ lookup('env', 'OPERATORS') | default(default_operator_list, true) }}"
+default_index_name: 'redhat/redhat-operator-index:v4.6'
+default_index_image: 'registry.redhat.io/{{ default_index_name }}'
+
+target_registry: "{{ target | default('localhost:5000', true) }}"
+index_image_out: '{{ target_registry }}/redhat/custom-{{ index_name }}:{{ index_tag }}'
+
+opm_index_list: '{{ operator_list | default(default_operator_list, true) }}'
+opm_index_image: '{{ index_image | default(default_index_image, true) }}'
+
+index_tag: "{{ source_catalog_image | default(default_index_image) | basename | regex_replace('^.*:','') }}"
+index_name: "{{ source_catalog_image | default(default_index_image) | basename | regex_replace(':.*$','') }}"
+bundle_name: 'koffer-bundle.custom-{{ index_name }}-catalog.tar.xz'
 
 # Ansible Playbook Run Variables
 name_vendor: "CodeSparta"

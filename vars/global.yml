@@ -12,6 +12,9 @@ default_operator_list: 'cluster-logging,servicemeshoperator,openshift-monitoring
 opm_index_image: '{{ index_image | default(default_index_image) }}'
 target_registry: '{{ mirror_registry | default(default_registry) }}'
 operator_list: "{{ lookup('env', 'OPERATORS') | default(default_operator_list, true) }}"
+index_tag: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace('^.*:','') }}"
+index_name: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace(':.*$','') }}"
+index_image_out: '{{ target_registry }}/redhat/custom-{{ index_name }}:{{ index_tag }}'
 
 # Ansible Playbook Run Variables
 name_vendor: "CodeSparta"

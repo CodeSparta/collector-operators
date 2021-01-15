@@ -39,7 +39,6 @@ mkdir -p /tmp/koffer/{.ssh,.docker,.aws}
 echo ">>  Starting Koffer"
 podman run -it --rm --entrypoint bash \
     --workdir ${HOME}/koffer                       \
-    --publish 10.88.0.1:5000:5000                  \
     --name ${project} -h ${project}                \
     --volume  /tmp/koffer/.ssh:/root/.ssh:z        \
     --volume  ${HOME}/bundle:/root/bundle:z        \
