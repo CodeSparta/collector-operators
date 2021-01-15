@@ -1,0 +1,11 @@
+# Koffer Config
+# https://github.com/RedHatOfficial/Koffer
+koffer:
+  # Disable user prompt for registry authentication secret
+  silent: true
+  plugins:
+    # https://github.com/codeSparta/collector-operators
+    collector-operators:
+      organization: CodeSparta
+      service: github.com
+      version: master
