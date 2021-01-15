@@ -43,9 +43,7 @@ podman run -it --rm --entrypoint bash \
     --workdir ${HOME}/koffer                       \
     --name ${project} -h ${project}                \
     --volume  $(pwd):/root/koffer:z                \
-    --volume  /tmp/koffer/.ssh:/root/.ssh:z        \
     --volume  /tmp/koffer/.docker:/root/.docker:z  \
-    --volume  /tmp/koffer/.aws:/root/.aws:z        \
     --volume  ${HOME}/bundle:/root/bundle:z        \
   quay.io/cloudctl/koffer:extra
 }

@@ -16,11 +16,13 @@ Artifacts:
     
 ## Usage: Execute Collector Plugin with Koffer Engine
 ```
- mkdir -p ${HOME}/bundle && \
+ mkdir -p ${HOME}/operators && \
  podman run -it --rm --pull always \
-     --volume ${HOME}/bundle:/root/bundle:z \
+     --privileged --device /dev/fuse \
+     --volume /tmp/docker:/root/.docker:z \
+     --volume ${HOME}/operators:/tmp/koffer/operators:z \
    docker.io/containercraft/koffer:latest bundle \
-     --plugin collector-ocp
+     --config 
 ```
   - unpack bundle
 ```
