@@ -2,6 +2,9 @@
 This automation provides a unified and standardized tarball of OpenShift artifacts for
 restricted or airgap infrastructure deployment.
 
+Glossary:
+  - [Operator Catalog API]
+
 Features:
   - CloudCtl compatible
   - Low side SHA256 artifact bundle metadata (for high side bit integrity validation)
@@ -32,3 +35,4 @@ tar -xvf ~/bundle/koffer-bundle.openshift-4.6.1.tar.xz -C /root
 [Release Images]:https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/release.txt
 [Red Hat CoreOS]:https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest
 [Binary]:https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest
+[Operator Catalog API]:https://quay.io/cnr/api/v1/packages?namespace=redhat-operators
