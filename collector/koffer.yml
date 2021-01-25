@@ -2,7 +2,7 @@
 # https://github.com/RedHatOfficial/Koffer
 koffer:
   # Disable user prompt for registry authentication secret
-  silent: true
+  silent: false
   plugins:
     # https://github.com/codeSparta/collector-operators
     collector-operators:
