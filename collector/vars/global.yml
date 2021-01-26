@@ -1,6 +1,9 @@
 ---
 target: "{{ lookup('env', 'TARGET') }}"                    ## fqdn: 'registry.my.company.net:5000' default: 'localhost:5000' koffer internal listener
+<<<<<<< HEAD
 WallE: "{{ lookup('env', 'WALLE') | default('false') }}" ## boolean: 'true|false|nill'
+=======
+>>>>>>> 873c5f110b08f5706ae5f0d940be10c308e8be3d
 bundle: "{{ lookup('env', 'BUNDLE') | default('false') }}" ## boolean: 'true|false|nill'
 mirror: "{{ lookup('env', 'MIRROR') | default('false') }}" ## boolean: 'true|false|nill'
 catalog: "{{ lookup('env', 'CATALOG') | default(default_index_image, true) }}" ## boolean: 'true|false|nill'
