@@ -1,0 +1,8 @@
+/.vscode
+/content
+/publish*
+/run*
+index*
+opm
+new-mirror.sh
+auth.json

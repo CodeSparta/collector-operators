@@ -19,7 +19,7 @@
         path: '{{ item }}'
         state: directory
         mode: '0744'
-        recurse: yes
+        recurse: no
       with_items:
         - '{{ dir_platform }}'
         - '{{ dir_platform }}/mirror'
