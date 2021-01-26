@@ -20,6 +20,13 @@
         - '{{ dir_bundle }}/{{ bundle_name }}.sha256'
       when: clean_purge_artifacts == True
 
+    - name: '{{ ansible_name }} | copy | Place iCSP and Catalog Subscription file'
+      copy:
+        src: '{{ local_tmp }}/operators/custom-redhat-operator-index-manifests'
+        dest: '{{ dir_platform }}/mirror/operators/'
+        remote_src: no
+        mode: '0775'
+
     - name: '{{ ansible_name_module }} | command:tar | Build Artifacts Bundle'
       command:
         cmd: |
