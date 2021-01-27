@@ -2,3 +2,6 @@ rhsso-operator
 cluster-logging
 servicemeshoperator
 compliance-operator
+kiali-ossm
+jaeger-product
+elasticsearch-operator
