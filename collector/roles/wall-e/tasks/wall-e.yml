@@ -1,6 +1,12 @@
 ---
+- name: '{{ ansible_name_module }} | copy:wall-e | Place wall-e bin in relative path'
+  copy:
+    src: /bin/wall-e
+    dest: /root/koffer/collector/roles/wall-e/tasks/wall-e
+    mode: 0755
+
 - name: '{{ ansible_name_module }} | command:wall-e | Building catalog & Mirroring with wall-e opm wrapper | CREDIT: @arvin-a https://github.com/arvin-a/openshift-disconnected-operators'
   command:
     chdir: "/root/koffer/collector/roles/wall-e/tasks"
     cmd: |
-      /bin/wall-e --output /tmp/koffer/operators/custom-redhat-operator-index-manifests --operator-file ./offline-operator-list --authfile /root/.docker/config.json --registry-catalog localhost:5000 --registry-olm localhost:5000 --catalog-version 1.0.0 --icsp-scope=namespace
+      ./wall-e --output /tmp/koffer/operators/custom-redhat-operator-index-manifests --operator-file ./offline-operator-list --authfile /root/.docker/config.json --registry-catalog localhost:5000 --registry-olm localhost:5000 --catalog-version 1.0.0 --icsp-scope=namespace
