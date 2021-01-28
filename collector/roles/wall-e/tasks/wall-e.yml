@@ -3,4 +3,4 @@
   command:
     chdir: "/root/koffer/collector/roles/wall-e/tasks"
     cmd: |
-      ./wall-e --output /tmp/koffer/operators/custom-redhat-operator-index-manifests --operator-file ./offline-operator-list --authfile /root/.docker/config.json --registry-catalog localhost:5000 --registry-olm localhost:5000 --catalog-version 1.0.0 --icsp-scope=namespace
+      /bin/wall-e --output /tmp/koffer/operators/custom-redhat-operator-index-manifests --operator-file ./offline-operator-list --authfile /root/.docker/config.json --registry-catalog localhost:5000 --registry-olm localhost:5000 --catalog-version 1.0.0 --icsp-scope=namespace
