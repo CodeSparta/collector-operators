@@ -28,7 +28,7 @@
 
     - name: "{{ ansible_name_module }} | unarchive:openshift-client-linux.tar.gz | Extracting OC Client {{ openshift_version }}"
       unarchive:
-        src: "/tmp/openshift-client-linux.tar.gz"
+        src: '/tmp/openshift-client-linux.tar.gz'
         dest: '/bin'
         mode: 0775
 
