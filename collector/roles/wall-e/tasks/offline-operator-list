@@ -1,5 +1,6 @@
 cluster-logging
-3scale apicast-operator
+3scale
+apicast-operator
 3scale-operator
 amq-streams
 businessautomation-operator
