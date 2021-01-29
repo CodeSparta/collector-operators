@@ -21,10 +21,13 @@
       when: openshift_version is not defined
 
     - name: "{{ ansible_name_module }} | get_url:openshift-client-linux.tar.gz | Downloading OC Client {{ openshift_version }}"
-      get_url:
-        url: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ openshift_version }}/openshift-client-linux.tar.gz"
-        dest: '/tmp/openshift-client-linux.tar.gz'
-        mode: '0744'
+      command:
+        cmd: |
+          tar xvf /tmp/openshift-client-linux.tar.gz -C /bin/
+#      get_url:
+#        url: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ openshift_version }}/openshift-client-linux.tar.gz"
+#        dest: '/tmp/openshift-client-linux.tar.gz'
+#        mode: '0744'
 
     - name: "{{ ansible_name_module }} | unarchive:openshift-client-linux.tar.gz | Extracting OC Client {{ openshift_version }}"
       unarchive:
