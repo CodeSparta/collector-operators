@@ -37,7 +37,7 @@ Capabilities:
 mkdir -p ${HOME}/operators && \
 podman run -it --rm --pull always \
      --privileged --device /dev/fuse \
-     --volume /tmp/docker:/root/.docker:z \
+     --volume /root/.docker:/root/.docker:z \
      --volume ${HOME}/operators:/tmp/koffer/operators:z \
      --env OPERATORS='elasticsearch-operator,cluster-logging,metering-ocp,serverless-operator,openshift-pipelines-operator-rh,nfd,ocs-operator,advanced-cluster-management,local-storage-operator,kubevirt-hyperconverged' \
    docker.io/cloudctl/koffer:extra bundle \
