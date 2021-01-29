@@ -33,7 +33,8 @@ image_mirror_utility: "oc"
 
 # Hosts Environment 
 local_user: "{{ lookup('env', 'USER') }}"
-local_home: "{{ lookup('env', 'HOME') }}"
+#local_home: "{{ lookup('env', 'HOME') }}"
+local_home: "/root"
 remote_home: "{{ ansible_env.HOME }}"
 
 # Directory Inventory
