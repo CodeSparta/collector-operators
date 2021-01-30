@@ -36,6 +36,7 @@ Capabilities:
 ```
 mkdir -p ${HOME}/operators && \
 sudo podman run -it --rm --pull always \
+     --env BUNDLE=true \
      --privileged --device /dev/fuse \
      --volume /root/.docker:/root/.docker:z \
      --volume ${HOME}/operators:/tmp/koffer/operators:z \
