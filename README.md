@@ -35,7 +35,7 @@ Capabilities:
 ### 1. Run Koffer Engine
 ```
 mkdir -p ${HOME}/operators && \
-podman run -it --rm --pull always \
+sudo podman run -it --rm --pull always \
      --privileged --device /dev/fuse \
      --volume /root/.docker:/root/.docker:z \
      --volume ${HOME}/operators:/tmp/koffer/operators:z \
