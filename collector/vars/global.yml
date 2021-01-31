@@ -1,5 +1,6 @@
 ---
 target: "{{ lookup('env', 'TARGET') }}"                    ## fqdn: 'registry.my.company.net:5000' default: 'localhost:5000' koffer internal listener
+target_namespace: "{{ lookup('env', 'TARGET_NAMESPACE') }}"                    ## registry ns: 'registry.my.company.net:5000/namespace' default: 'redhat'
 WallE: "{{ lookup('env', 'WALLE') | default(false) }}"   ## boolean: 'true|false|nill'
 bundle: "{{ lookup('env', 'BUNDLE') | default(false) }}" ## boolean: 'true|false|nill'
 mirror: "{{ lookup('env', 'MIRROR') | default(false) }}" ## boolean: 'true|false|nill'
@@ -15,7 +16,8 @@ default_index_name: 'redhat/redhat-operator-index:v4.6'
 default_index_image: 'registry.redhat.io/{{ default_index_name }}'
 
 target_registry: "{{ target | default('localhost:5000', true) }}"
-index_image_out: '{{ target_registry }}/redhat/custom-{{ index_name }}:{{ index_tag }}'
+target_registry_namespace: "{{ target_namespace | default('redhat', true) }}"
+index_image_out: '{{ target_registry }}/{{target_registry_namespace}}/custom-{{ index_name }}:{{ index_tag }}'
 
 opm_index_list: '{{ operator_list | default(default_operator_list, true) }}'
 opm_index_image: '{{ index_image | default(default_index_image, true) }}'
