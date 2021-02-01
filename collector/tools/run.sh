@@ -20,6 +20,7 @@ podman run -it --rm \
     --name ${project} -h ${project}                \
     --volume  $(pwd):/root/koffer:z                \
     --volume  ${HOME}/bundle:/root/bundle:z        \
+    --volume  ${HOME}/operators:/root/operators:z  \
     --volume  /tmp/koffer/.docker:/root/.docker:z  \
     --entrypoint ./collector/site.yml              \
   quay.io/cloudctl/koffer:extra

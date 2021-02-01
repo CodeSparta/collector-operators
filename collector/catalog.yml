@@ -26,7 +26,7 @@
       shell:
         chdir: '{{ local_tmp }}/operators'
         cmd: |
-          opm index prune --tag {{ index_image_out }} --packages {{ operator_list }} --from-index {{ opm_index_image }}
+          opm index prune --tag {{ index_image_out }} --packages {{ operator_list }} --from-index {{ opm_index_image }} --binary-image {{ opm_index_image }}
 
     - name: '{{ ansible_name_module }} | command:cmd | Push Custom Catalog {{ index_image_out }}'
       shell:
