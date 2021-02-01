@@ -39,7 +39,7 @@ sudo podman run -it --rm --pull always \
     --volume ${HOME}/.docker:/root/.docker:z \
     --privileged --device /dev/fuse \
   quay.io/cloudctl/koffer:extra bundle \
-    --config https://raw.githubusercontent.com/CodeSparta/collector-operators/master/collector/koffer.yml
+    --config https://git.io/JtUHP
 ```
 ### 2. Review list of images & imageContentSourcePolicy.yaml
 ```
