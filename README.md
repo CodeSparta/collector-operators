@@ -34,15 +34,12 @@ Capabilities:
 
 ### 1. Run Koffer Engine
 ```
-mkdir -p ${HOME}/operators && \
 sudo podman run -it --rm --pull always \
-     --env BUNDLE=true \
-     --privileged --device /dev/fuse \
-     --volume /root/.docker:/root/.docker:z \
-     --volume ${HOME}/operators:/tmp/koffer/operators:z \
-     --env OPERATORS='elasticsearch-operator,cluster-logging,metering-ocp,serverless-operator,openshift-pipelines-operator-rh,nfd,ocs-operator,advanced-cluster-management,local-storage-operator,kubevirt-hyperconverged' \
-   docker.io/cloudctl/koffer:extra bundle \
-     --config https://git.io/JtUHP
+    --volume ${HOME}/bundle:/root/bundle:z \
+    --volume ${HOME}/.docker:/root/.docker:z \
+    --privileged --device /dev/fuse \
+  quay.io/cloudctl/koffer:extra bundle \
+    --config https://raw.githubusercontent.com/CodeSparta/collector-operators/master/collector/koffer.yml
 ```
 ### 2. Review list of images & imageContentSourcePolicy.yaml
 ```
