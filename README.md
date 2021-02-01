@@ -34,14 +34,15 @@ Capabilities:
 
 ### 1. Run Koffer Engine
 ```
-sudo podman run -it --rm --pull always \
+mkdir ${HOME}/bundle \
+sudo podman run -it --rm \
+    --privileged --device /dev/fuse \
     --volume ${HOME}/bundle:/root/bundle:z \
     --volume ${HOME}/.docker:/root/.docker:z \
-    --privileged --device /dev/fuse \
   quay.io/cloudctl/koffer:extra bundle \
     --config https://git.io/JtUHP
 ```
-### 2. Review list of images & imageContentSourcePolicy.yaml
+### 2. Review Bundle(s)
 ```
-ls operators/*/
+ du -sh ${HOME}/*
 ```
