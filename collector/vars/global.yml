@@ -1,8 +1,9 @@
 ---
-target: "{{ lookup('env', 'TARGET') }}"                    ## fqdn: 'registry.my.company.net:5000' default: 'localhost:5000' koffer internal listener
-WallE: "{{ lookup('env', 'WALLE') | default(false) }}"   ## boolean: 'true|false|nill'
-bundle: "{{ lookup('env', 'BUNDLE') | default(false) }}" ## boolean: 'true|false|nill'
-mirror: "{{ lookup('env', 'MIRROR') | default(false) }}" ## boolean: 'true|false|nill'
+bundle_all: "{{ lookup('env', 'ALL') | default(false) }}" ## fqdn: 'registry.my.company.net:5000' default: 'localhost:5000' koffer internal listener
+target: "{{ lookup('env', 'TARGET') }}"                   ## fqdn: 'registry.my.company.net:5000' default: 'localhost:5000' koffer internal listener
+WallE: "{{ lookup('env', 'WALLE') | default(false) }}"    ## boolean: 'true|false|nill'
+bundle: "{{ lookup('env', 'BUNDLE') | default(false) }}"  ## boolean: 'true|false|nill'
+mirror: "{{ lookup('env', 'MIRROR') | default(false) }}"  ## boolean: 'true|false|nill'
 catalog: "{{ lookup('env', 'CATALOG') | default(default_index_image, true) }}" ## boolean: 'true|false|nill'
 operator_list: "{{ lookup('env', 'OPERATORS') | default(default_operator_list, true) }}"
 #####################################################################################################
