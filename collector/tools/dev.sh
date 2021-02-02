@@ -14,7 +14,7 @@ cp -rf ~/.docker /tmp/koffer/
 
 #clear
 echo ">>  Starting Koffer"
-podman run -it --rm --entrypoint bash \
+sudo podman run -it --rm --entrypoint bash \
     --name ${project} -h ${project}                \
     --privileged --device /dev/fuse                \
     --volume  $(pwd):/root/koffer:z                \
