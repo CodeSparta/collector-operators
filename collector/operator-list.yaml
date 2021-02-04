@@ -1,0 +1,13 @@
+- name: '{{ name_vendor }} | Koffer | operator-list.yaml'
+  hosts: koffer
+  vars_files:
+    - 'vars/global.yml'
+  vars:
+    module: "wall-e"
+    ansible_name_module: "{{ ansible_name }} | {{ module }}"
+
+  tasks:
+    - name: '{{ ansible_name_module }} | Create Operators list'
+      ansible.builtin.template:
+        src: templates/operators.j2
+        dest: roles/wall-e/custom-offline-operator-list
