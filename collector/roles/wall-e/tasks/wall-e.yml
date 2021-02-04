@@ -9,4 +9,4 @@
   shell:
     chdir: "/root/koffer/collector/roles/wall-e/tasks"
     cmd: |
-      REGISTRY_AUTH_FILE='/root/.docker/config.json' PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' /root/koffer/collector/roles/wall-e/tasks/wall-e --output /tmp/koffer/operators/custom-redhat-operator-index-manifests --operator-file ./offline-operator-list --authfile /root/.docker/config.json --registry-catalog localhost:5000 --registry-olm localhost:5000 --catalog-version 1.0.0 --icsp-scope=namespace
+      REGISTRY_AUTH_FILE='/root/.docker/config.json' PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' /root/koffer/collector/roles/wall-e/tasks/wall-e --output /tmp/koffer/operators/custom-redhat-operator-index-manifests --operator-file ./custom-offline-operator-list --authfile /root/.docker/config.json --registry-catalog localhost:5000 --registry-olm localhost:5000 --catalog-version 1.0.0 --icsp-scope=namespace
