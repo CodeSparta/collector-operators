@@ -1,9 +1,9 @@
 operator_list=[
 {% for OPERATORS in operator_list %}
 {% if not loop.last %}
-  {{ net }},
+  {{ OPERATORS }},
 {% else %}
-  {{ net }}
+  {{ OPERATORS }}
 {% endif %}
 {% endfor %}
 ]
