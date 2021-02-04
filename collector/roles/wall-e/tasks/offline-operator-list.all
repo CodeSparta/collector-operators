@@ -1,5 +1,6 @@
 cluster-logging
 3scale
+compliance-operator
 apicast-operator
 3scale-operator
 amq-streams
