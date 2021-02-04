@@ -11,4 +11,4 @@
     - name: '{{ ansible_name_module }} | Create Operators list'
       template:
         src: /root/koffer/collector/templates/operators.j2
-        dest: /root/koffer/collector/roles/wall-e/custom-offline-operator-list
+        dest: /root/koffer/collector/roles/wall-e/tasks/custom-offline-operator-list
