@@ -1,7 +1,7 @@
 operator_list=[
 {% for OPERATORS in operator_list %}
 {% if not loop.last %}
-  {{ net }}
+  {{ net }},
 {% else %}
   {{ net }}
 {% endif %}
