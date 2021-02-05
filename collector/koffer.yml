@@ -17,4 +17,4 @@ koffer:
       #   value: "true"
       organization: codesparta
       service: github.com
-      version: dynamic-operators
+      version: master
