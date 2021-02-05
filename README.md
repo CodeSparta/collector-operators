@@ -88,7 +88,7 @@ sudo podman run -it --rm \
     --privileged --device /dev/fuse \
     --volume ${HOME}/bundle:/root/bundle:z \
     --volume ${HOME}/.docker:/root/.docker:z \
-    --volume /tmp/koffer.yml:/root/.koffer/config.yml:z
+    --volume /tmp/koffer.yml:/root/.koffer/config.yml:z \
   quay.io/cloudctl/koffer:extra bundle
 ```
 ### 3. Review Bundle(s)
