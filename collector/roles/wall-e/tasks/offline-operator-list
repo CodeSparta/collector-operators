@@ -1,5 +1,6 @@
 kiali-ossm
 ocs-operator
+quay-operator
 jaeger-product
 cluster-logging
 servicemeshoperator
