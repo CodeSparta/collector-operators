@@ -76,13 +76,14 @@ koffer:
           value: "my,list,goes,here"
       organization: codesparta
       service: github.com
-      version: dynamic-operators
+      version: master
 " > /tmp/koffer.yml
 ```
 
 ### 2. Run the Bundle create on the same host the previous steps were executed on
 
 ```
+mkdir ${HOME}/bundle; \
 sudo podman run -it --rm \
     --privileged --device /dev/fuse \
     --volume ${HOME}/bundle:/root/bundle:z \
@@ -93,4 +94,11 @@ sudo podman run -it --rm \
 ### 3. Review Bundle(s)
 ```
  du -sh ${HOME}/*
+```
+
+###4. Unpack the bundle
+
+- Copy the bundle to the offline registry node and run the tar command
+```
+tar -xvf ~/bundle/koffer-bundle.openshift-4.6.1.tar.xz -C /root
 ```
