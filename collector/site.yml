@@ -1,19 +1,20 @@
 #!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
-- name: 'Koffer | Artifact Rake Utility' 
+- name: 'Koffer | Artifact Rake Utility'
   hosts: koffer
   vars_files:
     - 'vars/global.yml'
 
-- import_playbook: tree.yml          # Create required directory tree
-- import_playbook: dependencies.yml  # Pull OpenShift oc
-- import_playbook: catalog.yml       # Build custom catalog image and write imageContentSourcePolicy, mirror.list, mapping.txt
+- import_playbook: tree.yml            # Create required directory tree
+- import_playbook: dependencies.yml    # Pull OpenShift oc
+- import_playbook: operator-list.yaml  # Create offline Operator list based on user ENV lookup
+- import_playbook: catalog.yml         # Build custom catalog image and write imageContentSourcePolicy, mirror.list, mapping.txt
   when: not WallE
 
-- import_playbook: mirror.yml        # Download & Push Images
+- import_playbook: mirror.yml          # Download & Push Images
   when: (mirror or bundle) and not WallE
 
-- import_playbook: wall-e.yml        # Download & Push Images with wall-e opm python wrapper
+- import_playbook: wall-e.yml          # Download & Push Images with wall-e opm python wrapper
   when: WallE
 
-- import_playbook: bundle.yml       # Bundle artifacts into CloudCtl compliant archive for manual carry
+- import_playbook: bundle.yml         # Bundle artifacts into CloudCtl compliant archive for manual carry
   when: bundle

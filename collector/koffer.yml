@@ -13,6 +13,8 @@ koffer:
           value: "true"
         - name: "BUNDLE"
           value: "true"
+      #  - name: "OPERATORS"
+      #    value: "my,list,goes,here"
       # - name: "ALL"
       #   value: "true"
       organization: codesparta

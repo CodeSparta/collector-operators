@@ -1,5 +1,5 @@
 #!/usr/local/bin/ansible-playbook --inventory=inventory.yaml
-- name: '{{ name_vendor }} | Koffer | images.yml' 
+- name: '{{ name_vendor }} | Koffer | images.yml'
   hosts: koffer
   vars_files:
     - 'vars/global.yml'
@@ -9,6 +9,12 @@
     ansible_name_module: "{{ ansible_name }} | {{ module }}"
 
   tasks:
+
+    - name: '{{ ansible_name_module }} | Create Operators list'
+      ansible.builtin.template:
+        src: templates/operators.j2
+        dest: roles/wall-e/custom-offline-operator-list
+
 
     - name: '{{ ansible_name_module }} | file:absent | Purge artifact directory custom-{{ index_name }}-manifests'
       file:
