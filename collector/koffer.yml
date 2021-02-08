@@ -13,10 +13,8 @@ koffer:
           value: "true"
         - name: "BUNDLE"
           value: "true"
-      #  - name: "OPERATORS"
-      #    value: "my,list,goes,here"
-      # - name: "ALL"
-      #   value: "true"
+        - name: "OPERATORS"
+          value: "kiali-ossm,ocs-operator,quay-operator,jaeger-product,rhsso-operator,cluster-logging,servicemeshoperator,compliance-operator,elasticsearch-operator"
       organization: codesparta
       service: github.com
-      version: master
+      version: v00.12.0208
