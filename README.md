@@ -39,7 +39,7 @@ sudo podman run -it --rm \
     --privileged --device /dev/fuse \
     --volume ${HOME}/bundle:/root/bundle:z \
     --volume ${HOME}/.docker:/root/.docker:z \
-  quay.io/cloudctl/koffer:v00.21.0204-extra bundle \
+  quay.io/cloudctl/koffer:v00.21.0208-extra bundle \
     --config https://git.io/JtUHP
 ```
 ### 2. Review Bundle(s)
@@ -73,7 +73,7 @@ koffer:
         - name: "BUNDLE"
           value: "true"
         - name: "OPERATORS"
-          value: "my,list,goes,here"
+          value: "kiali-ossm,ocs-operator,quay-operator,jaeger-product,rhsso-operator,cluster-logging,servicemeshoperator,compliance-operator,elasticsearch-operator"
       organization: codesparta
       service: github.com
       version: master
