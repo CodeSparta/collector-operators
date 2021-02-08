@@ -35,7 +35,7 @@ Capabilities:
 ### 1. Run Koffer Engine
 ```
 mkdir ${HOME}/bundle; \
-sudo podman run -it --rm \
+sudo podman run -it --rm --pull always \
     --privileged --device /dev/fuse \
     --volume ${HOME}/bundle:/root/bundle:z \
     --volume ${HOME}/.docker:/root/.docker:z \
@@ -84,7 +84,7 @@ koffer:
 
 ```
 mkdir ${HOME}/bundle; \
-sudo podman run -it --rm \
+sudo podman run -it --rm --pull always \
     --privileged --device /dev/fuse \
     --volume ${HOME}/bundle:/root/bundle:z \
     --volume ${HOME}/.docker:/root/.docker:z \
