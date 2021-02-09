@@ -15,7 +15,6 @@
         src: templates/operators.j2
         dest: roles/wall-e/custom-offline-operator-list
 
-
     - name: '{{ ansible_name_module }} | file:absent | Purge artifact directory custom-{{ index_name }}-manifests'
       file:
         path: '{{ item }}'
@@ -47,22 +46,35 @@
       shell:
         chdir: '{{ local_tmp }}/operators'
         cmd: |
-          oc adm catalog mirror --insecure --manifests-only --filter-by-os='.*' {{ index_image_out }} {{ target_registry }}
+          oc adm catalog mirror --insecure --manifests-only --index-filter-by-os='.*' {{ index_image_out }} {{ target_registry }}
 
-         #oc adm catalog mirror --insecure --manifests-only --filter-by-os='x86_64' {{ index_image_out }} {{ target_registry }}
+    - name: '{{ ansible_name_module }} | find:/tmp/koffer/operators/* | Find index manifests'
+      find:
+        paths: '{{ local_tmp }}/operators'
+        file_type: directory
+        recurse: false
+        patterns:
+          - '*-{{ index_name }}-*'
+      register: manifest_dir
+
+    - name: debug
+      debug:
+        msg: "found {{ manifest_dir.files[0].path }}"
 
     - name: '{{ ansible_name_module }} | copy:mirror.list | Template mirror.list'
       copy:
-        src: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.src }}'
-        dest: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/{{ item.dest }}'
+        src: '{{ item }}/mapping.txt'
+        dest: '{{ item }}/mirror.list'
         mode: '0775'
       with_items:
-        - { src: 'mapping.txt', dest: 'mirror.list' }
+        - "{{ manifest_dir.files[0].path }}"
 
     - name: '{{ ansible_name_module }} | replace | Format mirror.list'
       replace:
-        path: '{{ local_tmp }}/operators/custom-{{ index_name }}-manifests/mirror.list'
+        path: '{{ item }}/mirror.list'
         regexp: '=.*$'
+      with_items:
+        - "{{ manifest_dir.files[0].path }}"
 
     - name: '{{ ansible_name_module }} | absent | Remove garbage index build material'
       file:
