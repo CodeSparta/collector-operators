@@ -57,10 +57,6 @@
           - '*-{{ index_name }}-*'
       register: manifest_dir
 
-    - name: debug
-      debug:
-        msg: "found {{ manifest_dir.files[0].path }}"
-
     - name: '{{ ansible_name_module }} | copy:mirror.list | Template mirror.list'
       copy:
         src: '{{ item }}/mapping.txt'
