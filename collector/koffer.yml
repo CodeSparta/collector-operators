@@ -17,4 +17,4 @@ koffer:
           value: "kiali-ossm,ocs-operator,quay-operator,jaeger-product,rhsso-operator,cluster-logging,servicemeshoperator,compliance-operator,elasticsearch-operator"
       organization: codesparta
       service: github.com
-      version: v00.12.0208
+      version: v00.21.0216
