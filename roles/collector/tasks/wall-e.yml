@@ -104,6 +104,7 @@
   when:
     - item.value.list is defined and item.value.list != "null" and item.value.list != ""
     - item.value.image is defined and item.value.image != ""
+
 - name: '{{ plugin.name }} | command:oc.adm.catalog.mirror | Mirror operator catalog(s) | filter-by-os="linux/amd64"'
   shell:
     cmd: |
