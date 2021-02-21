@@ -12,6 +12,7 @@ sudo podman run -it --rm --entrypoint bash \
     --volume  $(pwd):/root/koffer:z                              \
     --volume  ${HOME}/bundle:/root/bundle:z                      \
     --volume  ${HOME}/.docker:/root/.docker:z                    \
+    --volume  ${HOME}/.gitconfig:/root/.gitconfig:z              \
     --volume  $(pwd)/tools/koffer.yml:/root/.koffer/config.yml:z \
   quay.io/cloudctl/koffer:extra
 }

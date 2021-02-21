@@ -1,38 +1,38 @@
 ---
 koffer:
-  mirror: "{{   lookup('env', 'MIRROR')   | default('false') }}"
-  bundle: "{{   lookup('env', 'BUNDLE')   | default('false') }}"
-  purge: "{{    lookup('env', 'OMNIBUS')  | default('true') }}"
-  manifest: "{{ lookup('env', 'MANIFEST') | default('true') }}"
+  mirror: "{{   lookup('env', 'MIRROR')      | default('false', true) | bool }}"
+  bundle: "{{   lookup('env', 'BUNDLE')      | default('false', true) | bool }}"
+  purge: "{{    lookup('env', 'OMNIBUS')     | default('true', true)  | bool }}"
+  manifest: "{{ lookup('env', 'MANIFEST')    | default('true', true)  | bool }}"
+  walle: "{{    lookup('env', 'WALLE')       | default('true', true)  | bool }}"
 
 catalog:
-  release: "{{   lookup('env', 'VERSION')             | default('latest', true) }}"
-  source: "{{    lookup('env', 'CATALOG_SOURCE')      | default('registry.redhat.io', true) }}"
-  dest: "{{      lookup('env', 'REGISTRY')            | default('localhost:5000', true) }}"
+  release: "{{ lookup('env', 'VERSION')      | default('latest', true) }}"
+  dest: "{{    lookup('env', 'CATALOG_DEST') | default('localhost:5000', true) }}"
 
 operators:
   redhat:
     id: 1
-    image: "{{     lookup('env', 'REDHAT_OPERATORS')    | default('redhat/redhat-operator-index:v4.7', true) }}"
+    image: "{{     lookup('env', 'REDHAT_CATALOG')    | default('registry.redhat.io/redhat/redhat-operator-index:v4.7', true) }}"
+#   list: "kiali-ossm,ocs-operator,quay-operator,jaeger-product,rhsso-operator,cluster-logging,servicemeshoperator,compliance-operator,elasticsearch-operator"
     list: "3scale-operator,apicast-operator,amq-streams,businessautomation-operator,cluster-kube-descheduler-operator,cluster-logging,clusterresourceoverride,codeready-workspaces,compliance-operator,container-security-operator,elasticsearch-operator,file-integrity-operator,jaeger-product,kiali-ossm,kubevirt-hyperconverged,local-storage-operator,metering-ocp,nfd,ocs-operator,ptp-operator,rhsso-operator,serverless-operator,servicemeshoperator,sriov-network-operator"
   certified:
     id: 2
-    image: "{{ lookup('env', 'CERTIFIED_OPERATORS') | default('redhat/certified-operator-index:v4.7', true) }}"
+    image: "{{ lookup('env', 'CERTIFIED_CATALOG') | default('registry.redhat.io/redhat/certified-operator-index:v4.7', true) }}"
     list: "anchore-engine,elasticsearch-eck-operator-certified,falco-certified,gitlab-operator,gitlab-runner-operator,gpu-operator-certified,nginx-ingress-operator,node-red-operator-certified,openshiftartifactoryha-operator,openshiftpipeline-operator,openshiftxray-operator,prisma-cloud-compute-console-operator.v2.0.1,redhat-marketplace-operator,rocketchat-operator-certified,splunk-certified"
-  marketplace:
-    id: 3
-    image: "{{    lookup('env', 'MARKET_OPERATORS')    | default('redhat/redhat-marketplace-index:v4.7', true) }}"
-    list: "null"
   community:
-    id: 4
-    image: "{{ lookup('env', 'COMMUNITY_OPERATORS') | default('redhat/community-operator-index:latest', true) }}"
+    id: 3
+    image: "{{ lookup('env', 'COMMUNITY_CATALOG') | default('registry.redhat.io/redhat/community-operator-index:latest', true) }}"
     list: "group-sync-operator,keycloak-operator,koku-metrics-operator,konveyor-forklift-operator,konveyor-operator,namespace-configuration-operator,prisma-cloud-compute-console-operator,prometheus,prometheus-exporter-operator,splunk"
+  marketplace:
+    id: 4
+    image: "{{    lookup('env', 'MARKET_CATALOG')    | default('registry.redhat.io/redhat/redhat-marketplace-index:v4.7', true) }}"
+    list: "null"
+
 
 default:
-  arch: 'x86_64'
   bundle_name: 'operators-bundle'
-  pull_secret: '/root/.docker/config.json'
-  push_secret: '/root/.docker/config.json'
+  docker_config: '/root/.docker/config.json'
 
 dir:
   bin: '/bin'
@@ -45,4 +45,4 @@ dir:
   secrets: '/root/platform/secrets'
 
 plugin:
-  name: "Red Hat Consulting | CodeSparta | Koffer Artifact Collector | CodeSparta/collector-operators"
+  name: "Koffer Artifact Collector | Red Hat Consulting | CodeSparta/collector-operators"

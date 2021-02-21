@@ -1,0 +1,13 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: custom-{{ item.key }}-operators
+  namespace: openshift-marketplace
+spec:
+  displayName: Custom {{ item.key }} operator catalog
+  image: {{ {{ catalog.dest }}/{{ item.value.image.split('/')[1] }}/{{ item.value.image.split('/')[2] }} }}
+  publisher: Red Hat
+  sourceType: grpc
+  updateStrategy:
+    registryPoll:
+      interval: 10m0s
