@@ -1,0 +1,8 @@
+#!/usr/local/bin/ansible-playbook --inventory=inventory/all.yml
+- name: 'Red Hat Consulting | CodeSparta | Koffer | Collector Operators' 
+  hosts: koffer
+  vars:
+    module: "Collector Operators"
+    ansible_name_module: "Red Hat Consulting | CodeSparta | Koffer | {{ module }}"
+  roles:
+    - collector

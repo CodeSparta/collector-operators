@@ -1,0 +1,24 @@
+---
+- name: "{{ plugin.name }} | unarchive:openshift-client-linux.tar.gz | Download OC Client {{ catalog.release }}"
+  unarchive:
+    remote_src: yes
+    src: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ catalog.release }}/openshift-client-linux.tar.gz"
+    dest: '/bin'
+    mode: 0775
+
+- name: "{{ plugin.name }} | command:oc_version | Check Release Version"
+  command:
+    cmd: "/bin/oc version --client --output json"
+  register: oc_version_out
+
+- name: "{{ plugin.name }} | set_fact:openshift_release"
+  set_fact:
+    oc_version_json: "{{ oc_version_out.stdout | from_json }}"
+
+- name: "{{ plugin.name }} | set_fact:openshift_version"
+  set_fact:
+    openshift_version: "{{ oc_version_json['releaseClientVersion'] }}"
+
+- name: "{{ plugin.name }} | debug:msg | Register OC Version"
+  debug:
+    msg: "OpenShift Client Version: {{ openshift_version }}"

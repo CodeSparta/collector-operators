@@ -1,0 +1,142 @@
+---
+# name: '{{ ansible_name_module }} | command:wall-e | Building catalog & Mirroring with wall-e opm wrapper | CREDIT: @arvin-a https://github.com/arvin-a/openshift-disconnected-operators'
+# shell:
+#   chdir: "/root/koffer/collector/roles/wall-e/tasks"
+#   cmd: |
+#     REGISTRY_AUTH_FILE='/root/.docker/config.json' PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
+#     /bin/wall-e --output /tmp/koffer/operators/custom-redhat-operator-index-manifests --operator-file ./custom-offline-operator-list --authfile /root/.docker/config.json --registry-catalog localhost:5000 --registry-olm localhost:5000 --catalog-version 1.0.0 --icsp-scope=namespace --opm-path /usr/bin/opm --run-dir /root/koffer/collector/roles/wall-e/tasks/
+
+- name: '{{ plugin.name }} | command:podman_run | Start operator-index container(s)'
+  command:
+    cmd: >
+      podman run -d --replace --name catalog-index-{{ item.key }} -p 5005{{ item.value.id }}:50051 {{ item.value.image }}
+  with_dict:
+    - "{{ operators }}"
+  when:
+    - item.key is defined and item.key != ""
+    - item.key is defined and item.key != "null"
+    - item.value.image is defined and item.value.image != ""
+    - item.value.list is defined and item.value.id|int > 0
+
+# name: '{{ ansible_name_module }} | command | wait for all containers to be created'
+# wait_for:
+#   timeout: "{{ (operator_registres_to_mirror | length) * 3 }}"
+
+# name: '{{ ansible_name_module }} | Create Package index '
+# shell: >
+#   grpcurl -plaintext localhost:53{{ item.value.id }} api.Registry/ListPackages > {{ dir.bundle }}/packages-{{ item.key }}.out
+# with_dict:
+#   - "{{ operators }}"
+# when:
+#   - item.key is defined and item.key != ""
+#   - item.value.id is defined and item.value.container_port|int > 0
+# register: pkg_idx_out
+
+# name: '{{ ansible_name_module }} | opm:index:prune | prune package index '
+# block:
+#   - name: '{{ ansible_name_module }} | opm:index:prune | update operator index image '
+#     command: >
+#       opm index prune \
+#       -f {{ item.value.source }} \
+#       -p {{ item.value.operator_pull_list }} \
+#       -t localhost:5000/{{ item.key }}/{{ item.value.source.split('/')[2] }}
+#     with_dict:
+#       - "{{ operator_registres_to_mirror }}"
+#     when:
+#       - item.key is defined and item.key != ""
+#       - item.value.source is defined and item.value.source != ""
+#       - item.value.operator_pull_list is defined and item.value.operator_pull_list != ""
+
+#   - name: '{{ ansible_name_module }} | podman:push | push updated operator index image'
+#     command: >
+#       podman push --tls-verify=false localhost:5000/{{ item.key }}/{{ item.value.source.split('/')[2] }}
+#     with_dict:
+#       - "{{ operator_registres_to_mirror }}"
+#     when:
+#       - item.key is defined and item.key != ""
+#       - item.value.source is defined and item.value.source != ""
+#       - item.value.operator_pull_list is defined and item.value.operator_pull_list != ""
+
+# name: '{{ ansible_name_module }} | skopeo:copy | create operator index image bundle '
+# block:
+#   - name: '{{ ansible_name_module }} | podman:tag | tag operator index image'
+#     command: >
+#       podman tag {{ item.value.source }} \
+#       localhost:5000/{{ item.key }}/{{ item.value.source.split('/')[2] }}
+#     with_dict:
+#       - "{{ operator_registres_to_mirror }}"
+#     when:
+#       - item.key is defined and item.key != ""
+#       - item.value.source is defined and item.value.source != ""
+#       - not item.value.operator_pull_list is defined or (item.value.operator_pull_list is defined and item.value.operator_pull_list == "")
+
+#   - name: '{{ ansible_name_module }} | podman:push | push operator index bundle'
+#     command: >
+#       podman push --tls-verify=false localhost:5000/{{ item.key }}/{{ item.value.source.split('/')[2] }}
+#     with_dict:
+#       - "{{ operator_registres_to_mirror }}"
+#     when:
+#       - item.key is defined and item.key != ""
+#       - item.value.source is defined and item.value.source != ""
+#       - not item.value.operator_pull_list is defined or (item.value.operator_pull_list is defined and item.value.operator_pull_list == "")
+
+# name: '{{ ansible_name_module }} | Mirror operator catalog | local registry '
+# block:
+#   - name: '{{ ansible_name_module }} | Mirror operator catalog | login to registries'
+#     command: podman login {{ item.value.source }}
+#     with_dict:
+#       - "{{ operator_registres_to_mirror }}"
+#     when:
+#       - item.key is defined and item.key != ""
+#       - item.value.source is defined and item.value.source != ""
+#     register: registries_login
+
+#   - name: '{{ ansible_name_module }} | Mirror operator catalog | oc:adm:catalog:mirror'
+#     command: >
+#       oc adm catalog mirror localhost:5000/{{ item.key }}/{{ item.value.source.split('/')[2] }} \
+#       localhost:5000/{{ item.key }} \
+#       -a {{ ocp_registry_pull_secret_file }} \
+#        --filter-by-os="linux/amd64" \
+#        --insecure
+#     with_dict:
+#       - "{{ operator_registres_to_mirror }}"
+#     when:
+#       - item.key is defined and item.key != ""
+#       - item.value.source is defined and item.value.source != ""
+#     register: catalog_mirrored
+
+# name: '{{ ansible_name_module }} | archive:xz | create operator image bundle '
+# become: yes
+# command: > 
+#   tar -c --use-compress-program='pigz -9' -v \
+#   -f {{ dir_bundle_location }}/operators-bundle.tar.xz \
+#    {{ registry_container_dir }}/ 
+# args:
+#   creates: "{{ dir_bundle_location }}/operators-bundle.tar.xz"
+#   warn: false
+#   chdir: "{{ registry_container_dir }}/"
+
+#post_tasks:
+# name: '{{ ansible_name_module }} | podman:stop | Stop operator-collector containers '
+# command: podman stop operator_collector_{{ item.key }} 
+# with_dict:
+#   - "{{ operator_registres_to_mirror }}"
+# when:
+#   - item.key is defined and item.key != ""
+#   - item.value.source is defined and item.value.source != ""
+#   - item.value.container_port is defined and item.value.container_port|int > 0
+
+# name: '{{ ansible_name_module }} | podman:rm | Remove operator-index container '
+# command: podman rm -f operator_collector_{{ item.key }} 
+# with_dict:
+#   - "{{ operator_registres_to_mirror }}"
+# when:
+#   - item.key is defined and item.key != ""
+#   - item.value.source is defined and item.value.source != ""
+#   - item.value.container_port is defined and item.value.container_port|int > 0
+
+# name: '{{ ansible_name_module }} | podman:stop | Stop mirror-registry '
+# command: podman stop {{ registry_container_name | d('mirror-registry') }} 
+
+# name: '{{ ansible_name_module }} | podman:rm | Remove mirror-registry '
+# command: podman rm -f {{ registry_container_name | d('mirror-registry') }} 

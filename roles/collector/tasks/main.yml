@@ -1,0 +1,7 @@
+---
+# include_tasks: tree.yml            # Create required directory tree
+# include_tasks: dependencies.yml    # Pull OpenShift oc
+- include_tasks: wall-e.yml          # Download & Push Images with wall-e opm python wrapper
+# include_tasks: catalog.yml         # Build custom catalog image and write imageContentSourcePolicy, mirror.list, mapping.txt
+# include_tasks: bundle.yml          # Bundle artifacts into CloudCtl compliant archive for manual carry
+# when: bundle

@@ -1,0 +1,17 @@
+---
+- name: '{{ plugin.name }} | file:[absent,directory] | Prepare staging directory'
+  file:
+    path: '{{ dir.tmp }}/operators/custom-operator-manifests'
+    state: absent
+
+- name: '{{ plugin.name }} | file:directory | Create Artifact Bundle Directory Tree' 
+  file:
+    path: '{{ item }}'
+    state: directory
+    mode: '0744'
+    recurse: no
+  with_items: 
+    - '{{ dir.tmp }}'
+    - '{{ dir.mirror }}'
+    - '{{ dir.platform }}'
+    - '{{ dir.tmp }}/operators/custom-operator-manifests'

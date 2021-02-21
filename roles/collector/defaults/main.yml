@@ -1,0 +1,21 @@
+---
+#koffer:
+#  mirror: "{{   lookup('env', 'MIRROR')   | default('false') }}"
+#  bundle: "{{   lookup('env', 'BUNDLE')   | default('false') }}"
+#  purge: "{{    lookup('env', 'OMNIBUS')  | default('true') }}"
+#  manifest: "{{ lookup('env', 'MANIFEST') | default('true') }}"
+#
+#catalog:
+#  source: "{{    lookup('env', 'CATALOG_SOURCE')      | default('registry.redhat.io') }}"
+#  dest: "{{      lookup('env', 'REGISTRY')            | default('localhost:5000', true) }}"
+#  redhat: "{{    lookup('env', 'REDHAT_OPERATORS')    | default('/redhat/redhat-operator-index:v4.7', true) }}"
+#  certified: "{{ lookup('env', 'CERTIFIED_OPERATORS') | default('/redhat/certified-operator-index:v4.7', true) }}"
+#  market: "{{    lookup('env', 'MARKET_OPERATORS')    | default('registry.redhat.io/redhat/redhat-marketplace-index:v4.7', true) }}"
+#  community: "{{ lookup('env', 'COMMUNITY_OPERATORS') | default('registry.redhat.io/redhat/community-operator-index:latest'', true) }}"
+#  release: "{{   lookup('env', 'VERSION')             | default('latest') }}"
+#
+#operators:
+#  redhat: "3scale-operator,apicast-operator,amq-streams,businessautomation-operator,cluster-kube-descheduler-operator,cluster-logging,clusterresourceoverride,codeready-workspaces,compliance-operator,container-security-operator,elasticsearch-operator,file-integrity-operator,jaeger-product,kiali-ossm,kubevirt-hyperconverged,local-storage-operator,metering-ocp,nfd,ocs-operator,ptp-operator,rhsso-operator,serverless-operator,servicemeshoperator,sriov-network-operator"
+#  certified: "anchore-engine,elasticsearch-eck-operator-certified,falco-certified,gitlab-operator,gitlab-runner-operator,gpu-operator-certified,nginx-ingress-operator,node-red-operator-certified,openshiftartifactoryha-operator,openshiftpipeline-operator,openshiftxray-operator,prisma-cloud-compute-console-operator.v2.0.1,redhat-marketplace-operator,rocketchat-operator-certified,splunk-certified"
+#  community: "group-sync-operator,keycloak-operator,koku-metrics-operator,konveyor-forklift-operator,konveyor-operator,namespace-configuration-operator,prisma-cloud-compute-console-operator,prometheus,prometheus-exporter-operator,splunk"
+#  market: "null"
