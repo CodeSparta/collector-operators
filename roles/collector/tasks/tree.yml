@@ -4,7 +4,7 @@
     path: '{{ dir.tmp }}/operators/custom-operator-manifests'
     state: absent
 
-- name: '{{ plugin.name }} | file:directory | Create Artifact Bundle Directory Tree' 
+- name: '{{ plugin.name }} | file:directory | Create Koffer Directory Tree' 
   file:
     path: '{{ item }}'
     state: directory
@@ -14,4 +14,12 @@
     - '{{ dir.tmp }}'
     - '{{ dir.mirror }}'
     - '{{ dir.platform }}'
-    - '{{ dir.tmp }}/operators/custom-operator-manifests'
+
+- name: '{{ plugin.name }} | file:directory | Create Koffer Artifact Staging Directories' 
+  file:
+    path: '{{ dir.tmp }}/{{ item.key }}-catalog-index-manifests'
+    state: directory
+    mode: '0744'
+    recurse: no
+  with_dict:
+    - "{{ operators }}"

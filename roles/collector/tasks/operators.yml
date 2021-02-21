@@ -23,7 +23,6 @@
   when:
     - item.value.list is defined and item.value.list != "null" and item.value.list != ""
     - item.value.image is defined and item.value.image != ""
-    - koffer.mirror or koffer.bundle
 
 - name: '{{ plugin.name }} | command:podman_run | Start operator-index container(s)'
   containers.podman.podman_container:
