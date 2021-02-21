@@ -9,7 +9,7 @@
 - name: '{{ plugin.name }} | command:podman_run | Start operator-index container(s)'
   command:
     cmd: >
-      podman run -d --replace --name catalog-index-{{ item.key }} -p 5005{{ item.value.id }}:50051 {{ item.value.image }}
+      podman run -d --replace --name catalog-index-{{ item.key }} -p 127.0.0.1:5005{{ item.value.id }}:50051 {{ item.value.image }}
   with_dict:
     - "{{ operators }}"
   when:
@@ -18,19 +18,19 @@
     - item.value.image is defined and item.value.image != ""
     - item.value.list is defined and item.value.id|int > 0
 
-# name: '{{ ansible_name_module }} | command | wait for all containers to be created'
-# wait_for:
-#   timeout: "{{ (operator_registres_to_mirror | length) * 3 }}"
+- name: '{{ ansible_name_module }} | command | wait for all containers to be created'
+  wait_for:
+    timeout: "{{ (operators | length) * 2 }}"
 
-# name: '{{ ansible_name_module }} | Create Package index '
-# shell: >
-#   grpcurl -plaintext localhost:53{{ item.value.id }} api.Registry/ListPackages > {{ dir.bundle }}/packages-{{ item.key }}.out
-# with_dict:
-#   - "{{ operators }}"
-# when:
-#   - item.key is defined and item.key != ""
-#   - item.value.id is defined and item.value.container_port|int > 0
-# register: pkg_idx_out
+- name: '{{ ansible_name_module }} | Create Package index '
+  shell: >
+    grpcurl -plaintext 127.0.0.1:5005{{ item.value.id }} api.Registry/ListPackages > {{ dir.bundle }}/packages-{{ item.key }}.out
+  with_dict:
+    - "{{ operators }}"
+  when:
+    - item.key is defined and item.key != ""
+    - item.value.id is defined and item.value.id|int > 0
+  register: pkg_idx_out
 
 # name: '{{ ansible_name_module }} | opm:index:prune | prune package index '
 # block:
