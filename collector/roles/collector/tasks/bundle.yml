@@ -18,7 +18,7 @@
     cmd: |
       rm -rf {{ dir.bundle }}/koffer-bundle.{{ koffer.plugin }}-*.tar*
 
-- name: '{{ plugin.name }} | command:tar.cvf.pigz9 | Build Artifact Bundle'
+- name: '{{ plugin.name }} | command:tar.cvf | Build Artifact Bundle'
   shell:
     cmd: |
       tar -cSvf {{ dir.bundle }}/koffer-bundle.{{ koffer.plugin }}-{{ koffer.date }}.tar --directory /root platform

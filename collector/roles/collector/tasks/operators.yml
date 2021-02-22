@@ -1,8 +1,7 @@
 ---
 - name: '{{ plugin.name }} | command:opm.index.prune | update operator index image '
-  shell:
+  command:
     cmd: |
-      PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
       opm index prune \
         --packages {{ item.value.list }} \
         --from-index {{ item.value.image }} \
@@ -14,9 +13,8 @@
     - item.value.image is defined and item.value.image != ""
 
 - name: '{{ plugin.name }} | command:podman:push | push updated operator index image'
-  shell:
+  command:
     cmd: |
-      PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
       podman push --tls-verify=false {{ catalog.dest }}/{{ item.value.image.split('/')[1] }}/{{ item.value.image.split('/')[2] }}
   with_dict:
     - "{{ operators }}"
@@ -24,7 +22,7 @@
     - item.value.list is defined and item.value.list != "null" and item.value.list != ""
     - item.value.image is defined and item.value.image != ""
 
-- name: '{{ plugin.name }} | command:podman_run | Start operator-index container(s)'
+- name: '{{ plugin.name }} | podman_run:state.started | Start operator-index container(s)'
   containers.podman.podman_container:
     name: "{{ item.key }}-catalog"
     image: "{{ catalog.dest }}/{{ item.value.image.split('/')[1] }}/{{ item.value.image.split('/')[2] }}"
@@ -48,7 +46,6 @@
 - name: '{{ plugin.name }} | shell:grpcurl | Query catalog api.Registry/ListPackages to build index lists'
   shell:
     cmd: |
-      PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
       grpcurl -plaintext localhost:5005{{ item.value.id }} api.Registry/ListPackages | jq .name -r | tee {{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests/{{ item.key }}-catalog-operators.list;
   with_dict:
     - "{{ operators }}"
@@ -59,7 +56,8 @@
     - item.value.id is defined and item.value.id|int > 0
   register: pkg_idx_out
 
-- debug:
+- name: '{{ plugin.name }} | debug:msg.channel.namespace | Build Manifests with python opm wrapper | CREDIT: @arvin-a https://git.io/Jt9zz'
+  debug:
     msg: 
     - "channel {{ ( item.value.image | regex_replace(':', '/')).split('/')[2] }}"
     - "namespace {{ ( item.value.image | regex_replace(':', '/')).split('/')[1] }}"
@@ -69,7 +67,6 @@
 - name: '{{ plugin.name }} | shell:wall-e | Build Manifests with wall-e opm wrapper | CREDIT: @arvin-a https://git.io/Jt9zz'
   shell:
     cmd: |
-      PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
       wall-e \
         --opm-path=/bin/opm \
         --icsp-scope=namespace \
@@ -92,9 +89,8 @@
     - item.value.image is defined and item.value.image != ""
 
 - name: '{{ plugin.name }} | shell:cmd | Build Image Mirror Manifests'
-  shell:
+  command:
     cmd: |
-      PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
       oc adm catalog mirror --insecure --manifests-only --to-manifests='{{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests' --icsp-scope='registry' --index-filter-by-os='.*' {{ catalog.dest }}/{{ item.value.image.split('/')[1] }}/{{ item.value.image.split('/')[2] }} {{ catalog.dest }}
   args:
     chdir: '{{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests'
@@ -105,9 +101,8 @@
     - item.value.image is defined and item.value.image != ""
 
 - name: '{{ plugin.name }} | command:oc.adm.catalog.mirror | Mirror operator catalog(s) | filter-by-os="linux/amd64"'
-  shell:
+  command:
     cmd: |
-      PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
       oc adm catalog mirror --insecure --filter-by-os='linux/amd64' {{ catalog.dest }}/{{ item.value.image.split('/')[1] }}/{{ item.value.image.split('/')[2] }} {{ catalog.dest}}
   with_dict:
     - "{{ operators }}"
