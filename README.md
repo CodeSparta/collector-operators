@@ -65,5 +65,5 @@ sudo podman run -it --rm --pull always \
   - [ ] Automate bundle upload & image availability via [ShipperD Operator](https://github.com/ShipperD/shipperd-operator)
 
 ## References
-  - [CodeCtl.io(https://codectl.io)
+  - [CodeCtl.io](https://codectl.io)
   - [Supported Offline Operators List](https://access.redhat.com/articles/4740011)
