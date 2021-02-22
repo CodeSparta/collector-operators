@@ -73,3 +73,4 @@ sudo podman run -it --rm --pull always \
   - [@arvin-a](https://github.com/arvin-a)
   - [@day0hero](https://github.com/day0hero)
   - [@audiohacked](https://github.com/audiohacked)
+  - [@harshil-redhat](https://github.com/harshil-redhat)
