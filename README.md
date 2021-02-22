@@ -6,12 +6,12 @@ for deploying OpenShift Operator Hub and supported disconnected operators.
 Primarily built to enable airgaped environments in a standard "registry < to > mirror"
 workflow model conventional to more typical connected local mirror techniques.
 
-Features:
+### Features:
   - Low side injestion direct to "pre-hydrated" registry stateful path
   - High side sha256 verification of artifacts bundle before standup
   - High side artifacts served via generic docker registry container
 
-Capabilities:
+### Capabilities:
   - Build custom operator catalog index images
   - Generate imageContentSourcePolicy yaml definitions
   - Generate raw list of operator set image dependencies (mirror.list)
@@ -19,8 +19,9 @@ Capabilities:
   - Mirror images direct to accessible docker v2 compliant registry
   - CloudCtl ready bundle of artifacts
 
-## Instructions:
-### 0. Local run requirements
+## Getting Started:
+
+### 1. Local run requirements
   - RHEL8, Fedora 33+, or CoreOS 3.6.8+
   - Packages:
     - podman 1.9+
@@ -28,7 +29,7 @@ Capabilities:
   - A minimum of 32GB free storage
   - sudo privileges for nested container build support
 
-### 1. Run Koffer Engine
+### 2. Run Koffer Engine with [Remote Config](https://git.io/JtUHP)
 ```
 mkdir ${HOME}/bundle; \
 sudo podman run -it --rm --pull always \
@@ -38,15 +39,19 @@ sudo podman run -it --rm --pull always \
   quay.io/cloudctl/koffer:v00.21.0208-extra bundle \
     --config https://git.io/JtUHP
 ```
+
 ### 2. Check Bundle
 ```
- du -sh ${HOME}/koffer-bundle.operators-*.tar
+ du -sh ${HOME}/bundle/koffer-bundle.operators-*.tar;
 ```
 
 ###4. Unpack the bundle
   - Copy the bundle to the restricted side deployment node
+  - NOTE: sha256sum checking may take a while for large bundles
 ```
- sudo tar -xvf ~/bundle/koffer-bundle.openshift-*.tar -C /root
+ cd ${HOME}/bundle;
+ sha256sum --check;
+ sudo tar -xvf ${HOME}/bundle/koffer-bundle.openshift-*.tar -C /root;
 ```
 
 ###5. The operator content is now in place to serve via [CloudCtl - Trusted Platform Delivery Kit](https://github.com/CloudCtl/cloudctl)
