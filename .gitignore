@@ -1,1 +1,3 @@
 *.tar.gz
+index.Dockerfile*
+index_build_tmp*

@@ -1,0 +1,7 @@
+---
+- include_tasks: tree.yml            # Create required directory tree
+- include_tasks: tmpl.yml            # Template configs
+- include_tasks: dependencies.yml    # Pull OpenShift oc
+- include_tasks: operators.yml       # Build & Push Catalog Index Images && Write Manivests && Mirror Images with wall-e opm python wrapper
+- include_tasks: bundle.yml          # Bundle artifacts into CloudCtl compliant archive for manual carry
+  when: koffer.bundle
