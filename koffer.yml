@@ -1,5 +1,5 @@
 koffer:
-  silent: true
+  silent: false
   plugins:
     collector-operators:
       version: master
