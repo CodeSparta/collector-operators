@@ -3,7 +3,7 @@
 Koffer Collector OLM Operators Plugin leverages the Koffer Engine runtime container
 to enable streamlined low side enumeration and capture of all required artifacts
 for deploying OpenShift Operator Hub and supported disconnected operators.
-Primarily built to enable airgaped environments in a standard "registry < to > mirror"
+Primarily built to enable airgaped environments in a standard `registry < to > mirror`
 workflow model conventional to more typical connected local mirror techniques.
 
 ### Features:
@@ -29,15 +29,15 @@ workflow model conventional to more typical connected local mirror techniques.
   - A minimum of 32GB free storage
   - sudo privileges for nested container build support
 
-### 2. Run Koffer Engine with [Remote Config](https://git.io/JtUHP)
+### 2. Run Koffer Engine with [Remote Config](https://git.io/JtHzF)
 ```
 mkdir ${HOME}/bundle; \
 sudo podman run -it --rm --pull always \
     --privileged --device /dev/fuse \
     --volume ${HOME}/bundle:/root/bundle:z \
     --volume ${HOME}/.docker:/root/.docker:z \
-  quay.io/cloudctl/koffer:v00.21.0208-extra bundle \
-    --config https://git.io/JtUHP
+  quay.io/cloudctl/koffer:v00.21.0221-extra bundle \
+    --config https://git.io/JtHzF
 ```
 
 ### 3. Check Bundle
@@ -54,7 +54,7 @@ sudo podman run -it --rm --pull always \
  sudo tar -xvf ${HOME}/bundle/koffer-bundle.openshift-*.tar -C /root;
 ```
 
-### 5. The operator content is now in place to serve via [CloudCtl - Trusted Platform Delivery Kit](https://github.com/CloudCtl/cloudctl)
+### 5. The bundle is ready to serve via [CloudCtl - Trusted Platform Delivery Kit](https://github.com/CloudCtl/cloudctl)
 
 ## Roadmap
   - [x] Adopt OPM utility
@@ -68,6 +68,10 @@ sudo podman run -it --rm --pull always \
   - [CodeCtl.io](https://codectl.io)
   - [Supported Offline Operators List](https://access.redhat.com/articles/4740011)
 
-## Credit:
+## Special Credit:
   - [@usrbinkat](https://github.com/usrbinkat)
+  - [@hultzj](https://github.com/hultzj)
+  - [@chrisruffalo](https://github.com/chrisruffalo)
   - [@arvin-a](https://github.com/arvin-a)
+  - [@day0hero](https://github.com/day0hero)
+  - [@]udiohacked(https://github.com/audiohacked)
