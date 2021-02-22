@@ -4,5 +4,8 @@
   vars:
     module: "Collector Operators"
     ansible_name_module: "Red Hat Consulting | CodeSparta | Koffer | {{ module }}"
+  environment:
+    PATH: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
   roles:
     - collector
