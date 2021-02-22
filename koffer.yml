@@ -2,7 +2,7 @@ koffer:
   silent: false
   plugins:
     collector-operators:
-      version: master
+      version: v00.21.0221
       organization: codesparta
       service: github.com
       env:
