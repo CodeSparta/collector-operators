@@ -1,5 +1,4 @@
 # [Koffer](https://github.com/containercraft/Koffer) Collector | Operators
-## About
 Koffer Collector OLM Operators Plugin leverages the Koffer Engine runtime container
 to enable streamlined low side enumeration and capture of all required artifacts
 for deploying OpenShift Operator Hub and supported disconnected operators.
