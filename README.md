@@ -34,7 +34,6 @@ mkdir ${HOME}/bundle; \
 sudo podman run -it --rm --pull always \
     --privileged --device /dev/fuse \
     --volume ${HOME}/bundle:/root/bundle:z \
-    --volume ${HOME}/.docker:/root/.docker:z \
   quay.io/cloudctl/koffer:v00.21.0221-extra bundle \
     --config https://git.io/JtHzF
 ```
