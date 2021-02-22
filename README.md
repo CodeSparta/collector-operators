@@ -40,21 +40,21 @@ sudo podman run -it --rm --pull always \
     --config https://git.io/JtUHP
 ```
 
-### 2. Check Bundle
+### 3. Check Bundle
 ```
  du -sh ${HOME}/bundle/koffer-bundle.operators-*.tar;
 ```
 
-###4. Unpack the bundle
+### 4. Unpack the bundle
   - Copy the bundle to the restricted side deployment node
-  - NOTE: sha256sum checking may take a while for large bundles
+  - NOTE: sha256sum checking requires correct paths & may take a while for large bundles
 ```
  cd ${HOME}/bundle;
- sha256sum --check;
+ echo "$(cat koffer-bundle.operators-*.tar.sha256)" | sha256sum --check --status;
  sudo tar -xvf ${HOME}/bundle/koffer-bundle.openshift-*.tar -C /root;
 ```
 
-###5. The operator content is now in place to serve via [CloudCtl - Trusted Platform Delivery Kit](https://github.com/CloudCtl/cloudctl)
+### 5. The operator content is now in place to serve via [CloudCtl - Trusted Platform Delivery Kit](https://github.com/CloudCtl/cloudctl)
 
 ## Roadmap
   - [x] Adopt OPM utility
@@ -67,3 +67,7 @@ sudo podman run -it --rm --pull always \
 ## References
   - [CodeCtl.io](https://codectl.io)
   - [Supported Offline Operators List](https://access.redhat.com/articles/4740011)
+
+## Credit:
+  - [@usrbinkat](https://github.com/usrbinkat)
+  - [@arvin-a](https://github.com/arvin-a)
