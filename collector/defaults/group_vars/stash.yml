@@ -1,7 +1,0 @@
-# ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
-# ansible_python_interpreter: /usr/bin/python3
-# opm_index_image: '{{ index_image | default(default_index_image) }}'
-# target_registry: '{{ mirror_registry | default(default_registry) }}'
-# index_tag: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace('^.*:','') }}"
-# index_name: "{{ custom_index_image | default(default_custom_index_image) | basename | regex_replace(':.*$','') }}"
-# index_image_out: '{{ target_registry }}/redhat/custom-{{ index_name }}:{{ index_tag }}'
