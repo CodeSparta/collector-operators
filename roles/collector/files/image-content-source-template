@@ -1,6 +1,6 @@
 apiVersion: operator.openshift.io/v1alpha1
 kind: ImageContentSourcePolicy
 metadata:
-  name: {{ item.key }}-image-content-source
+  name: image-content-source-policy
 spec:
   repositoryDigestMirrors: []

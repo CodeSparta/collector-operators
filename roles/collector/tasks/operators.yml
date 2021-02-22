@@ -49,7 +49,7 @@
   shell:
     cmd: |
       PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
-      grpcurl -plaintext localhost:5005{{ item.value.id }} api.Registry/ListPackages | jq .name -r | tee {{ dir.tmp }}/{{ item.key }}-catalog-index-manifests/{{ item.key }}-catalog-operators.list;
+      grpcurl -plaintext localhost:5005{{ item.value.id }} api.Registry/ListPackages | jq .name -r | tee {{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests/{{ item.key }}-catalog-operators.list;
   with_dict:
     - "{{ operators }}"
   when:
@@ -77,14 +77,14 @@
         --catalog-version=1.0.0 \
         --registry-olm={{ catalog.dest }} \
         --registry-catalog={{ catalog.dest }} \
-        --authfile={{ default.docker_config }} \
+        --authfile={{ koffer.docker_config }} \
         --operator-channel={{ item.value.image.split(':')[1] }} \
-        --operator-file="{{ dir.tmp }}/{{ item.key }}-catalog-index-manifests/{{ item.key }}-catalog-operators.list" \
-        --output={{ dir.tmp }}/{{ item.key }}-catalog-index-manifests \
+        --output={{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests \
+        --operator-file="{{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests/{{ item.key }}-catalog-operators.list" \
         --operator-catalog-image-url={{ catalog.dest }}/{{ ( item.value.image | regex_replace(':', '/')).split('/')[1] }}/{{ ( item.value.image | regex_replace(':', '/')).split('/')[2] }} \
         --mirror-images={{ koffer.mirror }}
   args:
-    chdir: '/tmp'
+    chdir: '{{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests'
   with_dict:
     - "{{ operators }}"
   when:
@@ -95,9 +95,9 @@
   shell:
     cmd: |
       PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
-      oc adm catalog mirror --insecure --manifests-only --to-manifests='{{ dir.tmp }}/{{ item.key }}-catalog-index-manifests' --icsp-scope='registry' --index-filter-by-os='.*' {{ catalog.dest }}/{{ item.value.image.split('/')[1] }}/{{ item.value.image.split('/')[2] }} {{ catalog.dest }}
+      oc adm catalog mirror --insecure --manifests-only --to-manifests='{{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests' --icsp-scope='registry' --index-filter-by-os='.*' {{ catalog.dest }}/{{ item.value.image.split('/')[1] }}/{{ item.value.image.split('/')[2] }} {{ catalog.dest }}
   args:
-    chdir: '{{ dir.tmp }}/{{ item.key }}-catalog-index-manifests'
+    chdir: '{{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests'
   with_dict:
     - "{{ operators }}"
   when:
