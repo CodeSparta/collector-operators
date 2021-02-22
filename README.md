@@ -52,12 +52,12 @@ sudo podman run -it --rm --pull always \
 ###5. The operator content is now in place to serve via [CloudCtl - Trusted Platform Delivery Kit](https://github.com/CloudCtl/cloudctl)
 
 ## Roadmap
-  [x] Adopt OPM utility
-  [x] Adopt koffer.yml declarative artifact gather
-  [x] Support redhat, marketplace, certified, and community operator catalogs
-  [ ] Publish as part of Ansible Galaxy CodeSparta Collection
-  [ ] Rewrite python OPM wrapper as ansible module with deprication plan
-  [ ] Automate bundle upload & image availability via [ShipperD Operator](https://github.com/ShipperD/shipperd-operator)
+  - [x] Adopt OPM utility
+  - [x] Adopt koffer.yml declarative artifact gather
+  - [x] Support redhat, marketplace, certified, and community operator catalogs
+  - [ ] Publish as part of Ansible Galaxy CodeSparta Collection
+  - [ ] Rewrite python OPM wrapper as ansible module with deprication plan
+  - [ ] Automate bundle upload & image availability via [ShipperD Operator](https://github.com/ShipperD/shipperd-operator)
 
 ## References
   - [CodeCtl.io(https://codectl.io)
