@@ -1,0 +1,12 @@
+galaxy_info:
+  author: CodeSparta | Powered by Red Hat Consulting & Developed in partnership with the Sparta FOSS Community
+  description: Kubernetes Operator Dependency & Artifact Gathering for Disconnected or Restricted Network Deployment.
+  company: Red Hat Consulting + Open Source Community
+  license: GPL-3.0-only
+  min_ansible_version: 2.1
+  platforms:
+  - name: Koffer Container
+    versions:
+    - v00.21.0220
+  galaxy_tags: []
+dependencies: []

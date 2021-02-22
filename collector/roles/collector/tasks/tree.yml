@@ -1,0 +1,28 @@
+---
+- name: '{{ plugin.name }} | file:[absent,directory] | Prepare staging directory'
+  file:
+    path: '{{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests'
+    state: absent
+  with_dict:
+    - "{{ operators }}"
+
+
+- name: '{{ plugin.name }} | file:directory | Create Koffer Directory Tree' 
+  file:
+    path: '{{ item }}'
+    state: directory
+    mode: '0744'
+    recurse: no
+  with_items: 
+    - '{{ dir.tmp }}'
+    - '{{ dir.mirror }}'
+    - '{{ dir.platform }}'
+
+- name: '{{ plugin.name }} | file:directory | Create Koffer Artifact Staging Directories' 
+  file:
+    path: '{{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests'
+    state: directory
+    mode: '0744'
+    recurse: no
+  with_dict:
+    - "{{ operators }}"

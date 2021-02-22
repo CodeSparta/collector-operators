@@ -1,7 +1,0 @@
----
-- name: '{{ ansible_name_module }} | role:include_tasks | wall-e.yml' 
-  include_tasks: wall-e.yml
-  when: not bundle_all
-- name: '{{ ansible_name_module }} | role:include_tasks | wall-e.yml' 
-  include_tasks: wall-e-all.yml
-  when: bundle_all

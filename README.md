@@ -1,38 +1,35 @@
-# [Koffer](https://github.com/containercraft/Koffer) Collector | Operator Artifacts
-This automation provides a unified and standardized method of enumerating
-operator dependencies and either mirroring direct to an accisible docker v2
-compliant registry service, or producing a tarball of all artifacts that is
-cloudctl compliant for use across an airgap.
-### [Supported Offline Operators List](https://access.redhat.com/articles/4740011)
-
+# [Koffer](https://github.com/containercraft/Koffer) Collector | Operators
 ## About
-Koffer Collector Operator Hub uses the Koffer Engine runtime container to enable
-streamlined low side enumeration and capture of all required artifacts for deploying
-OpenShift Operator Hub. Primarily built to enable airgaped environments in a standard
-"registry < to > mirror" workflow model conventional to more typical connected
-local mirror techniques.
+Koffer Collector OLM Operators Plugin leverages the Koffer Engine runtime container
+to enable streamlined low side enumeration and capture of all required artifacts
+for deploying OpenShift Operator Hub and supported disconnected operators.
+Primarily built to enable airgaped environments in a standard "registry < to > mirror"
+workflow model conventional to more typical connected local mirror techniques.
 
-Features:
+### Features:
   - Low side injestion direct to "pre-hydrated" registry stateful path
   - High side sha256 verification of artifacts bundle before standup
   - High side artifacts served via generic docker registry container
 
-Capabilities:
-  - Custom operator catalog index image
-  - imageContentSourcePolicy yaml definition
-  - mapping.txt
-  - mirror.list
-  - CloudCtl ready bundle of artifacts
+### Capabilities:
+  - Build custom operator catalog index images
+  - Generate imageContentSourcePolicy yaml definitions
+  - Generate raw list of operator set image dependencies (mirror.list)
+  - Build offline carry bundle for quarantine / airgap travel
   - Mirror images direct to accessible docker v2 compliant registry
+  - CloudCtl ready bundle of artifacts
 
-## Instructions:
-### 0. Prereqs
+## Getting Started:
+
+### 1. Local run requirements
   - RHEL8, Fedora 33+, or CoreOS 3.6.8+
   - Packages:
-    - podman
+    - podman 1.9+
     - fuse-overlayfs
+  - A minimum of 32GB free storage
+  - sudo privileges for nested container build support
 
-### 1. Run Koffer Engine
+### 2. Run Koffer Engine with [Remote Config](https://git.io/JtUHP)
 ```
 mkdir ${HOME}/bundle; \
 sudo podman run -it --rm --pull always \
@@ -42,63 +39,35 @@ sudo podman run -it --rm --pull always \
   quay.io/cloudctl/koffer:v00.21.0208-extra bundle \
     --config https://git.io/JtUHP
 ```
-### 2. Review Bundle(s)
+
+### 3. Check Bundle
 ```
- du -sh ${HOME}/*
+ du -sh ${HOME}/bundle/koffer-bundle.operators-*.tar;
 ```
 
-## Instructions For custom operator import:
-### 0. Prereqs
-  - RHEL8, Fedora 33+, or CoreOS 3.6.8+
-  - Packages:
-    - podman
-    - fuse-overlayfs
-
-### 1. Create a custom list of operators
+### 4. Unpack the bundle
+  - Copy the bundle to the restricted side deployment node
+  - NOTE: sha256sum checking requires correct paths & may take a while for large bundles
 ```
-echo "
-# Koffer Config
-# https://github.com/RedHatOfficial/Koffer
-koffer:
-
-  # Disable user prompt for registry authentication secret
-  silent: true
-  plugins:
-
-    # https://github.com/codeSparta/collector-operators
-    collector-operators:
-      env:
-        - name: "WALLE"
-          value: "true"
-        - name: "BUNDLE"
-          value: "true"
-        - name: "OPERATORS"
-          value: "kiali-ossm,ocs-operator,quay-operator,jaeger-product,rhsso-operator,cluster-logging,servicemeshoperator,compliance-operator,elasticsearch-operator"
-      organization: codesparta
-      service: github.com
-      version: master
-" > /tmp/koffer.yml
+ cd ${HOME}/bundle;
+ echo "$(cat koffer-bundle.operators-*.tar.sha256)" | sha256sum --check --status;
+ sudo tar -xvf ${HOME}/bundle/koffer-bundle.openshift-*.tar -C /root;
 ```
 
-### 2. Run the Bundle create on the same host the previous steps were executed on
+### 5. The operator content is now in place to serve via [CloudCtl - Trusted Platform Delivery Kit](https://github.com/CloudCtl/cloudctl)
 
-```
-mkdir ${HOME}/bundle; \
-sudo podman run -it --rm --pull always \
-    --privileged --device /dev/fuse \
-    --volume ${HOME}/bundle:/root/bundle:z \
-    --volume ${HOME}/.docker:/root/.docker:z \
-    --volume /tmp/koffer.yml:/root/.koffer/config.yml:z \
-  quay.io/cloudctl/koffer:extra bundle
-```
-### 3. Review Bundle(s)
-```
- du -sh ${HOME}/*
-```
+## Roadmap
+  - [x] Adopt OPM utility
+  - [x] Adopt koffer.yml declarative artifact gather
+  - [x] Support redhat, marketplace, certified, and community operator catalogs
+  - [ ] Publish as part of Ansible Galaxy CodeSparta Collection
+  - [ ] Rewrite python OPM wrapper as ansible module with deprication plan
+  - [ ] Automate bundle upload & image availability via [ShipperD Operator](https://github.com/ShipperD/shipperd-operator)
 
-###4. Unpack the bundle
+## References
+  - [CodeCtl.io](https://codectl.io)
+  - [Supported Offline Operators List](https://access.redhat.com/articles/4740011)
 
-- Copy the bundle to the offline registry node and run the tar command
-```
-tar -xvf ~/bundle/koffer-bundle.openshift-4.6.1.tar.xz -C /root
-```
+## Credit:
+  - [@usrbinkat](https://github.com/usrbinkat)
+  - [@arvin-a](https://github.com/arvin-a)

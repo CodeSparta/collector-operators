@@ -1,0 +1,115 @@
+---
+- name: '{{ plugin.name }} | command:opm.index.prune | update operator index image '
+  command:
+    cmd: |
+      opm index prune \
+        --packages {{ item.value.list }} \
+        --from-index {{ item.value.image }} \
+        --tag {{ catalog.dest }}/{{ item.value.image.split('/')[1] }}/{{ item.value.image.split('/')[2] }}
+  with_dict:
+    - "{{ operators }}"
+  when:
+    - item.value.list is defined and item.value.list != "null" and item.value.list != ""
+    - item.value.image is defined and item.value.image != ""
+
+- name: '{{ plugin.name }} | command:podman:push | push updated operator index image'
+  command:
+    cmd: |
+      podman push --tls-verify=false {{ catalog.dest }}/{{ item.value.image.split('/')[1] }}/{{ item.value.image.split('/')[2] }}
+  with_dict:
+    - "{{ operators }}"
+  when:
+    - item.value.list is defined and item.value.list != "null" and item.value.list != ""
+    - item.value.image is defined and item.value.image != ""
+
+- name: '{{ plugin.name }} | podman_run:state.started | Start operator-index container(s)'
+  containers.podman.podman_container:
+    name: "{{ item.key }}-catalog"
+    image: "{{ catalog.dest }}/{{ item.value.image.split('/')[1] }}/{{ item.value.image.split('/')[2] }}"
+    state: "started"
+    recreate: "true"
+    detach: yes
+    publish:
+      - "5005{{ item.value.id }}:50051"
+  with_dict:
+    - "{{ operators }}"
+  when:
+    - item.key is defined and item.key != ""
+    - item.value.list is defined and item.value.list != "null" and item.value.list != ""
+    - item.value.image is defined and item.value.image != ""
+    - item.value.id is defined and item.value.id|int > 0
+
+- name: '{{ plugin.name }} | wait_for:timeout | Pausing for {{ (operators | length) * 1 }} seconds while catalogs start'
+  wait_for:
+    timeout: "{{ (operators | length) * 2 }}"
+
+- name: '{{ plugin.name }} | shell:grpcurl | Query catalog api.Registry/ListPackages to build index lists'
+  shell:
+    cmd: |
+      grpcurl -plaintext localhost:5005{{ item.value.id }} api.Registry/ListPackages | jq .name -r | tee {{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests/{{ item.key }}-catalog-operators.list;
+  with_dict:
+    - "{{ operators }}"
+  when:
+    - item.key is defined and item.key != ""
+    - item.value.list is defined and item.value.list != "null" and item.value.list != ""
+    - item.value.image is defined and item.value.image != ""
+    - item.value.id is defined and item.value.id|int > 0
+  register: pkg_idx_out
+
+- name: '{{ plugin.name }} | debug:msg.channel.namespace | Build Manifests with python opm wrapper | CREDIT: @arvin-a https://git.io/Jt9zz'
+  debug:
+    msg: 
+    - "channel {{ ( item.value.image | regex_replace(':', '/')).split('/')[2] }}"
+    - "namespace {{ ( item.value.image | regex_replace(':', '/')).split('/')[1] }}"
+  with_dict:
+    - "{{ operators }}"
+
+- name: '{{ plugin.name }} | shell:wall-e | Build Manifests with wall-e opm wrapper | CREDIT: @arvin-a https://git.io/Jt9zz'
+  shell:
+    cmd: |
+      wall-e \
+        --opm-path=/bin/opm \
+        --icsp-scope=namespace \
+        --run-dir={{ dir.tmp }} \
+        --catalog-version=1.0.0 \
+        --registry-olm={{ catalog.dest }} \
+        --registry-catalog={{ catalog.dest }} \
+        --authfile={{ koffer.docker_config }} \
+        --operator-channel={{ item.value.image.split(':')[1] }} \
+        --output={{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests \
+        --operator-file="{{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests/{{ item.key }}-catalog-operators.list" \
+        --operator-catalog-image-url={{ catalog.dest }}/{{ ( item.value.image | regex_replace(':', '/')).split('/')[1] }}/{{ ( item.value.image | regex_replace(':', '/')).split('/')[2] }} \
+        --mirror-images={{ koffer.mirror }}
+  args:
+    chdir: '{{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests'
+  with_dict:
+    - "{{ operators }}"
+  when:
+    - item.value.list is defined and item.value.list != "null" and item.value.list != ""
+    - item.value.image is defined and item.value.image != ""
+
+- name: '{{ plugin.name }} | shell:cmd | Build Image Mirror Manifests'
+  command:
+    cmd: |
+      oc adm catalog mirror --insecure --manifests-only --to-manifests='{{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests' --icsp-scope='registry' --index-filter-by-os='.*' {{ catalog.dest }}/{{ item.value.image.split('/')[1] }}/{{ item.value.image.split('/')[2] }} {{ catalog.dest }}
+  args:
+    chdir: '{{ dir.tmp }}/manifests/{{ item.key }}-catalog-index-manifests'
+  with_dict:
+    - "{{ operators }}"
+  when:
+    - item.value.list is defined and item.value.list != "null" and item.value.list != ""
+    - item.value.image is defined and item.value.image != ""
+
+- name: '{{ plugin.name }} | command:oc.adm.catalog.mirror | Mirror operator catalog(s) | filter-by-os="linux/amd64"'
+  command:
+    cmd: |
+      oc adm catalog mirror --insecure --filter-by-os='linux/amd64' {{ catalog.dest }}/{{ item.value.image.split('/')[1] }}/{{ item.value.image.split('/')[2] }} {{ catalog.dest}}
+  with_dict:
+    - "{{ operators }}"
+  when:
+    - item.value.list is defined and item.value.list != "null" and item.value.list != ""
+    - item.value.image is defined and item.value.image != ""
+    - item.key is defined and item.key != ""
+    - koffer.mirror or koffer.bundle
+    - not koffer.walle
+  register: catalog_mirrored

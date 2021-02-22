@@ -1,0 +1,26 @@
+koffer:
+  silent: true
+  plugins:
+    collector-operators:
+      version: master
+      organization: codesparta
+      service: github.com
+      env:
+        - name: "VERSION"
+          value: "candidate"
+        - name: "MIRROR"
+          value: "true"
+        - name: "WALLE"
+          value: "true"
+        - name: "BUNDLE"
+          value: "true"
+        - name: "CATALOG_MIRROR"
+          value: "localhost:5000"
+        - name: "REDHAT_OPERATORS"
+          value: "kiali-ossm,ocs-operator,quay-operator,jaeger-product,rhsso-operator,cluster-logging,servicemeshoperator,compliance-operator,elasticsearch-operator"
+        - name: "CERTIFIED_OPERATORS"
+          value: "null"
+        - name: "COMMUNITY_OPERATORS"
+          value: "null"
+        - name: "MARKET_OPERATORS"
+          value: "null"

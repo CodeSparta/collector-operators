@@ -1,7 +1,0 @@
-{
-	"auths": {
-		"localhost:5000": {
-			"auth": "Og=="
-		}
-	}
-}

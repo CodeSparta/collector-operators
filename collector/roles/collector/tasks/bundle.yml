@@ -1,0 +1,47 @@
+---
+- name: '{{ plugin.name }} | copy | Load manifests into bundle'
+  copy:
+    remote_src: no
+    src: '{{ dir.tmp }}/manifests'
+    dest: '{{ dir.platform }}/mirror/'
+    mode: '0775'
+  with_dict:
+    - "{{ operators }}"
+  when:
+    - item.key is defined and item.key != ""
+    - item.value.list is defined and item.value.list != "null" and item.value.list != ""
+    - item.value.image is defined and item.value.image != ""
+    - item.value.id is defined and item.value.id|int > 0
+
+- name: '{{ plugin.name }} | command:rm.rf | Purge pre-existing {{ koffer.plugin }} bundles'
+  shell:
+    cmd: |
+      rm -rf {{ dir.bundle }}/koffer-bundle.{{ koffer.plugin }}-*.tar*
+
+- name: '{{ plugin.name }} | command:tar.cvf | Build Artifact Bundle'
+  shell:
+    cmd: |
+      tar -cSvf {{ dir.bundle }}/koffer-bundle.{{ koffer.plugin }}-{{ koffer.date }}.tar --directory /root platform
+  args:
+    creates: '{{ dir.bundle }}/koffer-bundle.{{ koffer.plugin }}-{{ koffer.date }}.tar'
+    
+- name: '{{ plugin.name }} | command:sha256sum | SHA koffer-bundle.{{ koffer.plugin }}-{{ koffer.date }}.tar'
+  command: 'sha256sum {{ dir.bundle }}/koffer-bundle.{{ koffer.plugin }}-{{ koffer.date }}.tar' 
+  args:
+    chdir: '{{ dir.bundle }}'
+  register: bundle_sha256
+    
+- name: '{{ plugin.name }} | copy:content.bundle_sha | Write SHA256 sum File | {{ bundle_sha256.stdout }}'
+  copy:
+    dest: "{{ dir.bundle }}/koffer-bundle.{{ koffer.plugin }}-{{ koffer.date }}.tar.sha256"
+    content: '{{ bundle_sha256.stdout }}'
+    mode: 0666
+
+- name: '{{ plugin.name }} | file:directory.mode.0777 | Opem Permissions on Bundle Files'
+  file:
+    state: file
+    path: '{{ item }}'
+    mode: 0666
+  loop:
+    - "{{ dir.bundle }}/koffer-bundle.{{ koffer.plugin }}-{{ koffer.date }}.tar.sha256"
+    - "{{ dir.bundle }}/koffer-bundle.{{ koffer.plugin }}-{{ koffer.date }}.tar"
