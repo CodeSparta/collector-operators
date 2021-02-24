@@ -28,14 +28,14 @@ workflow model conventional to more typical connected local mirror techniques.
   - A minimum of 32GB free storage
   - sudo privileges for nested container build support
 
-#### 2. Run Koffer Engine with [Remote Config](https://git.io/JtHzF)
+#### 2. Run Koffer Engine with [Remote Config](https://git.io/Jt5uF)
 ```
 mkdir ${HOME}/bundle; \
 sudo podman run -it --rm --pull always \
     --privileged --device /dev/fuse \
     --volume ${HOME}/bundle:/root/bundle:z \
   quay.io/cloudctl/koffer:v00.21.0221-extra bundle \
-    --config https://git.io/JtHzF
+    --config https://git.io/Jt5uF
 ```
 
 #### 3. Check Bundle
