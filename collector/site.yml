@@ -1,14 +1,15 @@
 #!/usr/local/bin/ansible-playbook --inventory=inventory/all.yml
-- name: 'Red Hat Consulting | CodeSparta | Koffer | Collector Operators'
+- name: 'Red Hat Consulting | CodeSparta | Koffer | Collector Operators' 
   hosts: koffer
   collections:
   - usrbinkat.collector
   - containers.podman
   vars:
-    module: "operators"
+    module: "Collector Operators"
     ansible_name_module: "Red Hat Consulting | CodeSparta | Koffer | {{ module }}"
   environment:
     PATH: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
-  roles:
-    - collector
+  tasks:
+    - import_role:
+        name: usrbinkat.collector.collector
