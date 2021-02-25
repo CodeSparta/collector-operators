@@ -8,4 +8,4 @@
     PATH: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
   tasks:
     - import_role:
-        name: usrbinkat.collector.operators
+        name: sparta.collector.operators
