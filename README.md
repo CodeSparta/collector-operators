@@ -49,10 +49,25 @@ sudo podman run -it --rm --pull always \
 ```
  cd ${HOME}/bundle;
  echo "$(cat koffer-bundle.operators-*.tar.sha256)" | sha256sum --check --status;
- sudo tar -xvf ${HOME}/bundle/koffer-bundle.openshift-*.tar -C /root;
+ sudo tar -xvf ${HOME}/bundle/koffer-bundle.operators-*.tar -C /root;
 ```
 
 #### 5. Operators are ready to deploy via [CloudCtl - Trusted Platform Delivery Kit](https://github.com/CloudCtl/cloudctl)
+  - Modify the mainfests
+```
+cd /root/platform/mirror/manifests/redhat-catalog-index-manifests
+sed -i 's/localhost/registry.$(vpc_name).$(name_domain)/g' *
+```
+  - Apply the mainfests
+```
+podman exec -it konductor connect
+oc patch OperatorHub cluster --type json -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
+
+oc apply -f /root/platform/mirror/manifests/redhat-catalog-index-manifests/olm-icsp.yaml 
+oc apply -f /root/platform/mirror/manifests/redhat-catalog-index-manifests/rh-catalog-source.yaml
+```
+
+
 
 ### Roadmap
   - [x] Adopt OPM utility
